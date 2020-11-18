@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagement.API", "LibraryManagement.API\LibraryManagement.API.csproj", "{57B5A216-651C-4C95-93A9-0E7A88A56889}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryManagement.API", "LibraryManagement.API\LibraryManagement.API.csproj", "{57B5A216-651C-4C95-93A9-0E7A88A56889}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LM.Domain", "LM.Domain\LM.Domain.csproj", "{6A30A35D-8FAA-4F58-AB82-8707EFBF3138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LM.DAL.Interface", "LM.DAL.Interface\LM.DAL.Interface.csproj", "{22C6B525-6A9A-4AA4-970B-CEFAD3C266F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LM.DAL.Implement", "LM.DAL.Implement\LM.DAL.Implement.csproj", "{7377BF3A-87E2-4BE3-9155-4360E451C113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LM.BAL.Interface", "LM.BAL.Interface\LM.BAL.Interface.csproj", "{73194EF2-9903-4011-92D5-FC6AA03720A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LM.BAL.Implement", "LM.BAL.Implement\LM.BAL.Implement.csproj", "{06520355-6FD6-4E08-A97E-15C15D695A0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{57B5A216-651C-4C95-93A9-0E7A88A56889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57B5A216-651C-4C95-93A9-0E7A88A56889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57B5A216-651C-4C95-93A9-0E7A88A56889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A30A35D-8FAA-4F58-AB82-8707EFBF3138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A30A35D-8FAA-4F58-AB82-8707EFBF3138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A30A35D-8FAA-4F58-AB82-8707EFBF3138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A30A35D-8FAA-4F58-AB82-8707EFBF3138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C6B525-6A9A-4AA4-970B-CEFAD3C266F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C6B525-6A9A-4AA4-970B-CEFAD3C266F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C6B525-6A9A-4AA4-970B-CEFAD3C266F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C6B525-6A9A-4AA4-970B-CEFAD3C266F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7377BF3A-87E2-4BE3-9155-4360E451C113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7377BF3A-87E2-4BE3-9155-4360E451C113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7377BF3A-87E2-4BE3-9155-4360E451C113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7377BF3A-87E2-4BE3-9155-4360E451C113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73194EF2-9903-4011-92D5-FC6AA03720A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73194EF2-9903-4011-92D5-FC6AA03720A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73194EF2-9903-4011-92D5-FC6AA03720A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73194EF2-9903-4011-92D5-FC6AA03720A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06520355-6FD6-4E08-A97E-15C15D695A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06520355-6FD6-4E08-A97E-15C15D695A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06520355-6FD6-4E08-A97E-15C15D695A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06520355-6FD6-4E08-A97E-15C15D695A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
