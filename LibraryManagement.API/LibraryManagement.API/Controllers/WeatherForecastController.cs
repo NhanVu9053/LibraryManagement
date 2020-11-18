@@ -35,5 +35,6 @@ namespace LibraryManagement.API.Controllers
             })
             .ToArray();
         }
+        public int MyProperty { get; set; }
     }
 }
