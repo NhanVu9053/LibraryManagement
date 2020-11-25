@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LibraryManagement.API.ModelDb;
+using LM.BAL.Implement;
+using LM.BAL.Interface;
+using LM.DAL.Implement;
+using LM.DAL.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LibraryManagement.API
 {
@@ -27,6 +27,18 @@ namespace LibraryManagement.API
         {
             services.AddControllers();
             services.AddSwaggerGen();
+
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ILoanCardService, LoanCardService>();
+            services.AddScoped<ILoanCardRepository, LoanCardRepository>();
+
+
+            services.AddDbContext<LibraryManagementDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<LibraryManagementDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
