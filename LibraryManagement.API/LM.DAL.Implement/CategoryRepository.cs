@@ -24,7 +24,7 @@ namespace LM.DAL.Implement
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@CategoryId", categoryId);
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
-                                                                    sql: "sp_IsDeleteCategory",
+                                                                    sql: "sp_DeleteCategory",
                                                                     param: parameters,
                                                                     commandType: CommandType.StoredProcedure);
                 return result;
@@ -40,7 +40,7 @@ namespace LM.DAL.Implement
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@CategoryId", categoryId);
             return await SqlMapper.QueryFirstOrDefaultAsync<CategoryView>(cnn: connection,
-                                                        sql: "Category_GetByCategoryId",
+                                                        sql: "sp_GetCategory",
                                                         parameters,
                                                         commandType: CommandType.StoredProcedure);
         }

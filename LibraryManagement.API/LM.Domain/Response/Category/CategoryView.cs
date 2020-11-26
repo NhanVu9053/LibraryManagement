@@ -11,8 +11,7 @@ namespace LM.Domain.Response.Category
         public int StatusId { get; set; }
         public string StatusName { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int CreatedBy { get; set; }
-        public string message { get; set; }
+        public string CreatedBy { get; set; }       
         public string CreatedDateStr { get; set; }
         public string ModifiedDateStr { get; set; }
     }

@@ -16,6 +16,6 @@ namespace LM.Domain.Response.BookArchive
         public string CreatedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string ModifiedDateStr { get; set; }
-        public string Message { get; set; }
+    
     }
 }
