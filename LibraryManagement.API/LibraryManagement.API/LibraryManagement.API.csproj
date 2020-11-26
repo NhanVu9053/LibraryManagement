@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,7 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LM.BAL.Implement\LM.BAL.Implement.csproj" />
     <ProjectReference Include="..\LM.BAL.Interface\LM.BAL.Interface.csproj" />
+    <ProjectReference Include="..\LM.DAL.Implement\LM.DAL.Implement.csproj" />
     <ProjectReference Include="..\LM.Domain\LM.Domain.csproj" />
   </ItemGroup>
 

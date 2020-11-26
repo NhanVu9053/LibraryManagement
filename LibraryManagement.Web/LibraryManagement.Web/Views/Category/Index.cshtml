@@ -1,0 +1,54 @@
+﻿@model List<CategoryView>
+@{
+    ViewData["Title"] = "Category Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div>
+    <h3 class="display text-center"> DANH SÁCH THƯ MỤC</h3>
+    @*<a asp-controller="#" asp-action="#" class="btn btn-warning mb-2">Create Role</a>*@
+    <table id="tbCategory" class="table table-bordered table-hover table-primary">
+        <thead class="thead-dark">
+            <tr>
+                <th>#ID</th>
+                <th>Tên Danh Mục</th>
+                <th>Ngày tạo</th>
+                <th>Người tạo</th>
+                <th>Trạng thái</th>
+                <th>Ngày sửa</th>
+                <th>Người sửa</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td>@category.CategoryId</td>
+                        <td>@category.CategoryName</td>
+                        <td>@category.CreatedDateStr</td>
+                        <td>@category.CreatedBy</td>
+                        <td>@category.StatusName</td>
+                        <td>@category.ModifiedDateStr</td>
+                        <td>@category.ModifiedBy</td>
+
+                        <td>
+                            @*<a asp-controller="#" asp-action="Edit" asp-route-id="@category.CategoryId" class="text-danger"><i class="fas fa-edit"></i></a>
+                            <a href="javascript:void(0)" class="text-danger" onclick="role.delete('@category.CategoryId')"><i class="fas fa-trash"></i></a>*@
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/lib/bootbox/bootbox.min.js"></script>
+    <script src="~/js/category.js" asp-append-version="true"></script>
+}

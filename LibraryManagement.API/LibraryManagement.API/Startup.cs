@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LM.BAL.Implement;
+using LM.BAL.Interface;
+using LM.DAL.Implement;
+using LM.DAL.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +31,12 @@ namespace LibraryManagement.API
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddScoped<IWikiService, WikiService>();
+            services.AddScoped<IWikiRepository, WikiRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IBookArchiveService, BookArchiveService>();
+            services.AddScoped<IBookArchiveRepository, BookArchiveRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

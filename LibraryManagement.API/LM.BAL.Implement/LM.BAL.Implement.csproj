@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LM.BAL.Interface\LM.BAL.Interface.csproj" />
+    <ProjectReference Include="..\LM.DAL.Interface\LM.DAL.Interface.csproj" />
     <ProjectReference Include="..\LM.Domain\LM.Domain.csproj" />
   </ItemGroup>
 
