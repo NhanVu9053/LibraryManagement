@@ -25,7 +25,7 @@ namespace LibraryManagement.API.Controllers
             var category = await categoryService.Get(categoryId);
             return Ok(category);
         }
-        [HttpGet("api/Category/gets")]
+        [HttpGet("api/category/gets")]
         public async Task<OkObjectResult> Gets()
         {
             var category = await categoryService.Gets();

@@ -13,7 +13,6 @@ namespace LibraryManagement.Web.Controllers
     {
         public IActionResult Index()
         {
-        
             return View();
         }
         [HttpGet]
@@ -49,7 +48,8 @@ namespace LibraryManagement.Web.Controllers
         [Route("/category/status/gets")]
         public JsonResult GetStatus()
         {
-            var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Category},{false}");
+            var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Category}");
+            /*,{ false}*/
             return Json(new { data = status });
         }
     }

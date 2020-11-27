@@ -21,7 +21,6 @@ category.showData = function () {
                         <td>${v.modifiedDate}</td>
                         <td>${v.modifiedBy}</td>
                         <td>
-                             
                              <a href="javascript:;" class="text-warning  ml-2" onclick="category.edit(${v.categoryId})"><i class='fas fa-edit'></i></a>
                              <a href="javascript:;" class='text-danger ml-2' onclick="category.delete(${v.categoryId},'${v.categoryName}')"><i class='fas fa-trash'></i></a>
                         </td>
@@ -79,6 +78,63 @@ category.delete = function (categoryId, categoryName) {
         }
     });
 }
+
+
+category.save = function () {
+    if ($('#fromAddEditCategory').valid()) {
+        var changeObj = {};
+        var checkSave = false;
+        var saveObj = {};
+        saveObj.categoryId = parseInt($('#CategoryId').val());
+        saveObj.categoryName = $('#CategoryName').val();
+        
+        saveObj.status = parseInt($('#Status').val());
+        $.ajax({
+            url: `/category/get/${saveObj.categoryId}`,
+            method: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json',
+            success: function (response) {
+                console.log(response);
+                if (response.data.categoryName != saveObj.categoryName) {
+                    changeObj.categoryName = response.data.categoryName;
+                    checkSave = true;
+                };
+               
+                if (response.data.status != saveObj.status) {
+                    changeObj.status = response.data.status;
+                    checkSave = true;
+                };
+                if (checkSave) {
+                    $.ajax({
+                        url: '/category/save',
+                        method: 'POST',
+                        dataType: 'JSON',
+                        contentType: 'application/json',
+                        data: JSON.stringify(saveObj),
+                        success: function (response) {
+                            console.log(response);
+                            bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`);
+                            if (response.data.categoryId > 0) {
+                                $('#addEditCategoryModal').modal('hide');
+                                category.showData();
+                            }
+                        }
+                    });
+                }
+                else {
+                    document.getElementById('msg').innerHTML = 'You are not doing new any value !!!';
+                    document.getElementById('msg').style.display = 'block';
+                    //$('.msg').text('You are not doing new any value !!!');
+                    //$('.msg').removeAttr("style").hide();
+                    //$('.msg').show();
+                    //bootbox.alert(`<h4 class="alert alert-danger">You are not doing new any value !!!</h4>`);
+                }
+            }
+        });
+    }
+}
+
 
 
 category.openModal = function () {
