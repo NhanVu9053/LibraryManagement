@@ -10,11 +10,13 @@ namespace LibraryManagement.Web.Ultilities
         public static string apiUrl = @"https://localhost:44367/api";
         public enum Table
         {
-            Category = 1,
-            //Module = 2,
-            //Teacher = 3,
-            LoanCard = 4,
-            BookArchive =5
+           Book=1,
+           Student=2,
+           LoanCard=3,
+           LoanCardBook=4,
+           Libaryian=5,
+           Category=6,
+           BookArchive=7
         }
     }
 }
