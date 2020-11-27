@@ -1,8 +1,6 @@
 ﻿var category = {} || category;
 
 
-
-
 category.showData = function () {
     $.ajax({
         url: '/category/gets',
@@ -21,7 +19,6 @@ category.showData = function () {
                         <td>${v.modifiedDate}</td>
                         <td>${v.modifiedBy}</td>
                         <td>
-                             
                              <a href="javascript:;" class="text-warning  ml-2" onclick="category.edit(${v.categoryId})"><i class='fas fa-edit'></i></a>
                              <a href="javascript:;" class='text-danger ml-2' onclick="category.delete(${v.categoryId},'${v.categoryName}')"><i class='fas fa-trash'></i></a>
                         </td>
@@ -87,15 +84,7 @@ category.openModal = function () {
     $('#addEditCategoryModal').modal('show');
 }
 
-category.init = function () {
-    category.showData();
-    category.initStatus();
-}
-
-$(document).ready(function () {
-    category.init();
-});
-$(document).ready(function () {
+category.tables = function () {
     $("#tbCategory").dataTable(
         {
             "language": {
@@ -140,4 +129,13 @@ $(document).ready(function () {
             ]
         }
     );
+};
+category.init = function () {
+    category.showData();
+    category.initStatus();
+}
+
+$(document).ready(function () {
+    category.init();
 });
+

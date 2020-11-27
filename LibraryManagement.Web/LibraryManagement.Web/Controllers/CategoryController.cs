@@ -34,7 +34,7 @@ namespace LibraryManagement.Web.Controllers
         [Route("/category/save")]
         public JsonResult Save([FromBody] SaveCategoryReq request)
         {
-            var result = ApiHelper<SaveCategoryRes>.HttpPostAsync($"category/save", "POST", request);
+            var result = ApiHelper<SaveCategoryRes>.HttpAsync($"category/save", "POST", request);
             return Json(new { data = result });
         }
         [HttpPatch]
