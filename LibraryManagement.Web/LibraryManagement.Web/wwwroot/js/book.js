@@ -1,5 +1,36 @@
-﻿$(document).ready(function () {
-    $("#tbCategory").dataTable(
+﻿var books = {} || books;
+books.delete = function (id) {
+    bootbox.confirm({
+        title: "Cảnh báo",
+        message: "Bạn có muốn xóa cuốn sách này không?",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Không'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Có'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    url: `/Book/Delete/${id}`,
+                    method: "PATCH",
+                    contentType: 'JSON',
+                    success: function () {
+                            window.location.href = "/Book/Index";
+                    }
+                });
+            }
+        }
+    });
+}
+
+
+
+
+$(document).ready(function () {
+    $("#tbBooks").dataTable(
         {
             "language": {
                 "sProcessing": "Đang xử lý...",
@@ -24,19 +55,16 @@
                     "orderable": false
                 },
                 {
-                    "targets": 3,
-                    "orderable": false
-                },
-                {
                     "targets": 4,
                     "orderable": false
                 },
                 {
-                    "targets": 6,
-                    "orderable": false
+                    "targets": 5,
+                    "orderable": false,
+                    "searchable": false
                 },
                 {
-                    "targets": 7,
+                    "targets": 6,
                     "orderable": false,
                     "searchable": false
                 }

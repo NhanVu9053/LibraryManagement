@@ -17,9 +17,9 @@ namespace LM.BAL.Implement
             this.wikiRepository = wikiRepository;
         }
 
-        public async Task<IEnumerable<Status>> GetStatus(int tableId)
+        public async Task<IEnumerable<Status>> GetStatus(int tableId, bool isUpdate)
         {
-            return await wikiRepository.GetStatus(tableId);
+            return await wikiRepository.GetStatus(tableId, isUpdate);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace LibraryManagement.Web.Ultilities
             }
         }
 
-        public static T HttpPostAsync(string apiName, string method, object model)
+        public static T HttpAsync(string apiName, string method, object model)
         {
             string result = string.Empty;
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(@$"{Common.apiUrl}/{apiName}");
@@ -54,28 +54,28 @@ namespace LibraryManagement.Web.Ultilities
             return JsonConvert.DeserializeObject<T>(result);
         }
 
-        public static T HttpPatchAsync(string apiName)
-        {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(@$"{Common.apiUrl}/{apiName}");
-            httpWebRequest.Method = "PATCH";
-            var response = httpWebRequest.GetResponse();
-            {
-                string responseData;
-                Stream responseStream = response.GetResponseStream();
-                try
-                {
-                    using (StreamReader sr = new StreamReader(responseStream))
-                    {
-                        responseData = sr.ReadToEnd();
-                    }
-                }
-                finally
-                {
-                    ((IDisposable)responseStream).Dispose();
-                }
-                return JsonConvert.DeserializeObject<T>(responseData);
+        //public static T HttpPatchAsync(string apiName)
+        //{
+        //    HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(@$"{Common.apiUrl}/{apiName}");
+        //    httpWebRequest.Method = "PATCH";
+        //    var response = httpWebRequest.GetResponse();
+        //    {
+        //        string responseData;
+        //        Stream responseStream = response.GetResponseStream();
+        //        try
+        //        {
+        //            using (StreamReader sr = new StreamReader(responseStream))
+        //            {
+        //                responseData = sr.ReadToEnd();
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            ((IDisposable)responseStream).Dispose();
+        //        }
+        //        return JsonConvert.DeserializeObject<T>(responseData);
 
-            }
-        }
+        //    }
+        //}
     }
 }
