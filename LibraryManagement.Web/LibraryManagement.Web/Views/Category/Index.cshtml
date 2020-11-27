@@ -1,14 +1,12 @@
-﻿@model List<CategoryView>
+﻿
 @{
-    ViewData["Title"] = "Category Index";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-<div>
-    <h3 class="display text-center text-success"> DANH SÁCH DANH MỤC SÁCH</h3>
-    @*<a asp-controller="#" asp-action="#" class="btn btn-warning mb-2">Create Role</a>*@
-    <table id="tbCategory" class="table table-bordered table-hover table-primary">
+<a href="javascript:void(0);" class="btn btn-info" onclick="category.openModal()">Create</a>
+<div class="text-center my-2">
+    <table id="tbCategory" class="table table-bordered mt-2">
         <thead class="thead-dark">
             <tr>
                 <th>#ID</th>
@@ -22,32 +20,56 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model != null)
-            {
-                @foreach (var category in Model)
-                {
-                    <tr>
-                        <td>@category.CategoryId</td>
-                        <td>@category.CategoryName</td>
-                        <td>@category.CreatedDateStr</td>
-                        <td>@category.CreatedBy</td>
-                        <td>@category.StatusName</td>
-                        <td>@category.ModifiedDateStr</td>
-                        <td>@category.ModifiedBy</td>
-
-                        <td>
-                            @*<a asp-controller="#" asp-action="Edit" asp-route-id="@category.CategoryId" class="text-danger"><i class="fas fa-edit"></i></a>
-                            <a href="javascript:void(0)" class="text-danger" onclick="role.delete('@category.CategoryId')"><i class="fas fa-trash"></i></a>*@
-                        </td>
-                    </tr>
-                }
-            }
-
         </tbody>
     </table>
 </div>
 
+<!-- The Modal -->
+<div class="modal" id="addEditCategoryModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h4 class="text-danger" id="msg" style="display: none"></h4>
+                <form id="fromAddEditCategory">
+                    <input hidden name="CategoryId" id="CategoryId" value="0" />
+                    <div class="row form-group">
+                        <label for="CategoryName" class="col-3">Category name:</label>
+                        <div class="col-9">
+                            <input type="text" class="form-control" placeholder="category name"
+                                   id="CategoryName" name="CategoryName"
+                                   data-rule-required="true"
+                                   data-msg-required="Xin nhập tên danh mục sách">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label for="Status" class="col-3">Status:</label>
+                        <div class="col-9">
+                            <select class="form-control" id="Status" name="Status">
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-success" onclick="category.save()">Save</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 @section Scripts{
-    <script src="~/lib/bootbox/bootbox.min.js"></script>
     <script src="~/js/category.js" asp-append-version="true"></script>
 }
