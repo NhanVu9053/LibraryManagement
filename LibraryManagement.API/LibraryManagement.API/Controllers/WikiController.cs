@@ -15,10 +15,10 @@ namespace LibraryManagement.API.Controllers
         {
             this.wikiService = wikiService;
         }
-        [HttpGet("api/wiki/status/{id}")]
-        public async Task<OkObjectResult> GetStatus(int id)
+        [HttpGet("api/wiki/status/{id},{isUpdate}")]
+        public async Task<OkObjectResult> GetStatus(int id, bool isUpdate)
         {
-            return Ok(await wikiService.GetStatus(id));
+            return Ok(await wikiService.GetStatus(id, isUpdate));
         }
     }
 }

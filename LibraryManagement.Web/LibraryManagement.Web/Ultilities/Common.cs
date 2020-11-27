@@ -14,7 +14,6 @@ namespace LibraryManagement.Web.Ultilities
             Student = 2,
             LoanCard = 3,
             LoanCardBook = 4,
-            Libaryian = 5,
             Category = 6,
             BookArchive = 7
         }

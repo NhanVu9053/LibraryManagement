@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -42,5 +43,7 @@ namespace LibraryManagement.Web.Models.Book
         [Required(ErrorMessage = "Số lượng không được để trống")]
         [Display(Name = "Số lượng")]
         public int Quanity { get; set; }
+        [Required(ErrorMessage = "Bạn chưa chọn hình ảnh sản phẩm")]
+        public IFormFile Image { get; set; }
     }
 }
