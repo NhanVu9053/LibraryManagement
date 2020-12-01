@@ -1,0 +1,36 @@
+﻿@model StudentView
+@{
+    ViewData["Title"] = Model.StatusName;
+    var imagePath = $"/img/{(Model.AvatarPath ?? "none-avatar.png")}";
+}
+
+<h2 class="text-center text-info m-2">Học sinh: @Model.StudentName</h2>
+<div class="row justify-content-center col-xl-12">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <p><b>StudentId:</b> @Model.StudentId</p>
+                <p><b>Tên lớp:</b> @Model.CourseName</p>
+                <p><b>Giới tính:</b> @(Model.Gender == true ? "Nam" : "Nữ")</p>
+                <p><b>Ngày sinh:</b> @Model.DobStr</p>
+                <p><b>Số điện thoại:</b> @Model.PhoneNumber</p>
+                <p><b>Email:</b> @Model.Email</p>
+                <p><b>Địa chỉ:</b> @Model.AddressStr</p>
+                <p><b>Trạng thái:</b> @Model.StatusName</p>
+                <p><b>Ngày tạo:</b> @Model.CreatedDateStr</p>
+                <p><b>Người tạo:</b> @Model.CreatedBy</p>
+                <p><b>Ngày cập nhật:</b> @Model.ModifiedDateStr</p>
+                <p><b>Người cập nhật:</b> @Model.ModifiedBy</p>
+            </div>
+            <div class="card-footer text-center">
+                @*<a asp-controller="Student" asp-action="Edit" asp-route-id="@Model.StudentId" class="btn btn-warning">Sửa</a>
+                <a href="javascript:void(0)" class="btn btn-danger" onclick="books.delete(@Model.StudentId)">Xóa</a>*@
+                <a asp-controller="Student" asp-action="Index" class="btn btn-primary">Quay lại</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+        <img src="@imagePath" class="m-2" style="width: 400px; height: 450px;" />
+    </div>
+</div>
+

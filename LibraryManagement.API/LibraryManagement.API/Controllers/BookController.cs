@@ -45,5 +45,11 @@ namespace LibraryManagement.API.Controllers
             var result = await bookService.ChangeStatus(request);
             return Ok(result);
         }
+        //[HttpPatch]
+        //[Route("api/book/checkStatusBookIsOver")]
+        //public void CheckStatusBookIsOver(int id)
+        //{
+        //    bookService.CheckStatusBookIsOver(id);
+        //}
     }
 }

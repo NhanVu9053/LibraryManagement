@@ -4,14 +4,12 @@
     var imagePath = $"/img/{(Model.ImagePath ?? "none-imgbook.png")}";
 }
 
-<h3 class="text-center">@Model.BookName</h3>
+<h2 class="text-center text-success m-2">@Model.BookName</h2>
 <div class="row justify-content-center col-xl-12">
-    <div class="col-xl-6 col-md-12">
-        <img src="@imagePath" class="m-2" style="width: 400px; height: 450px;" />
-    </div>
     <div class="col-xl-6 col-md-12">
         <div class="card">
             <div class="card-body">
+                <p><b>BookId:</b> @Model.BookId</p>
                 <p><b>Thể loại:</b> @Model.CategoryName</p>
                 <p><b>Tác giả:</b> @Model.Author</p>
                 <p><b>Ngày xuất bản:</b> @Model.DopStr</p>
@@ -21,18 +19,20 @@
                 <p><b>Tổng sô lượng sách:</b> @Model.Quanity</p>
                 <p><b>Số sách còn trong kho:</b> @Model.QuanityRemain</p>
                 <p><b>Trạng thái:</b> @Model.StatusName</p>
+                <p><b>Ngày tạo:</b> @Model.CreatedDateStr</p>
+                <p><b>Người tạo:</b> @Model.CreatedBy</p>
+                <p><b>Ngày cập nhật:</b> @Model.ModifiedDateStr</p>
+                <p><b>Người cập nhật:</b> @Model.ModifiedBy</p>
             </div>
             <div class="card-footer text-center">
-                <a asp-controller="Book" asp-action="Edit" asp-route-id="@Model.BookId" class="btn btn-warning">Sửa</a>
-                <a href="javascript:void(0)" class="btn btn-danger" onclick="books.delete(@Model.BookId)">Xóa</a>
+                @*<a href="javascript:void(0)" class="btn btn-warning m-2" onclick="book.edit(@Model.BookId)">Cập nhật</a>
+                <a href="javascript:void(0)" class="btn btn-danger" onclick="books.delete(@Model.BookId)">Xóa</a>*@
                 <a asp-controller="Book" asp-action="Index" class="btn btn-primary">Quay lại</a>
             </div>
         </div>
     </div>
+    <div class="col-xl-6 col-md-12">
+        <img src="@imagePath" class="m-2" style="width: 400px; height: 450px;" />
+    </div>
 </div>
 
-@section Scripts
-{
-    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
-    <script src="~/js/book.js"></script>
-}
