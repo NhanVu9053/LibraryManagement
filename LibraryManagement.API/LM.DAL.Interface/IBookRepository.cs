@@ -13,5 +13,6 @@ namespace LM.DAL.Interface
         Task<BookView> Get(int id);
         Task<SaveBookRes> Save(SaveBookReq request);
         Task<SaveBookRes> ChangeStatus(StatusBookReq request);
+        //void CheckStatusBookIsOver(int id);
     }
 }
