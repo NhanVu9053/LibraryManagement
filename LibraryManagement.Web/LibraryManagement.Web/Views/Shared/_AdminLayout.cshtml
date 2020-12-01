@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>@ViewData["Title"]</title>
     <link href="~/Assets/startbootstrap-sb-admin-gh-pages/dist/css/styles.css" rel="stylesheet" />
     @*<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />*@
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>*@
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 <body class="sb-nav-fixed">
@@ -111,7 +113,11 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                @RenderBody()
+                <section class="content">
+                    <div class="container-fluid">
+                        @RenderBody()
+                    </div>
+                </section>
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">

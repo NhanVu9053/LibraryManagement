@@ -49,6 +49,8 @@ namespace LibraryManagement.API
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IBookArchiveService, BookArchiveService>();
             services.AddScoped<IBookArchiveRepository, BookArchiveRepository>();
+            services.AddScoped<IContactInfoService, ContactInfoService>();
+            services.AddScoped<IContactInfoRepository, ContactInfoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
