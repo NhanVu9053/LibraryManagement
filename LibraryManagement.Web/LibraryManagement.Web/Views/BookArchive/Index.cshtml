@@ -1,20 +1,23 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<a href="javascript:void(0);" class="btn btn-info" onclick="category.openModal()">Create</a>
+<a href="javascript:void(0);" class="btn btn-info" onclick="bookArchive.openModal()">Create</a>
 <div class="text-center my-2">
-    <table id="tbCategory" class="table table-bordered mt-2">
+    <table id="tbbookArchive" class="table table-bordered mt-2">
         <thead class="thead-dark">
             <tr>
                 <th>#ID</th>
+                <th>Mã Sách</th>
+                <th>Tên Sách</th>
                 <th>Tên Danh Mục</th>
-                <th>Ngày tạo</th>
-                <th>Người tạo</th>
-                <th>Trạng thái</th>
+                <th>Tổng số lượng</th>
+                <th>Số lượng còn lại</th>
                 <th>Ngày sửa</th>
                 <th>Người sửa</th>
+                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -24,7 +27,7 @@
 </div>
 
 <!-- The Modal -->
-<div class="modal" id="addEditCategoryModal">
+<div class="modal" id="addEditbookArchiveModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -37,15 +40,15 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <h4 class="text-danger" id="msg" style="display: none"></h4>
-                <form id="fromAddEditCategory">
-                    <input hidden name="CategoryId" id="CategoryId" value="0" />
+                <form id="fromAddEditbookArchive">
+                    <input hidden name="bookArchiveId" id="bookArchiveId" />
                     <div class="row form-group">
-                        <label for="CategoryName" class="col-3">Category name:</label>
+                        <label for="Value" class="col-3">Giá trị:</label>
                         <div class="col-9">
-                            <input type="text" class="form-control" placeholder="category name"
-                                   id="CategoryName" name="CategoryName"
+                            <input type="text" class="form-control" placeholder="Value"
+                                   id="value" name="value"
                                    data-rule-required="true"
-                                   data-msg-required="Xin nhập tên danh mục sách">
+                                   data-msg-required="Xin nhập số lượng">
                         </div>
                     </div>
                     <div class="row form-group">
@@ -61,7 +64,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-success" onclick="category.save()">Save</a>
+                <a href="javascript:;" class="btn btn-success" onclick="bookArchive.save()">Save</a>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
 
@@ -71,5 +74,6 @@
 
 @section Scripts{
     <script src="~/lib/bootbox.js/bootbox.min.js"></script>
-    <script src="~/js/category.js" asp-append-version="true"></script>
+    <script src="~/js/bookArchive.js" asp-append-version="true"></script>
 }
+

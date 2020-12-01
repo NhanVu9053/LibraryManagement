@@ -24,7 +24,7 @@ namespace LM.DAL.Implement
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@bookArchiveId", id);
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
-                                                                    sql: "sp_IsDeleteBookArchive",
+                                                                    sql: "sp_DeleteBookArchive",
                                                                     param: parameters,
                                                                     commandType: CommandType.StoredProcedure);
                 return result;
@@ -59,16 +59,20 @@ namespace LM.DAL.Implement
                 BookArchiveId = 0,
                 Message = ""
             };
+
+            
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@BookArchiveId", bookArchiveId.BookArchiveId);        
             parameters.Add("@StatusId", bookArchiveId.StatusId);
             parameters.Add("@Value", bookArchiveId.Value);
             parameters.Add("@IsPlus", bookArchiveId.IsPlus);
             parameters.Add("@ModifiedBy", bookArchiveId.ModifiedBy);
+
             return await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
                                                         sql: "sp_UpdateBookArchive",
                                                         parameters,
                                                         commandType: CommandType.StoredProcedure);
+
         }
     }
 }

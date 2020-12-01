@@ -1,4 +1,6 @@
-﻿var category = {} || category;
+﻿
+
+var category = {} || category;
 
 
 category.showData = function () {
@@ -13,10 +15,10 @@ category.showData = function () {
                     `<tr>
                         <td>${v.categoryId}</td>
                         <td>${v.categoryName}</td>
-                        <td>${v.createdDate}</td>
+                        <td>${v.createdDateStr}</td>
                         <td>${v.createdBy}</td>
                         <td>${v.statusName}</td>
-                        <td>${v.modifiedDate}</td>
+                        <td>${v.modifiedDateStr}</td>
                         <td>${v.modifiedBy}</td>
                         <td>
                              <a href="javascript:;" class="text-warning  ml-2" onclick="category.edit(${v.categoryId})"><i class='fas fa-edit'></i></a>
@@ -65,6 +67,7 @@ category.delete = function (categoryId, categoryName) {
                     dataType: 'JSON',
                     contentType: 'application/json',
                     success: function (response) {
+                        
                         bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`);
                         if (response.data.categoryId > 0) {
                             $('#addEditCategoryModal').modal('hide');
@@ -79,61 +82,46 @@ category.delete = function (categoryId, categoryName) {
 
 
 category.save = function () {
+
     if ($('#fromAddEditCategory').valid()) {
-        var changeObj = {};
-        var checkSave = false;
         var saveObj = {};
         saveObj.categoryId = parseInt($('#CategoryId').val());
-        saveObj.categoryName = $('#CategoryName').val();
-        
-        saveObj.status = parseInt($('#Status').val());
+        saveObj.categoryName = $('#CategoryName').val();      
+        saveObj.statusId = parseInt($('#Status').val());
         $.ajax({
-            url: `/category/get/${saveObj.categoryId}`,
-            method: 'GET',
+            url: '/category/save',
+            method: 'POST',
             dataType: 'JSON',
             contentType: 'application/json',
+            data: JSON.stringify(saveObj),
             success: function (response) {
-                console.log(response);
-                if (response.data.categoryName != saveObj.categoryName) {
-                    changeObj.categoryName = response.data.categoryName;
-                    checkSave = true;
-                };
-               
-                if (response.data.status != saveObj.status) {
-                    changeObj.status = response.data.status;
-                    checkSave = true;
-                };
-                if (checkSave) {
-                    $.ajax({
-                        url: '/category/save',
-                        method: 'POST',
-                        dataType: 'JSON',
-                        contentType: 'application/json',
-                        data: JSON.stringify(saveObj),
-                        success: function (response) {
-                            console.log(response);
-                            bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`);
-                            if (response.data.categoryId > 0) {
-                                $('#addEditCategoryModal').modal('hide');
-                                category.showData();
-                            }
-                        }
-                    });
-                }
-                else {
-                    document.getElementById('msg').innerHTML = 'You are not doing new any value !!!';
-                    document.getElementById('msg').style.display = 'block';
-                    //$('.msg').text('You are not doing new any value !!!');
-                    //$('.msg').removeAttr("style").hide();
-                    //$('.msg').show();
-                    //bootbox.alert(`<h4 class="alert alert-danger">You are not doing new any value !!!</h4>`);
+                bootbox.alert(`<h2 class="text-success">${response.data.message}</h2>`);
+                if (response.data.categoryId > 0) {
+                    $('#addEditCategoryModal').modal('hide');
+                    category.showData();
                 }
             }
         });
     }
 }
 
+category.edit = function (id) {
+    $.ajax({
+        url: `category/get/${id}`,
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (reponse) {
+            console.log(reponse);
+            $('#CategoryId').val(reponse.data.categoryId);
+            $('#CategoryName').val(reponse.data.categoryName);
+            $('#Status').val(reponse.data.status);
+            $('#addEditCategoryModal').find('.modal-title').text('Update Category');
+            $('#addEditCategoryModal').modal('show');
+        }
+    });
 
+};
 
 category.openModal = function () {
     
@@ -141,52 +129,7 @@ category.openModal = function () {
     $('#addEditCategoryModal').modal('show');
 }
 
-category.tables = function () {
-    $("#tbCategory").dataTable(
-        {
-            "language": {
-                "sProcessing": "Đang xử lý...",
-                "sLengthMenu": "Xem _MENU_ mục",
-                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
-                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
-                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
-                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
-                "sInfoPostFix": "",
-                "sSearch": "Tìm:",
-                "sUrl": "",
-                "oPaginate": {
-                    "sFirst": "Đầu",
-                    "sPrevious": "Trước",
-                    "sNext": "Tiếp",
-                    "sLast": "Cuối"
-                }
-            },
-            "columnDefs": [
-                {
-                    "targets": 1,
-                    "orderable": false
-                },
-                {
-                    "targets": 3,
-                    "orderable": false
-                },
-                {
-                    "targets": 4,
-                    "orderable": false
-                },
-                {
-                    "targets": 6,
-                    "orderable": false
-                },
-                {
-                    "targets": 7,
-                    "orderable": false,
-                    "searchable": false
-                }
-            ]
-        }
-    );
-};
+
 category.init = function () {
     category.showData();
     category.initStatus();
