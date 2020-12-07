@@ -31,6 +31,13 @@ namespace LibraryManagement.Web.Controllers
             return View(student);
         }
         [HttpGet]
+        [Route("/student/get/{id}")]
+        public JsonResult Get(int id)
+        {
+            var student = ApiHelper<StudentView>.HttpGetAsync(@$"student/get/{id}");
+            return Json(new { data = student });
+        }
+        [HttpGet]
         [Route("/student/status/gets")]
         public JsonResult GetStatus()
         {
@@ -41,13 +48,14 @@ namespace LibraryManagement.Web.Controllers
         [Route("/student/save")]
         public JsonResult Save([FromForm] SaveStudentReq request)
         {
+
             var avatarPathOld = request.AvatarPath;
             if (request.Avatar != null)
             {
                 request.AvatarPath = ProcessAvatarPath(request.Avatar);
             }
             var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/save", "POST", request);
-            if (result.Message == "Thao tác tạo mới Student thành công")
+            if (result.Message == "Thao tác tạo mới Student thành công" && request.AvatarPath != "none-avatar.png")
             {
                 CreateAvatar(request.Avatar, request.AvatarPath);
             }
@@ -55,6 +63,7 @@ namespace LibraryManagement.Web.Controllers
             {
                 EditAvatar(request.Avatar, request.AvatarPath, avatarPathOld);
             }
+            TempData["Message"] = result.Message;
             return Json(new { data = result });
         }
         [HttpPatch]
@@ -64,6 +73,30 @@ namespace LibraryManagement.Web.Controllers
             {
                 StudentId = id,
                 StatusId = 4,
+                ModifiedBy = "admin"
+            };
+            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
+            return ResultMessage(result);
+        }
+        [HttpPatch]
+        public IActionResult ChangeStatusToBlocked(int id)
+        {
+            var request = new StatusStudentReq()
+            {
+                StudentId = id,
+                StatusId = 3,
+                ModifiedBy = "admin"
+            };
+            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
+            return ResultMessage(result);
+        }
+        [HttpPatch]
+        public IActionResult ChangeStatusToActive(int id)
+        {
+            var request = new StatusStudentReq()
+            {
+                StudentId = id,
+                StatusId = 1,
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);

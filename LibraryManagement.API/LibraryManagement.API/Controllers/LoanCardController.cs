@@ -22,14 +22,14 @@ namespace LibraryManagement.API.Controllers
         [HttpGet("api/loanCard/gets")]
         public async Task<OkObjectResult> Gets()
         {
-            var books = await loanCardService.Gets();
-            return Ok(books);
+            var loanCards = await loanCardService.Gets();
+            return Ok(loanCards);
         }
         [HttpGet("api/loanCard/get/{id}")]
         public async Task<OkObjectResult> Get(int id)
         {
-            var book = await loanCardService.Get(id);
-            return Ok(book);
+            var loanCard = await loanCardService.Get(id);
+            return Ok(loanCard);
         }
         [HttpPost, HttpPatch]
         [Route("api/loanCard/save")]
@@ -43,6 +43,13 @@ namespace LibraryManagement.API.Controllers
         public async Task<OkObjectResult> ChangeStatus(StatusLoanCardReq request)
         {
             var result = await loanCardService.ChangeStatus(request);
+            return Ok(result);
+        }
+        [HttpPatch]
+        [Route("api/loanCard/extendLoanCard")]
+        public async Task<OkObjectResult> ExtendLoanCard(ExtendLoanCardReq request)
+        {
+            var result = await loanCardService.ExtendLoanCard(request);
             return Ok(result);
         }
     }

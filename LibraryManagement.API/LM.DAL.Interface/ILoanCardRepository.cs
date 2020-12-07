@@ -15,5 +15,6 @@ namespace LM.DAL.Interface
         Task<SaveLoanCardRes> Save(SaveLoanCardReq request);
         Task<SaveLoanCardRes> ChangeStatus(StatusLoanCardReq request);
         Task<IEnumerable<BookView>> GetBookList(int loanCardId);
+        Task<SaveLoanCardRes> ExtendLoanCard(ExtendLoanCardReq request);
     }
 }

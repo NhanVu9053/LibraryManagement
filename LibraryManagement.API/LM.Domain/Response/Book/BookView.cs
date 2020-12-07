@@ -17,7 +17,7 @@ namespace LM.Domain.Response.Book
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public string ImagePath { get; set; }
-        public int Quanity { get; set; }
+        public int Quantity { get; set; }
         public int QuanityRemain { get; set; }
     }
 }

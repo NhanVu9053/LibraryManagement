@@ -31,24 +31,6 @@ namespace LM.DAL.Implement
                 throw ex;
             }
         }
-
-        //public async void CheckStatusBookIsOver(int id)
-        //{
-        //    try
-        //    {
-        //        DynamicParameters parameters = new DynamicParameters();
-        //        parameters.Add("@BookId", id);
-        //        await SqlMapper.QueryFirstOrDefaultAsync(cnn: connection,
-        //                                                sql: "sp_GetBook",
-        //                                                param: parameters,
-        //                                                commandType: CommandType.StoredProcedure);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
         public async Task<BookView> Get(int id)
         {
             try
@@ -145,9 +127,9 @@ namespace LM.DAL.Implement
                 parameters.Add("@Page", request.Page);
                 parameters.Add("@Description", request.Description);
                 parameters.Add("@CategoryId", request.CategoryId);
-                parameters.Add("@StatusId", request.StatusId);
+                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@ImagePath", request.ImagePath);
-                parameters.Add("@Quanity", request.Quanity);
+                parameters.Add("@Quantity", request.Quantity);
                 parameters.Add("@CreatedBy", "admin");
                 parameters.Add("@ModifiedBy", "admin");
 

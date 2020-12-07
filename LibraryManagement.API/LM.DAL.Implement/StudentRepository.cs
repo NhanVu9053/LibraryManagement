@@ -81,14 +81,14 @@ namespace LM.DAL.Implement
                 parameters.Add("@Gender", request.Gender);
                 parameters.Add("@Email", request.Email);
                 parameters.Add("@PhoneNumber", request.PhoneNumber);
-                parameters.Add("@StatusId", request.StatusId);
+                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@ProvinceId", request.ProvinceId);
                 parameters.Add("@DistrictId", request.DistrictId);
                 parameters.Add("@WardId", request.WardId);
                 parameters.Add("@Address", request.Address);
                 parameters.Add("@AvatarPath", request.AvatarPath);
-                parameters.Add("@CreatedBy", request.CreatedBy);
-                parameters.Add("@ModifiedBy", request.ModifiedBy);
+                parameters.Add("@CreatedBy", "admin");
+                parameters.Add("@ModifiedBy", "admin");
 
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveStudentRes>(cnn: connection,
                                                                     sql: "sp_SaveStudent",

@@ -51,37 +51,6 @@ namespace LibraryManagement.Web.Controllers
             var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Book},{false}");
             return Json(new { data = status });
         }
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-        //    var data = new SaveBookReq();
-        //    data.Statuses = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Book},{false}");
-        //    data.Categories = ApiHelper<List<Category>>.HttpGetAsync("category/gets");
-        //    return View(data);
-        //}
-        //[HttpPost]
-        //public IActionResult Create(SaveBookReq req)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = ApiHelper<SaveBookRes>.HttpAsync("book/save", "POST", req);
-        //        if (result.BookId != 0)
-        //        {
-        //            TempData["Message"] = result.Message;
-        //            return RedirectToAction("index");
-        //        }
-        //        ModelState.AddModelError("", result.Message);
-        //    }
-        //    //ViewBag.Status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Book},{false}");
-        //    return View(req);
-        //}
-        //[HttpPost]
-        //[Route("/book/save")]
-        //public JsonResult Save([FromBody] SaveBookReq request)
-        //{
-        //    var result = ApiHelper<SaveBookRes>.HttpAsync($"book/save", "POST", request);
-        //    return Json(new { data = result });
-        //}
         [HttpPost]
         [Route("/book/save")]
         public JsonResult Save([FromForm] SaveBookReq request)
@@ -100,10 +69,10 @@ namespace LibraryManagement.Web.Controllers
             {
                 EditImg(request.Image, request.ImagePath, imagePathOld);
             }
+            TempData["Message"] = result.Message;
             return Json(new { data = result });
         }
         [HttpPatch]
-        //[Route("/book/delete/{id}")]
         public IActionResult Delete(int id)
         {
             var request = new StatusBookReq()
@@ -116,7 +85,6 @@ namespace LibraryManagement.Web.Controllers
             return ResultMessage(result);
         }
         [HttpPatch]
-        //[Route("/book/changeStatusToOver/{id}")]
         public IActionResult ChangeStatusToOver(int id)
         {
             var request = new StatusBookReq()
@@ -129,7 +97,6 @@ namespace LibraryManagement.Web.Controllers
             return ResultMessage(result);
         }
         [HttpPatch]
-        //[Route("/book/changeStatusToOver/{id}")]
         public IActionResult ChangeStatusToStochking(int id)
         {
             var request = new StatusBookReq()
@@ -142,7 +109,6 @@ namespace LibraryManagement.Web.Controllers
             return ResultMessage(result);
         }
         [HttpPatch]
-        //[Route("/book/changeStatusToPending/{id}")]
         public IActionResult ChangeStatusToPending(int id)
         {
             var request = new StatusBookReq()
@@ -154,19 +120,6 @@ namespace LibraryManagement.Web.Controllers
             var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
             return ResultMessage(result);
         }
-        //[HttpPatch]
-        ////[Route("/book/changeStatusToPending/{id}")]
-        //public IActionResult CheckStatusBookIsOver(int id)
-        //{
-        //    //var request = new StatusBookReq()
-        //    //{
-        //    //    BookId = id,
-        //    //    StatusId = 3,
-        //    //    ModifiedBy = "admin"
-        //    //};
-        //    ApiHelper<SaveBookRes>.HttpAsync($"book/checkStatusBookIsOver", "PATCH", id);
-        //    return Ok();
-        //}
         public IActionResult ResultMessage(SaveBookRes result)
         {
             if (result != null)
@@ -182,13 +135,7 @@ namespace LibraryManagement.Web.Controllers
             string fileName = null;
             if (file != null)
             {
-                //string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "img");
                 fileName = $"{Guid.NewGuid()}_{file.FileName}";
-                //var filePath = Path.Combine(uploadFolder, fileName);
-                //using (var fs = new FileStream(filePath, FileMode.Create))
-                //{
-                //    file.CopyTo(fs);
-                //}
             }
             return fileName;
         }
@@ -203,17 +150,14 @@ namespace LibraryManagement.Web.Controllers
         }
         public void EditImg(IFormFile file, string fileName, string fileNameOld)
         {
-            //string fileName = null;
             if (file != null)
             {
                 string uploadFolder = Path.Combine(webHostEnvironment.WebRootPath, "img");
-                //fileName = $"{Guid.NewGuid()}_{file.FileName}";
                 var filePath = Path.Combine(uploadFolder, fileName);
                 using (var fs = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(fs);
                 }
-                //editProduct.ImagePath = fileName;
                 if (!string.IsNullOrEmpty(fileNameOld) && (fileNameOld != "none-imgbook.png"))
                 {
                     string delFile = Path.Combine(webHostEnvironment.WebRootPath
