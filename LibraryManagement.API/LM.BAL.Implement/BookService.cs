@@ -32,14 +32,34 @@ namespace LM.BAL.Implement
             return await bookRepository.Get(id);
         }
 
+        public async Task<IEnumerable<BookView>> GetByCategoryId(int categoryId)
+        {
+            return await bookRepository.GetByCategoryId(categoryId);
+        }
+
         public async Task<IEnumerable<BookView>> Gets()
         {
             return await bookRepository.Gets();
         }
 
+        public  async Task<IEnumerable<BookView>> GetTopLoanBook()
+        {
+            return await bookRepository.GetTopLoanBook();
+        }
+
+        public async Task<IEnumerable<BookView>> GetTopNewBook()
+        {
+            return await bookRepository.GetTopNewBook();
+        }
+
         public async Task<SaveBookRes> Save(SaveBookReq request)
         {
             return await bookRepository.Save(request);
+        }
+
+        public async Task<IEnumerable<BookView>> Search(string resultid)
+        {
+            return await bookRepository.Search(resultid);
         }
     }
 }

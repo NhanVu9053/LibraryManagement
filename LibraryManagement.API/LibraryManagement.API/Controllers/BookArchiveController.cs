@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using LM.BAL.Interface;
 using LM.Domain.Request.BookArchive;
+using LM.Domain.Request.Category;
 using LM.Domain.Response.BookArchive;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
 {
+    //[ApiController]
     public class BookArchiveController : Controller
     {
         private readonly IBookArchiveService bookArchiveService;
@@ -29,13 +31,14 @@ namespace LibraryManagement.API.Controllers
             var bookArchive = await bookArchiveService.Gets();
             return Ok(bookArchive);
         }
-        [HttpPatch]
+        [HttpPost, HttpPatch]
         [Route("api/bookArchive/save")]
-        public async Task<OkObjectResult> Save(SaveBookArchiveReq request)
+        public async Task<OkObjectResult> Save([FromBody] SaveBookArchiveReq request)
         {
             var result = await bookArchiveService.Save(request);
             return Ok(result);
         }
+
         [HttpPatch("api/bookArchive/Delete/{id}")]
         public async Task<SaveBookArchiveRes> Delete(int id)
         {

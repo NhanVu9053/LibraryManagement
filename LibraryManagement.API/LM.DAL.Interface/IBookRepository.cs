@@ -14,5 +14,9 @@ namespace LM.DAL.Interface
         Task<SaveBookRes> Save(SaveBookReq request);
         Task<SaveBookRes> ChangeStatus(StatusBookReq request);
         //void CheckStatusBookIsOver(int id);
+        Task<IEnumerable<BookView>> GetByCategoryId(int categoryId);
+        Task<IEnumerable<BookView>> Search(string resultid);
+        Task<IEnumerable<BookView>> GetTopLoanBook();
+        Task<IEnumerable<BookView>> GetTopNewBook();
     }
 }

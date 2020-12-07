@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<a href="javascript:void(0);" class="btn btn-info" onclick="bookArchive.openModal()">Create</a>
+<div class="text-center my-2">
+    <table id="tbbookArchive" class="table table-bordered mt-2">
+        <thead class="thead-dark">
+            <tr>
+                <th>#ID</th>
+                <th>Mã Sách</th>
+                <th>Tên Sách</th>
+                <th>Tên Danh Mục</th>
+                <th>Tổng số lượng</th>
+                <th>Số lượng còn lại</th>
+                <th>Ngày sửa</th>
+                <th>Người sửa</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="addEditbookArchiveModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h4 class="text-danger" id="msg" style="display: none"></h4>
+                <form id="fromAddEditbookArchive">
+                    <input hidden name="bookArchiveId" id="bookArchiveId" />
+                    <div class="row form-group">
+                        <label for="Value" class="col-3">Giá trị:</label>
+                        <div class="col-9">
+                            <input type="text" class="form-control" placeholder="Value"
+                                   id="value" name="value"
+                                   data-rule-required="true"
+                                   data-msg-required="Xin nhập số lượng"
+                                   min="0">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label for="StatusId" class="col-3">Status:</label>
+                        <div class="col-9">
+                            <select class="form-control" id="Status" name="Status">
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-success" onclick="bookArchive.save()">Save</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+    <script src="~/js/bookArchive.js" asp-append-version="true"></script>
+}
+
