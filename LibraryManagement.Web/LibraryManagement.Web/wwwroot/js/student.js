@@ -53,7 +53,7 @@ student.edit = function (id) {
             $('#Ward').val(response.data.wardId);
             console.log(response.data.provinceId, response.data.districtId, response.data.wardId);
             $('#Address').val(response.data.address);
-            $('#Status').val(response.data.statusId);
+            //$('#Status').val(response.data.statusId);
             if (response.data.avatarPath = "none-avatar.png") {
                 response.data.avatarPath = "none-avatar.png?v=aAV3uOswN-3pO2CQXqL8QINyLxyvHnj8hSbQVotuF2w";
             }
@@ -78,7 +78,7 @@ student.save = function () {
         formData.append("districtId", parseInt($('#District').val()));
         formData.append("wardId", parseInt($('#Ward').val()));
         formData.append("address", $('#Address').val());
-        formData.append("statusId", parseInt($('#Status').val()));
+        //formData.append("statusId", parseInt($('#Status').val()));
         var checkAvatarFile = $('#Avatar')[0].files[0];
         var checkAvatar = $('#AvatarPath').val();
         if (checkAvatarFile == null && checkAvatar == '') {
@@ -176,22 +176,22 @@ student.initWards = function (districtId, wardId) {
 }
 //---------------------------------------------------
 
-student.initStatus = function () {
-    $.ajax({
-        url: '/student/status/gets',
-        method: 'GET',
-        dataType: 'JSON',
-        success: function (response) {
-            $('#Status').empty();
-            $('#Status').append(`<option selected for="StatusId" value="">-Chọn-</option>`);
-            $.each(response.data, function (i, v) {
-                $('#Status').append(
-                    `<option value=${v.statusId}>${v.statusName}</option>`
-                );
-            });
-        }
-    });
-}
+//student.initStatus = function () {
+//    $.ajax({
+//        url: '/student/status/gets',
+//        method: 'GET',
+//        dataType: 'JSON',
+//        success: function (response) {
+//            $('#Status').empty();
+//            $('#Status').append(`<option selected for="StatusId" value="">-Chọn-</option>`);
+//            $.each(response.data, function (i, v) {
+//                $('#Status').append(
+//                    `<option value=${v.statusId}>${v.statusName}</option>`
+//                );
+//            });
+//        }
+//    });
+//}
 
 student.resetForm = function () {
     $('.close').on('click', function () {
@@ -215,7 +215,7 @@ student.openModal = function () {
 }
 student.init = function () {
     student.initProvinces();
-    student.initStatus();
+    //student.initStatus();
 }
 
 $(document).ready(function () {

@@ -81,7 +81,7 @@ namespace LM.DAL.Implement
                 parameters.Add("@Gender", request.Gender);
                 parameters.Add("@Email", request.Email);
                 parameters.Add("@PhoneNumber", request.PhoneNumber);
-                parameters.Add("@StatusId", request.StatusId);
+                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@ProvinceId", request.ProvinceId);
                 parameters.Add("@DistrictId", request.DistrictId);
                 parameters.Add("@WardId", request.WardId);
