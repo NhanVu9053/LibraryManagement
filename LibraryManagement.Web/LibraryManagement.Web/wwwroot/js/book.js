@@ -2,13 +2,15 @@
 book.delete = function (id) {
     bootbox.confirm({
         title: "Cảnh báo",
-        message: "Bạn có muốn xóa cuốn sách này không?",
+        message: `Bạn có muốn xóa <b class="text-primary">Sách</b> có <b class="text-success">ID: ${id}</b> này không?`,
         buttons: {
             cancel: {
-                label: '<i class="fa fa-times"></i> Không'
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
             },
             confirm: {
-                label: '<i class="fa fa-check"></i> Có'
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
             }
         },
         callback: function (result) {
@@ -27,10 +29,6 @@ book.delete = function (id) {
 }
 
 book.edit = function (id) {
-    //book.openModal();
-    //$('#Image').rules('remove', 'required')
-    //$('#Image').attr('data-rule-required', 'false');
-    //$('#Image').removeAttr('required');
     $.ajax({
         url: `/book/get/${id}`,
         method: 'GET',
@@ -39,97 +37,85 @@ book.edit = function (id) {
         success: function (response) {
             book.resetForm();
             console.log(response.data);
-            //$('#fromAddEditBook').trigger('reset');
             $('#BookId').val(response.data.bookId);
             $('#BookName').val(response.data.bookName);
             $('#Categoryies').val(response.data.categoryId);
             $('#Author').val(response.data.author);
-            var dobString = response.data.dop.toString();
-            $('#Dop').val(dobString.slice(0,10));
+            var dopString = response.data.dop.toString();
+            $('#Dop').val(dopString.slice(0,10));
             $('#PublishCompany').val(response.data.publishCompany);
             $('#Description').val(response.data.description);
             $('#Page').val(response.data.page);
-            $('#Quanity').val(response.data.quanity);
-            $('#Status').val(response.data.statusId);
             $('#ImagePath').val(response.data.imagePath);
             $('#image_upload_preview').attr('src',`/img/${response.data.imagePath}`);
-            $('#addEditBookModal').find('.modal-title').text('Update Book');
-            $("#Image").removeAttr('data-rule-required');
-            $("#Image").removeAttr('data-msg-required');
+            $('#modalBookTitle').text('CẬP NHẬT SÁCH');
+            $('#QuantityBook').hide();
             $('#addEditBookModal').modal('show');
-            //document.getElementById('msg').style.display = 'none';
         }
     });
 }
 
-book.save = function () {
-    //var checkBookId = parseInt($('#BookId').val());
-    //console.log(checkBookId);
-    //if (checkBookId > 0) {
-    //    $('#Image').attr('data-rule-required', 'false');
-    //    $("#Image").removeAttr('data-rule-required');
-    //    $("#Image").removeAttr('data-msg-required');     
-    //    console.log(checkBookId);
-    //};
+book.checkSave = function () {
+    var bookId = parseInt($('#BookId').val());
+    var checkImgFile = $('#Image').val();
+    $("#msgImg").hide();
     if ($('#fromAddEditBook').valid()) {
-        var formData = new FormData();
-        formData.append("bookId", parseInt($('#BookId').val()));
-        formData.append('image', $('#Image')[0].files[0]);
-        formData.append("bookName", $('#BookName').val());
-        formData.append("categoryId", parseInt($('#Categoryies').val()));
-        formData.append("author", $('#Author').val());
-        formData.append("dop", $('#Dop').val());
-        formData.append("publishCompany", $('#PublishCompany').val());
-        formData.append("description", $('#Description').val());
-        formData.append("page", parseInt($('#Page').val()));
-        formData.append("quanity", parseInt($('#Quanity').val()));
-        formData.append("statusId", parseInt($('#Status').val()));
-        formData.append("imagePath", $('#ImagePath').val());
-        console.log(formData);
-        $.ajax({
-            url: '/book/save',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false, 
-            success: function (response) {
-                console.log(response);
-                bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`, () => {
-                    if (response.data.bookId > 0) {
-                        $('#addEditBookModal').modal('hide');
-                        window.location.href = "/Book/Index";
-                    }
-                });
-            }
-        });
+        if (bookId > 0) {
+            book.save();
+        } else if (bookId == 0 && checkImgFile == '') {
+            $("#msgImg").text('Hình ảnh sách không được để trống');
+            $("#msgImg").show();
+        } else {
+            book.save();
+        }
     }
+}
+book.save = function () {
+    var formData = new FormData();
+    formData.append("bookId", parseInt($('#BookId').val()));
+    formData.append('image', $('#Image')[0].files[0]);
+    formData.append("bookName", $('#BookName').val());
+    formData.append("categoryId", parseInt($('#Categoryies').val()));
+    formData.append("author", $('#Author').val());
+    formData.append("dop", $('#Dop').val());
+    formData.append("publishCompany", $('#PublishCompany').val());
+    formData.append("description", $('#Description').val());
+    formData.append("page", parseInt($('#Page').val()));
+    formData.append("quantity", parseInt($('#Quantity').val()));
+    formData.append("imagePath", $('#ImagePath').val());
+    console.log(formData);
+    $.ajax({
+        url: '/book/save',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            if (response.data.bookId > 0) {
+                window.location.href = `/Book/Details/${response.data.bookId}`;
+            }
+            else {
+                $('#msgResult').text(`${response.data.message}`);
+                $('#msgResult').show();
+            }
+        }
+    });
 }
 
 book.resetForm = function () {
     $('.close').on('click', function () {
         $('#addEditBookModal').modal('hide');
         $('#fromAddEditBook').trigger('reset');
-        window.location.href = "/Book/Index";
     });
     $('#closeModal').on('click', function () {
         $('#addEditBookModal').modal('hide');
         $('#fromAddEditBook').trigger('reset');
-        window.location.href = "/Book/Index";
     });
     $('#image_upload_preview').attr('src', '/img/none-imgbook.png');
-
-    //var classError = document.getElementsByClassName('error');
-    //var count = 0;
-    //for (let i = 0; i < classError.length; i++) {
-    //    let item = classError[i];
-    //    if (count % 2) {
-    //        item.style.display = 'none';
-    //    } else {
-    //        item.classList.remove('error');
-    //        i--;
-    //    }
-    //    count++;
-    //}
+    $('#addEditBookModal').validate().resetForm();
+    $('#labelBook').text('Chọn file');
+    $('#msgResult').hide();
 }
 
 
@@ -139,7 +125,6 @@ book.initCategoryies = function () {
         method: 'GET',
         dataType: 'JSON',
         success: function (response) {
-            //console.log(response);
             $('#Categoryies').empty();
             $('#Categoryies').append(`<option selected for="CategoryId" value="">-Chọn-</option>`);
             $.each(response.data, function (i, v) {
@@ -150,35 +135,15 @@ book.initCategoryies = function () {
         }
     });
 }
-book.initStatus = function () {
-    $.ajax({
-        url: '/book/status/gets',
-        method: 'GET',
-        dataType: 'JSON',
-        success: function (response) {
-            //console.log(response);
-            $('#Status').empty();
-            $('#Status').append(`<option selected for="StatusId" value="">-Chọn-</option>`);
-            $.each(response.data, function (i, v) {
-                $('#Status').append(
-                    `<option value=${v.statusId}>${v.statusName}</option>`
-                );
-            });
-        }
-    });
-}
 
 
 
 book.openModal = function () {
     book.resetForm();
-    //document.getElementById('msg').style.display = 'none';
+    $('#modalBookTitle').text('THÊM MỚI SÁCH');
     $('#addEditBookModal').modal('show');
-    //book.resetForm();
 }
 book.init = function () {
-    //module.showData();
-    book.initStatus();
     book.initCategoryies();
 }
 
@@ -245,18 +210,10 @@ book.changeStatusToStochking = function (id) {
         }
     });
 }
-
-//book.checkStatusBookIsOver = function (id) {
-//    $.ajax({
-//        url: `/Book/CheckStatusBookIsOver/${id}`,
-//        method: "PATCH",
-//        contentType: 'JSON',
-//        success: function () {
-//                window.location.href = `/Book/Index`;
-//        }
-//    });
-//}
-
+book.changeImage = function () {
+    $("#msgImg").empty();
+    $("#msgImg").hide();
+}
 $(document).ready(function () {
     $("#tbBooks").dataTable(
         {

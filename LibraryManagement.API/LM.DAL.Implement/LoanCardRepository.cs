@@ -33,6 +33,26 @@ namespace LM.DAL.Implement
             }
         }
 
+        public async Task<SaveLoanCardRes> ExtendLoanCard(ExtendLoanCardReq request)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@LoanCardId", request.LoanCardId);
+                parameters.Add("@dayNumber", request.DayNumber);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
+                var result = await SqlMapper.QueryFirstOrDefaultAsync<SaveLoanCardRes>(cnn: connection,
+                                                                                sql: "sp_ExtendLoanCard",
+                                                                                param: parameters,
+                                                                                commandType: CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<LoanCardView> Get(int id)
         {
             try
@@ -97,7 +117,7 @@ namespace LM.DAL.Implement
                 parameters.Add("@StudentId", request.StudentId);
                 parameters.Add("@LoanOfDate", request.LoanOfDate);
                 parameters.Add("@ReturnOfDate", request.ReturnOfDate);
-                parameters.Add("@StatusId", request.StatusId);
+                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@CreatedBy", request.CreatedBy);
                 parameters.Add("@ModifiedBy", request.ModifiedBy);
                 parameters.Add("@BookIds", request.BookIds);
@@ -108,9 +128,9 @@ namespace LM.DAL.Implement
                                                                     commandType: CommandType.StoredProcedure);
                 return result;
             }
-            catch
+            catch (Exception ex)
             {
-                return result;
+                throw ex;
             }
         }
     }

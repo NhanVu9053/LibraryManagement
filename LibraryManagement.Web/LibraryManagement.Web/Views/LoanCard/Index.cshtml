@@ -1,0 +1,259 @@
+﻿@model List<LoanCardView>
+@{
+    ViewData["Title"] = "LoanCard List";
+    var maxDate = DateTime.Now.ToString("yyyy/MM/dd");
+}
+<style>
+    .img_book {
+        width: 120px;
+        height: 130px;
+        margin-top: 0px;
+    }
+</style>
+<div class="text-left">
+    <br />
+    <h3 class="display-4 text-success text-center">QUẢN LÝ THẺ MƯỢN</h3>
+    @if (TempData["Message"] != null)
+    {
+        <p class="alert alert-success">@TempData["Message"]</p>
+    }
+    <a href="javascript:;" onclick="loanCard.openModal()" class="btn btn-primary" style="width: auto;">+ Tạo thẻ mượn</a>
+    <hr />
+    <table id="tbLoanCard" class="table table-bordered table-hover table-primary">
+        <thead class="thead-dark">
+            <tr>
+                <th>Mã ID</th>
+                <th>Ngày mượn</th>
+                <th>Ngày trả</th>
+                <th>Mã học sinh </th>
+                <th>Số sách mượn</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var loanCard in Model)
+            {
+                if (loanCard.StatusName != "Deleted")
+                {
+                    var actions = "";
+                    switch (loanCard.StatusId)
+                    {
+                        case 4:
+                            {
+                                actions = $"<a href='javascript:void(0)' class='text-danger ml-2' onclick='loanCard.delete({loanCard.LoanCardId})' title='Xóa'><i class='fas fa-trash'></i></a>";
+                                break;
+                            }
+                        default:
+                            {
+                                actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='loanCard.extendLoanCard({loanCard.LoanCardId})' title='Gia hạn'><i class='fa fa-plus-circle'></i></a>";
+                                actions += $"<a href='javascript: void(0)' class='text-success ml-2' onclick='loanCard.changeStatusToCompleted({loanCard.LoanCardId})' title='Hoàn thành'><i class='fas fa-check-circle'></i></a>";
+                                break;
+                            }
+                    }
+                    <tr>
+                        <td>@loanCard.LoanCardId</td>
+                        <td>@loanCard.LoanOfDateStr</td>
+                        <td>@loanCard.ReturnOfDateStr</td>
+                        <td>@loanCard.StudentId</td>
+                        <td>@loanCard.Books</td>
+                        <td class="text-center">
+                            <span class="@(loanCard.StatusId == 1? "btn btn-primary": (loanCard.StatusId == 2? "btn btn-warning" : (loanCard.StatusId == 3? "btn btn-danger" : (loanCard.StatusId == 3? "btn btn-success" : "btn btn-info"))))"
+                                  style="width: 100px; height: 40px;">
+                                @loanCard.StatusName
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-controller="LoanCard" asp-action="Details" asp-route-id="@loanCard.LoanCardId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                            <a href="javascript:void(0)" class="text-warning ml-2" onclick="loanCard.edit(@loanCard.LoanCardId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                            @Html.Raw(actions)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="addEditLoanCardModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary" id="modalLoanCardTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row col-xl-12">
+                    <div class="col-xl-6 col-md-12">
+                        <h5 class="text-center text-warning">NHẬP THÔNG TIN</h5>
+                        <br />
+                        <div class="row col-12">
+                            <div class="col-9">
+                                <form id="fromCheckStudent">
+                                    <div class="row form-group">
+                                        <label for="checkStudentId" class="col-4">Mã học sinh:</label>
+                                        <div class="col-8">
+                                            <input type="number" class="form-control" placeholder="Mã học sinh"
+                                                   id="checkStudentId" name="checkStudentId"
+                                                   data-rule-min="1"
+                                                   data-msg-min="Mã học sinh không hợp lệ"
+                                                   data-rule-required="true"
+                                                   data-msg-required="Mã học sinh không được để trống"
+                                                   data-rule-number="true"
+                                                   data-msg-number="Mã học sinh phải là số nguyên">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-3">
+                                <a href="javascript:;" class="btn btn-info" onclick="loanCard.checkStudent()" style="width: 100px">Kiểm tra</a>
+                            </div>
+                        </div>
+                        <div class="row col-12">
+                            <div class="col-9">
+                                <form id="fromCheckBook">
+                                    <div class="row form-group">
+                                        <label for="checkBookId" class="col-4">Mã sách:</label>
+                                        <div class="col-8">
+                                            <input type="number" class="form-control" placeholder="Mã sách"
+                                                   id="checkBookId" name="checkBookId"
+                                                   data-rule-min="1"
+                                                   data-msg-min="Mã sách không hợp lệ"
+                                                   data-rule-required="true"
+                                                   data-msg-required="Mã sách không được để trống"
+                                                   data-rule-number="true"
+                                                   data-msg-number="Mã sách phải là số nguyên">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-3">
+                                <a href="javascript:;" class="btn btn-info" onclick="loanCard.checkBook()" style="width: 100px">Kiểm tra</a>
+                            </div>
+                        </div>
+                        
+
+                        <div class="row col-12 border border-warning m-2" id="dataCheckBook">
+                            <h5 class="text-center text-success mt-1">KIỂM TRA THÔNG TIN SÁCH</h5>
+                            <div class="col-12">
+                                <h6 id="msgInfoBook" class="alert alert-danger text-center"></h6>
+                            </div>
+                            <div id="dataInfoBook">
+                                <div class="col-12">
+                                    <p><b>Mã sách:</b>&nbsp;<span class="infoBook" id="BookId"></span></p>
+                                    <p><b>Tên sách:</b>&nbsp;<span class="infoBook" id="BookName"></span></p>
+                                    <p><b>Thể loại:</b>&nbsp;<span class="infoBook" id="CategoryName"></span></p>
+                                    <p><b>Tác giả:</b>&nbsp;<span class="infoBook" id="Author"></span></p>
+                                    <p><b>Ngày xuất bản:</b>&nbsp;<span class="infoBook" id="DopStr"></span></p>
+                                    <p><b>Trạng thái:</b>&nbsp;<span class="infoBook" id="StatusNameBook"></span></p>
+                                </div>
+                                <div class="row col-12">
+                                    <div class="col-9 text-center" id="dataImg">
+                                        <img src="/img/none-imgbook.png" class="m-2" style="width: 300px; height: 350px;" id="ImgBook" />
+                                    </div>
+                                    <div class="col-3 text-center" id="addBook">
+                                        <a href="javascript:;" class="btn btn-warning" onclick="loanCard.addBook()" style="width: 100px; margin-top: 125px;">Chọn</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xl-6 col-md-12 border border-success">
+                        <h5 class="text-center text-success mt-1">KIỂM TRA THÔNG TIN</h5>
+                        <div class="row" id="dataLoanCard">
+                            <form class="col-12" id="fromEditLoanCard">
+                                <h5 class="text-warning">Thông tin Thẻ mượn</h5>
+                                <p class="text-center">Mã Thẻ mượn: <span id="loanCard_id"></span></p>
+                                <div class="col-12">
+                                    <div class="row form-group">
+                                        <label for="StudentId" class="col-3">Mã học sinh: </label>
+                                        <div class="col-9">
+                                            <input type="number" class="form-control" placeholder="Mã học sinh"
+                                                   id="editStudentId" name="editStudentId"
+                                                   data-rule-required="true"
+                                                   data-msg-required="Mã học sinh không được để trống"
+                                                   data-rule-min="1"
+                                                   data-msg-min="Mã học sinh không hợp lệ">
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="LoanOfDate" class="col-3">Ngày mượn:</label>
+                                        <div class="col-9">
+                                            <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
+                                                   id="LoanOfDate" name="LoanOfDate"
+                                                   max="@maxDate"
+                                                   data-rule-required="true"
+                                                   data-msg-required="Ngày mượn không được để trống">
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label for="ReturnOfDate" class="col-3">Ngày trả:</label>
+                                        <div class="col-9">
+                                            <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
+                                                   id="ReturnOfDate" name="ReturnOfDate"
+                                                   data-rule-required="true"
+                                                   data-msg-required="Ngày trả không được để trống">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-info">Thông tin Học sinh</h5>
+                            </div>
+                            <div class="col-12">
+                                <h6 id="msgInfo" class="alert alert-danger text-center"></h6>
+                            </div>
+                            <div class="col-12" id="dataInfoStudent">
+                                <p><b>Mã học sinh:</b>&nbsp;<span class="infoStudent" id="StudentId"></span></p>
+                                <p><b>Tên học sinh:</b>&nbsp;<span class="infoStudent" id="StudentName"></span></p>
+                                <p><b>Tên lớp:</b>&nbsp;<span class="infoStudent" id="CourseName"></span></p>
+                                <p><b>Giới tính:</b>&nbsp;<span class="infoStudent" id="Gender"></span></p>
+                                <p><b>Ngày sinh:</b>&nbsp;<span class="infoStudent" id="Dob"></span></p>
+                                <p><b>Số điện thoại:</b>&nbsp;<span class="infoStudent" id="PhoneNumber"></span></p>
+                                <p><b>Email:</b>&nbsp;<span class="infoStudent" id="Email"></span></p>
+                                <p><b>Địa chỉ:</b>&nbsp;<span class="infoStudent" id="Address"></span></p>
+                                <p><b>Trạng thái:</b>&nbsp;<span class="infoStudent" id="StatusName"></span></p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-primary">Danh sách mượn</h5>
+                            </div>
+                        </div>
+                        <div class="row" id="listBooks">
+                        </div>
+                        <div class="col-12">
+                            <h6 id="msgdataBook" class="alert alert-danger text-center"></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-xl-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
+                <a href="javascript:;" class="btn btn-success" onclick="loanCard.save()">Lưu</a>
+                <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+    <script src="~/js/loanCard.js" asp-append-version="true"></script>
+}
