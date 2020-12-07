@@ -4,7 +4,12 @@
     var imagePath = $"/img/{(Model.ImagePath ?? "none-imgbook.png")}";
 }
 
-<h2 class="text-center text-success m-2">@Model.BookName</h2>
+<h3 class="display-4 text-success text-center">CHI TIẾT HỌC SINH</h3>
+@if (TempData["Message"] != null)
+{
+    <p class="alert alert-success">@TempData["Message"]</p>
+}
+<h5 class="text-info m-2">Tên sách: @Model.BookName</h5>
 <div class="row justify-content-center col-xl-12">
     <div class="col-xl-6 col-md-12">
         <div class="card">
@@ -16,7 +21,7 @@
                 <p><b>Nhà xuất bản:</b> @Model.PublishCompany</p>
                 <p><b>Tóm tắt nội dung:</b> @Model.Description</p>
                 <p><b>Số trang:</b> @Model.Page</p>
-                <p><b>Tổng sô lượng sách:</b> @Model.Quanity</p>
+                <p><b>Tổng số lượng sách:</b> @Model.Quantity</p>
                 <p><b>Số sách còn trong kho:</b> @Model.QuanityRemain</p>
                 <p><b>Trạng thái:</b> @Model.StatusName</p>
                 <p><b>Ngày tạo:</b> @Model.CreatedDateStr</p>
@@ -25,8 +30,6 @@
                 <p><b>Người cập nhật:</b> @Model.ModifiedBy</p>
             </div>
             <div class="card-footer text-center">
-                @*<a href="javascript:void(0)" class="btn btn-warning m-2" onclick="book.edit(@Model.BookId)">Cập nhật</a>
-                <a href="javascript:void(0)" class="btn btn-danger" onclick="books.delete(@Model.BookId)">Xóa</a>*@
                 <a asp-controller="Book" asp-action="Index" class="btn btn-primary">Quay lại</a>
             </div>
         </div>

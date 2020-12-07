@@ -13,5 +13,6 @@ namespace LM.BAL.Interface
         Task<LoanCardDetailView> Get(int id);
         Task<SaveLoanCardRes> Save(SaveLoanCardReq request);
         Task<SaveLoanCardRes> ChangeStatus(StatusLoanCardReq request);
+        Task<SaveLoanCardRes> ExtendLoanCard(ExtendLoanCardReq request);
     }
 }

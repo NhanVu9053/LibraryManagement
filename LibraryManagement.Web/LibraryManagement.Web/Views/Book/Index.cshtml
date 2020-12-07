@@ -13,7 +13,6 @@
         <p class="alert alert-success">@TempData["Message"]</p>
     }
     <a href="javascript:;" onclick="book.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm sách mới</a>
-    @*<a asp-controller="Book" asp-action="Create" class="btn btn-primary" style="width: auto;">+ Thêm sách mới</a>*@
     <hr />
     <table id="tbBooks" class="table table-bordered table-hover table-primary">
         <thead class="thead-dark">
@@ -43,6 +42,7 @@
                         case 3:
                             {
                                 actions = $"<a href='javascript: void(0)' class='text-success ml-2' onclick='book.changeStatusToStochking({book.BookId})' title='Cho mượn'><i class='far fa-play-circle'></i></a>";
+                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='book.delete({book.BookId})' title='Xóa'><i class='fas fa-trash'></i></a>";
                                 break;
                             }
                     }
@@ -56,14 +56,12 @@
                                 @book.StatusName
                             </span>
                         </td>
-                        @*<td>@book.StatusName</td>*@
                         <td class="text-center">
                             <img src="/img/@book.ImagePath" style="width: 60px; height: 70px;" />
                         </td>
                         <td>
-                            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookId" class="text-primary m-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
-                            <a href="javascript:void(0)" class="text-warning m-2" onclick="book.edit(@book.BookId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                            <a href="javascript:void(0)" class="text-danger m-2" onclick="book.delete(@book.BookId)" title="Xóa"><i class="fas fa-trash"></i></a>
+                            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                            <a href="javascript:void(0)" class="text-warning ml-2" onclick="book.edit(@book.BookId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
                             @Html.Raw(actions)
                         </td>
                     </tr>
@@ -80,13 +78,12 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title"></h4>
+                <h4 class="modal-title text-primary" id="modalBookTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                @*<h4 class="text-danger" id="msg" style="display: none"></h4>*@
                 <form id="fromAddEditBook">
                     <input hidden name="BookId" id="BookId" value="0" />
                     <input hidden name="ImagePath" id="ImagePath" value="" />
@@ -169,11 +166,11 @@
                                            data-msg-max="Số trang sách vượt quá quy định">
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <label for="Quanity" class="col-3">Số lượng nhập kho:</label>
+                            <div class="row form-group" id="QuantityBook">
+                                <label for="Quantity" class="col-3">Số lượng nhập kho:</label>
                                 <div class="col-9">
-                                    <input type="number" class="form-control" rows="3" for="Quanity" placeholder="Số lượng"
-                                           id="Quanity" name="Quanity"
+                                    <input type="number" class="form-control" rows="3" for="Quantity" placeholder="Số lượng"
+                                           id="Quantity" name="Quantity"
                                            min="1" max="10000"
                                            data-rule-required="true"
                                            data-msg-required="Số lượng nhập kho không được để trống"
@@ -184,23 +181,13 @@
                                 </div>
                             </div>
                             <div class="row form-group">
-                                <label for="StatusId" class="col-3">Trạng thái:</label>
-                                <div class="col-9">
-                                    <select class="form-control" id="Status" name="Status"
-                                            data-rule-required="true"
-                                            data-msg-required="Chưa chọn trạng thái sách">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row form-group">
                                 <label for="Image" class="col-3">Hình ảnh:</label>
                                 <div class="col-9">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input form-control" placeholder="Hình ảnh"
-                                               id="Image" name="Image"
-                                               data-rule-required="true"
-                                               data-msg-required="Hình ảnh sách không được để trống">
-                                        <label class="custom-file-label" for="Image">Chọn file</label>
+                                        <input type="file" class="custom-file-input form-control" placeholder="Hình ảnh" onchange="book.changeImage()"
+                                               id="Image" name="Image">
+                                        <label class="custom-file-label" for="Image" id="labelBook">Chọn file</label>
+                                        <label id="msgImg" class="error"></label>
                                     </div>
                                 </div>
                             </div>
@@ -212,12 +199,14 @@
                         </div>
                     </div>
                 </form>
-
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-success" onclick="book.save()">Lưu</a>
+                <div class="col-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
+                <a href="javascript:;" class="btn btn-success" onclick="book.checkSave()">Lưu</a>
                 <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
             </div>
 

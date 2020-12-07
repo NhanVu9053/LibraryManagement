@@ -22,6 +22,11 @@ namespace LM.BAL.Implement
             return await loanCardRepository.ChangeStatus(request);
         }
 
+        public async Task<SaveLoanCardRes> ExtendLoanCard(ExtendLoanCardReq request)
+        {
+            return await loanCardRepository.ExtendLoanCard(request);
+        }
+
         public async Task<LoanCardDetailView> Get(int id)
         {
             var loanCardDetail = new LoanCardDetailView();

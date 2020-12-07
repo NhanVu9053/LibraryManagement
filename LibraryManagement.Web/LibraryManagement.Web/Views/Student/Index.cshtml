@@ -13,7 +13,6 @@
         <p class="alert alert-success">@TempData["Message"]</p>
     }
     <a href="javascript:;" onclick="student.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm học sinh</a>
-    @*<a asp-controller="Book" asp-action="Create" class="btn btn-primary" style="width: auto;">+ Thêm sách mới</a>*@
     <hr />
     <table id="tbStudents" class="table table-bordered table-hover table-primary">
         <thead class="thead-dark">
@@ -34,20 +33,26 @@
             {
                 if (student.StatusName != "Deleted")
                 {
-                    //var actions = "";
-                    //switch (book.StatusId)
-                    //{
-                    //    case 1:
-                    //        {
-                    //            actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='book.changeStatusToPending({book.BookId})' title='Tạm dừng'><i class='far fa-stop-circle'></i></a>";
-                    //            break;
-                    //        }
-                    //    case 3:
-                    //        {
-                    //            actions = $"<a href='javascript: void(0)' class='text-success ml-2' onclick='book.changeStatusToStochking({book.BookId})' title='Cho mượn'><i class='far fa-play-circle'></i></a>";
-                    //            break;
-                    //        }
-                    //}
+                    if(student.AvatarPath == "none-avatar.png")
+                    {
+                        student.AvatarPath = "none-avatar.png?v=aAV3uOswN-3pO2CQXqL8QINyLxyvHnj8hSbQVotuF2w";
+                    }
+                    var actions = "";
+                    switch (student.StatusId)
+                    {
+                        case 1:
+                            {
+                                actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='student.changeStatusToBlocked({student.StudentId})' title='Khóa'><i class='fa fa-ban'></i></a>";
+                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='student.delete({student.StudentId})' title='Xóa'><i class='fas fa-trash'></i></a>";
+                                break;
+                            }
+                        case 3:
+                            {
+                                actions = $"<a href='javascript: void(0)' class='text-success ml-2' onclick='student.changeStatusToActive({student.StudentId})' title='Hoạt dộng'><i class='far fa-play-circle'></i></a>";
+                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='student.delete({student.StudentId})' title='Xóa'><i class='fas fa-trash'></i></a>";
+                                break;
+                            }
+                    }
             <tr>
                 <td>@student.StudentId</td>
                 <td>@student.StudentName</td>
@@ -60,15 +65,13 @@
                         @student.StatusName
                     </span>
                 </td>
-                @*<td>@book.StatusName</td>*@
                 <td class="text-center">
                     <img src="/img/@student.AvatarPath" style="width: 60px; height: 70px;" />
                 </td>
                 <td>
-                    <a asp-controller="Student" asp-action="Details" asp-route-id="@student.StudentId" class="text-primary m-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
-                    <a href="javascript:void(0)" class="text-warning m-2" onclick="student.edit(@student.StudentId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                    <a href="javascript:void(0)" class="text-danger m-2" onclick="student.delete(@student.StudentId)" title="Xóa"><i class="fas fa-trash"></i></a>
-                    @*@Html.Raw(actions)*@
+                    <a asp-controller="Student" asp-action="Details" asp-route-id="@student.StudentId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                    <a href="javascript:void(0)" class="text-warning ml-2" onclick="student.edit(@student.StudentId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                    @Html.Raw(actions)
                 </td>
             </tr>
                 }
@@ -90,7 +93,6 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                @*<h4 class="text-danger" id="msg" style="display: none"></h4>*@
                 <form id="fromAddEditStudent">
                     <input hidden name="StudentId" id="StudentId" value="0" />
                     <input hidden name="AvatarPath" id="AvatarPath" value="" />
@@ -121,12 +123,12 @@
                             <div class="row form-group">
                                 <label for="Gender" class="col-3">Giới tính:</label>
                                 <div class="col-9">
-                                    <select class="form-control" id="Gender" name="Gender"
+                                    <select class="custom-select" id="Gender" name="Gender" 
                                             data-rule-required="true"
                                             data-msg-required="Chưa chọn giới tính">
                                         <option selected value="">-Chọn-</option>
                                         <option value="true">Nam</option>
-                                        <option value="flase">Nữ</option>
+                                        <option value="false">Nữ</option>
                                     </select>
                                 </div>
                             </div>
@@ -154,12 +156,44 @@
                             <div class="row form-group">
                                 <label for="PhoneNumber" class="col-3">Số điện thoại:</label>
                                 <div class="col-9">
-                                    <input type="email" class="form-control" placeholder="Số điện thoại"
+                                    <input type="text" class="form-control" placeholder="Số điện thoại"
                                            id="PhoneNumber" name="PhoneNumber"
                                            data-rule-required="true"
                                            data-msg-required="Số điện thoại không được để trống"
                                            data-rule-maxlength="20"
-                                           data-msg-maxlength="Số điện thoại quá dài">
+                                           data-msg-maxlength="Số điện thoại quá dài"/>
+                                </div>
+                            </div>
+                            <div class="row form-group col-xs-12">
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="ProvinceId">Tỉnh/thành:</label>
+                                        <select id="Province" name="Province" class="custom-select" onchange="student.changeProvince(this.value)"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Tỉnh/thành">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="DistrictId">Quận/huyện:</label>
+                                        <select id="District" name="District" class="custom-select" onchange="student.changeDistrict(this.value)"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Quận/huyện">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="WardId">Phường/xã:</label>
+                                        <select id="Ward" name="Ward" class="custom-select"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Phường/xã">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -174,67 +208,7 @@
                                            data-msg-maxlength="Địa chỉ quá dài">
                                 </div>
                             </div>
-                            @*<div class="row form-group">
-            <label for="Dop" class="col-3">Ngày xuất bản:</label>
-            <div class="col-9">
-                <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
-                       id="Dop" name="Dop"
-                       max="@maxDate"
-                       data-rule-required="true"
-                       data-msg-required="Ngày xuất bản không được để trống">
-            </div>
-        </div>*@
-                            @*<div class="row form-group">
-                                <label for="PublishCompany" class="col-3">Nhà xuất bản:</label>
-                                <div class="col-9">
-                                    <input type="text" class="form-control" placeholder="Nhà xuất bản"
-                                           id="PublishCompany" name="PublishCompany"
-                                           data-rule-required="true"
-                                           data-msg-required="Nhà xuất bản không được để trống"
-                                           data-rule-maxlength="200"
-                                           data-msg-maxlength="Nhà xuất bản quá dài">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <label for="Description" class="col-3">Tóm tắt nội dung :</label>
-                                <div class="col-9">
-                                    <textarea class="form-control" rows="3" for="Description" placeholder="Nội dung"
-                                              id="Description" name="Description"
-                                              data-rule-required="true"
-                                              data-msg-required="Tóm tắt nội dung sách không được để trống"
-                                              data-rule-maxlength="500"
-                                              data-msg-maxlength="Tóm tắt nội dung sách quá dài"></textarea>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <label for="Page" class="col-3">Số trang sách :</label>
-                                <div class="col-9">
-                                    <input type="number" class="form-control" rows="3" for="Page" placeholder="Số trang"
-                                           id="Page" name="Page"
-                                           min="10" max="10000"
-                                           data-rule-required="true"
-                                           data-msg-required="Số trang sách không được để trống"
-                                           data-rule-min="20"
-                                           data-msg-min="Số trang sách nhỏ hơn giá trị tối thiểu"
-                                           data-rule-max="10000"
-                                           data-msg-max="Số trang sách vượt quá quy định">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <label for="Quanity" class="col-3">Số lượng nhập kho:</label>
-                                <div class="col-9">
-                                    <input type="number" class="form-control" rows="3" for="Quanity" placeholder="Số lượng"
-                                           id="Quanity" name="Quanity"
-                                           min="1" max="10000"
-                                           data-rule-required="true"
-                                           data-msg-required="Số lượng nhập kho không được để trống"
-                                           data-rule-min="1"
-                                           data-msg-min="Số lượng nhập kho nhỏ hơn giá trị tối thiểu"
-                                           data-rule-max="10000"
-                                           data-msg-max="Số lượng nhập kho vượt quá quy định">
-                                </div>
-                            </div>*@
-                            <div class="row form-group">
+                             <div class="row form-group">
                                 <label for="StatusId" class="col-3">Trạng thái:</label>
                                 <div class="col-9">
                                     <select class="form-control" id="Status" name="Status"
@@ -248,10 +222,8 @@
                                 <div class="col-9">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input form-control" placeholder="Ảnh đại diện"
-                                               id="Avatar" name="Avatar"
-                                               data-rule-required="true"
-                                               data-msg-required="Hình ảnh sách không được để trống">
-                                        <label class="custom-file-label" for="Avatar">Chọn file</label>
+                                               id="Avatar" name="Avatar">
+                                        <label class="custom-file-label" for="Avatar" id="labelFile">Chọn file</label>
                                     </div>
                                 </div>
                             </div>
@@ -263,11 +235,13 @@
                         </div>
                     </div>
                 </form>
-
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
+                <div class="col-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
                 <a href="javascript:;" class="btn btn-success" onclick="student.save()">Lưu</a>
                 <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
             </div>
