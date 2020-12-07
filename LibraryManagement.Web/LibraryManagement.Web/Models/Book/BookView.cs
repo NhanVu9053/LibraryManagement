@@ -20,5 +20,6 @@ namespace LibraryManagement.Web.Models.Book
         public string ImagePath { get; set; }
         public int Quanity { get; set; }
         public int QuanityRemain { get; set; }
+       
     }
 }

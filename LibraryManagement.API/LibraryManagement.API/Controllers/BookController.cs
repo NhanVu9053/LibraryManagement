@@ -25,6 +25,18 @@ namespace LibraryManagement.API.Controllers
             var books = await bookService.Gets();
             return Ok(books);
         }
+        [HttpGet("api/book/toploan")]
+        public async Task<OkObjectResult> GetTopLoan()
+        {
+            var books = await bookService.GetTopLoanBook();
+            return Ok(books);
+        }
+        [HttpGet("api/book/topnew")]
+        public async Task<OkObjectResult> GetTopNew()
+        {
+            var books = await bookService.GetTopNewBook();
+            return Ok(books);
+        }
         [HttpGet("api/book/get/{id}")]
         public async Task<OkObjectResult> Get(int id)
         {
@@ -44,6 +56,20 @@ namespace LibraryManagement.API.Controllers
         {
             var result = await bookService.ChangeStatus(request);
             return Ok(result);
+        }
+
+        [HttpGet("api/book/getby/{categoryId}")]
+        public async Task<OkObjectResult> GetbyCategoryId(int categoryId)
+        {
+            var book = await bookService.GetByCategoryId(categoryId);
+            return Ok(book);
+        }
+
+        [HttpGet("api/book/search/{resultid}")]
+        public async Task<OkObjectResult> GetbyCategoryId(string resultid)
+        {
+            var book = await bookService.Search(resultid);
+            return Ok(book);
         }
         //[HttpPatch]
         //[Route("api/book/checkStatusBookIsOver")]

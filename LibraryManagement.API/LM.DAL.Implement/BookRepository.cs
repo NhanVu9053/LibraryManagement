@@ -67,12 +67,58 @@ namespace LM.DAL.Implement
             }
         }
 
+        public async Task<IEnumerable<BookView>> GetByCategoryId(int categoryId)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@CategoryId", categoryId);
+                var result = await SqlMapper.QueryAsync<BookView>(cnn: connection,
+                                                                                sql: "sp_GetBookByCategoryId",
+                                                                                param: parameters,
+                                                                                commandType: CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IEnumerable<BookView>> Gets()
         {
             try
             {
                 return await SqlMapper.QueryAsync<BookView>(cnn: connection,
                                                         sql: "sp_GetBooks",
+                                                        commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<BookView>> GetTopLoanBook()
+        {
+            try
+            {
+                return await SqlMapper.QueryAsync<BookView>(cnn: connection,
+                                                        sql: "sp_GetTopLoanBook",
+                                                        commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<BookView>> GetTopNewBook()
+        {
+            try
+            {
+                return await SqlMapper.QueryAsync<BookView>(cnn: connection,
+                                                        sql: "sp_GetTopNew",
                                                         commandType: CommandType.StoredProcedure);
             }
             catch (Exception ex)
@@ -114,6 +160,24 @@ namespace LM.DAL.Implement
             catch
             {
                 return result;
+            }
+        }
+
+        public async Task<IEnumerable<BookView>> Search(string resultid)
+        {
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@Search", resultid);
+                var result = await SqlMapper.QueryAsync<BookView>(cnn: connection,
+                                                                                sql: "sp_SearchBook",
+                                                                                param: parameters,
+                                                                                commandType: CommandType.StoredProcedure);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

@@ -1,8 +1,204 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
+    var dataBook = ViewBag.ListBook != null ? ViewBag.ListBook as List<BookView> : new List<BookView>();
+    var topLoan = ViewBag.TopLoan != null ? ViewBag.TopLoan as List<BookView> : new List<BookView>();
+    var topNew = ViewBag.TopNew != null ? ViewBag.TopNew as List<BookView> : new List<BookView>();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="body__overlay"></div>
+<!-- Start Offset Wrapper -->
+<div class="offset__wrapper">
+    <!-- Start Search Popap -->
+    <div class="search__area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search__inner">
+                        <form action="#" method="get">
+                            <input placeholder="Search here... " type="text">
+                            <button type="submit"></button>
+                        </form>
+                        <div class="search__close__btn">
+                            <span class="search__close__btn_icon"><i class="zmdi zmdi-close"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Search Popap -->
+    <!-- Start Offset MEnu -->
+    <!-- End Offset MEnu -->
+    <!-- Start Cart Panel -->
+    <!-- End Cart Panel -->
 </div>
+<!-- End Offset Wrapper -->
+<!-- Start Feature Product -->
+<section class="categories-slider-area bg__white">
+    <div class="container">
+        <div class="row">
+            <!-- Start Left Feature -->
+            <div class="col-md-9 col-lg-9 col-sm-8 col-xs-12 float-left-style">
+                <!-- Start Slider Area -->
+                <div class="slider__container slider--one">
+                    <div class="slider__activation__wrap owl-carousel owl-theme">
+
+                        <!-- Start Single Slide -->
+                        <div class="slide slider__full--screen slider-height-inherit slider-text-right" style=" background: rgba(0, 0, 0, 0) url(img/BookBanner7.jpg) no-repeat scroll center center / cover;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-8 col-md-offset-2 col-lg-offset-4 col-sm-12 col-xs-12">
+                                        <div class="slider__inner">
+                                            <h1>New Book <span class="text--theme">Mượn ngay</span></h1>
+                                            <div class="slider__btn">
+                                                @*<a class="htc__btn" href="cart.html">shop now</a>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Slide -->
+                        <!-- Start Single Slide -->
+                        <div class="slide slider__full--screen slider-height-inherit  slider-text-left" style="  background: rgba(0, 0, 0, 0) url(Assets/tmart/images/slider/bg/BookBanner2.jpg) no-repeat scroll center center / cover;">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+                                        <div class="slider__inner">
+                                            <h1>Sách Hay <span class="text--theme">Mượn Ngay</span></h1>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Slide -->
+                    </div>
+                </div>
+                <!-- Start Slider Area -->
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-4 col-xs-12 float-right-style">
+                <div class="categories-menu mrg-xs">
+                    <div class="category-heading">
+                        <h3> Danh Mục</h3>
+                    </div>
+                    <div class="category-menu-list">
+                        <ul>
+                            @{
+                                foreach (var category in dataCategory)
+                                {
+                                    <li><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId"><img alt="" src="~/Assets/tmart/images/icons/thum10.png"> @category.CategoryName</a></li>
+
+                                }
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Left Feature -->
+        </div>
+    </div>
+</section>
+<!-- End Feature Product -->
+
+<div class="only-banner ptb--100 bg__white">
+    <div class="container">
+        <div class="only-banner-img">
+            <a href="shop-sidebar.html"><img src="~/Assets/tmart/images/slider/bg/BookBanner3.jpg" alt="new product"></a>
+        </div>
+    </div>
+</div>
+<!-- Start Blog Area -->
+<!-- Start Blog Area -->
+
+<section class="htc__blog__area bg__white pb--130">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="section__title section__title--2 text-center">
+                    <h2  class="text__a clip-text clip-textGif" style="font-size: 31px;color: #FF4136;border-bottom: 1px solid #d5d5d5">
+                        Top sách mượn nhiều nhất
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="product">
+                <!-- Start Single Blog -->
+                @foreach (var toploan in topLoan)
+                {
+                    <div class="col-md-4 single__pro col-lg-4 cat--1 col-sm-4 col-xs-12">
+                        <div class="product__details">
+                            <div class="product__inner">
+                                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@toploan.BookId">
+                                    <img src="~/img/73613712-e803-4ab0-8e5a-82bf1cd24a16_book4.png" alt="blog images" />
+
+                                </a>
+                                @*<div class="blog__hover__info">*@
+                                    @*<div class="blog__hover__action">*@
+                                        <div class="product__price">
+                                            <span style="text-align: center; font-size: 1.5em; margin-left: 140px;">@toploan.StatusName</span>
+                                        </div>
+                                    @*</div>*@
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- End Single Blog -->
+                <!-- Start Single Blog -->
+                <!-- End Single Blog -->
+            </div>
+        </div>
+    </div>
+</section>
+<section class="htc__blog__area bg__white pb--130">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="section__title section__title--2 text-center">
+                    <h2  class="text__a clip-text clip-textGif" style="font-size: 31px;color: #FF4136;border-bottom: 1px solid #d5d5d5">
+                        Top sách mới nhất
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="product">
+                <!-- Start Single Blog -->
+                @foreach (var topnew in topNew)
+                {
+                    <div class="col-md-4 single__pro col-lg-4 cat--1 col-sm-4 col-xs-12">
+                        <div class="product__details">
+                            <div class="product__inner">
+                                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@topnew.BookId">
+                                    <img src="~/img/cc24300d-5dc3-4207-b73b-c51661f9d7e0_book6.png" alt="blog images" />
+
+                                </a>
+                                @*<div class="blog__hover__info">*@
+                                @*<div class="blog__hover__action">*@
+                                <div class="product__price">
+                                    <span style="text-align: center; font-size: 1.5em; margin-left: 140px">@topnew.StatusName</span>
+                                </div>
+                                @*</div>*@
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- End Single Blog -->
+                <!-- Start Single Blog -->
+                <!-- End Single Blog -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Single Blog -->

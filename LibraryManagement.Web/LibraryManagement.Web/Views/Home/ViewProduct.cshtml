@@ -1,0 +1,117 @@
+﻿@model BookView
+@{
+    ViewData["Title"] = "ViewProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = ViewBag.Categories;
+    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
+    ViewBag.Title = $"{Model.CategoryName}--{Model.BookName}";
+}
+
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/Assets/tmart/images/bg/2.jpg) no-repeat scroll center center / cover;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="bradcaump__inner text-center">
+                        <h2 class="bradcaump-title">@Model.CategoryName</h2>
+                        <nav class="bradcaump-inner">
+                            <span class="breadcrumb-item" href="index.html">@Model.BookName</span>
+                           
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Bradcaump area -->
+<!-- Start Product Details -->
+<section class="htc__product__details pt--120 pb--100 bg__white">
+  
+    
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                    <div class="product__details__container">
+                        <!-- Start Small images -->
+                        <ul class="product__small__images" role="tablist">
+                        </ul>
+                        <!-- End Small images -->
+                        <div class="product__big__images">
+                            <div class="portfolio-full-image tab-content">
+                                <div >
+                                    <img src="~/img/05e17ebf-bdf3-459f-85b8-f639cb56fa48_book7.png" alt="full-image">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 smt-30 xmt-30">
+                    <div class="htc__product__details__inner">
+                        <div class="pro__detl__title">
+                            <h2 style="color:#FF4136">@Model.BookName</h2>
+                        </div>
+                        <div class="pro__details">
+                            <h2>Nhà Xuất Bản:  @Model.PublishCompany</h2>
+
+                        </div>
+                        <div class="pro__details">
+                            <h2>Ngày Xuất Bản:  @Model.DopStr</h2>
+                        </div>
+                        <div class="pro__details">
+                            <h2>Số Trang:  @Model.Page</h2>
+                        </div>
+                        <div class="pro__details">
+                            <h2>Tác Giả:  @Model.Author</h2>
+                        </div>
+                        <div class="pro__details">
+                            <h2>Danh Mục:  @Model.CategoryName</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+</section>
+<!-- End Product Details -->
+<!-- Start Product tab -->
+<section class="htc__product__details__tab bg__white pb--120">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <ul class="product__deatils__tab mb--60" role="tablist">
+                    <li role="presentation" class="text__a clip-text clip-textGif" style="font-size:31px;color:#FF4136">
+                        Nội Dung
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product__details__tab__content">
+                    <!-- Start Single Content -->
+                    <div role="tabpanel" id="description" class="product__tab__content fade in active">
+                        <div class="product__description__wrap">
+                            <div class="product__desc">
+                                @Model.Description
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <!-- End Single Content -->
+                    <!-- Start Single Content -->
+               
+                    <!-- End Single Content -->
+                    <!-- Start Single Content -->
+                   
+                    <!-- End Single Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

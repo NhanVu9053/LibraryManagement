@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryManagement.Web.Models.Book;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace LibraryManagement.Web.Models.Category
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string  ModifiedDateStr { get; set; }
+        
 
     }
 }
