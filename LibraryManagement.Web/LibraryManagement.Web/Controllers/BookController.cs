@@ -20,6 +20,7 @@ namespace LibraryManagement.Web.Controllers
         {
             this.webHostEnvironment = webHostEnvironment;
         }
+        [Route("book/index")]
         public IActionResult Index()
         {
             var books = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");

@@ -11,6 +11,7 @@ namespace LibraryManagement.Web.Controllers
 {
     public class BookArchiveController : Controller
     {
+        [Route("bookarchive/index")]
         public IActionResult Index()
         {
             return View();

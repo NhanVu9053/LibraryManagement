@@ -37,6 +37,11 @@ namespace LM.BAL.Implement
             return await bookRepository.GetByCategoryId(categoryId);
         }
 
+        public async Task<IEnumerable<BookView>> GetRandomBook()
+        {
+            return await bookRepository.GetRandomBook();
+        }
+
         public async Task<IEnumerable<BookView>> Gets()
         {
             return await bookRepository.Gets();

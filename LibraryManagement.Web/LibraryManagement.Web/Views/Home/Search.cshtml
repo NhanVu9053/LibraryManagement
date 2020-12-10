@@ -1,25 +1,22 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList;
 @model IPagedList<BookView>;
-
 @{
-    ViewData["title"] = $"Danh mục {ViewBag.title}";
+    ViewData["Title"] = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
     var dataBook = ViewBag.ListBook != null ? ViewBag.ListBook as List<BookView> : new List<BookView>();
     var id = ViewBag.CategoryId;
-    var ctName = dataBook[0].CategoryName;
-
+    var search = ViewBag.search;
 }
 
-
-<div class="ht__bradcaump__area" style=" background: rgba(0, 0, 0, 0) url( /img/bg3.jpg) no-repeat scroll center center / cover;">
+<div class="ht__bradcaump__area" style=" background: rgba(0, 0, 0, 0) url(/Assets/tmart/images/bg/2.jpg) no-repeat scroll center center / cover;">
     <div class="ht__bradcaump__wrap">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="bradcaump__inner text-center">
-                        <h2 class="bradcaump-title">@ctName</h2>
+                        @*<h2 class="bradcaump-title">@ctName</h2>*@
                         <nav class="bradcaump-inner">
                             @*<a class="breadcrumb-item" href="index.html">Home</a>
                                 <span class="brd-separetor">/</span>
@@ -34,7 +31,7 @@
 
 
 
-<div class="portfolio-grid-area bg__white pt--130 pb--100">
+<div id="searchsach" class="portfolio-grid-area bg__white pt--130 pb--100">
     <div class="container">
         <div class="portfolio-style">
             <div class="row grid" style="position: relative; height: 2040px;">
@@ -68,7 +65,7 @@
 </div>
 <div>
 
-    @Html.PagedListPager(Model, page => Url.Action($"Category", new { page }))
+    @Html.PagedListPager(Model, page => Url.Action($"Search", new { resultid = search, page = page }));
 </div>
 
 <style>
@@ -83,4 +80,5 @@
             border-radius: 5px;
         }
 </style>
+
 
