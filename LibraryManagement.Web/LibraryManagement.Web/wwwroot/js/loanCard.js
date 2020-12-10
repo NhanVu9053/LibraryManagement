@@ -1,4 +1,120 @@
 ﻿var loanCard = {} || loanCard;
+var table = $('#tbLoanCard').DataTable();
+
+loanCard.showData = function () {
+    $.ajax({
+        url: '/loanCard/gets',
+        method: 'GET',
+        dataType: 'JSON',
+        success: function (response) {
+            table.clear().destroy();
+            $('#tbLoanCard>tbody').empty();
+            $.each(response.data, function (i, v) {
+                if (v.statusName != 'Deleted') {
+                    var actions = "";
+                    switch (v.statusId) {
+                        case 4:
+                            {
+                                actions = `<a href='javascript:void(0)' class='text-danger ml-2' onclick='loanCard.delete(${v.loanCardId})' title='Xóa'><i class='fas fa-trash'></i></a>`;
+                                break;
+                            }
+                        default:
+                            {
+
+                                actions = `<a href="javascript:void(0)" class="text-warning ml-2" onclick="loanCard.edit(${v.loanCardId})" title="Cập nhật"><i class="fas fa-edit"></i></a>`
+                                actions += `<a href='javascript: void(0)' class='text-dark ml-2' onclick='loanCard.extendLoanCard(${v.loanCardId})' title='Gia hạn'><i class='fa fa-plus-circle'></i></a>`;
+                                actions += `<a href='javascript: void(0)' class='text-success ml-2' onclick='loanCard.changeStatusToCompleted(${v.loanCardId})' title='Hoàn thành'><i class='fas fa-check-circle'></i></a>`;
+                                break;
+                            }
+                    }
+                    $('#tbLoanCard>tbody').append(
+                        `<tr>
+                            <td>${v.loanCardId}</td>
+                            <td>${v.loanOfDateStr}</td>
+                            <td>${v.returnOfDateStr}</td>
+                            <td>${v.studentId}</td>
+                            <td>${v.books}</td>
+                            <td class="text-center">
+                                <span class="${(v.statusId == 1? "btn btn-primary": (v.statusId == 2? "btn btn-warning" : (v.statusId == 3? "btn btn-danger" : (v.statusId == 3? "btn btn-success" : "btn btn-info"))))}"
+                                      style="width: 100px; height: 40px;">
+                                    ${v.statusName}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)"  onclick="loanCard.details(${v.loanCardId})" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                                ${actions}
+                            </td>
+                        </tr>`
+                    );
+                }
+            });
+            loanCard.drawDataTable();
+        }
+    });
+}
+
+loanCard.details = function (loanCardId) {
+    $('#dataModal').empty();
+    $.ajax({
+        url: `/loanCard/get/${loanCardId}`,
+        method: 'GET',
+        dataType: 'JSON',
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.data.loanCard.loanCardId > 0) {
+                $('#dataModalTitle').text('THÔNG TIN THẺ MƯỢN');
+                var dataBook = '';
+                $.each(response.data.bookList, function (i, v) {
+                    dataBook += `<div class="row">
+                                    <div class="col-sm-6 text-break">
+                                        <br />
+                                        <p><b>Tên sách:</b> ${v.bookName}</p>
+                                        <p><b>Tác giả:</b>${v.author}</p>
+                                        <p><b>Thể loại:</b> ${v.categoryName}</p>
+                                    </div>
+                                    <div class="col-sm-6 text-break text-center">
+                                        <img src="/img/${v.imagePath}" class="img_book" />
+                                    </div>
+                                </div>
+                                <hr />`;
+                })
+                $('#dataModal').append(
+                    `<div class="row justify-content-center col-xl-12">
+                        <div class="col-xl-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body text-break">
+                                    <p><b>Mã ID: </b> ${response.data.loanCard.loanCardId}</p>
+                                    <p><b>Ngày mượn: </b> ${response.data.loanCard.loanOfDateStr}</p>
+                                    <p><b>Ngày trả: </b> ${response.data.loanCard.returnOfDateStr}</p>
+                                    <p><b>Mã học sinh: </b> ${response.data.loanCard.studentId}</p>
+                                    <p><b>Tên học sinh: </b> ${response.data.loanCard.studentName}</p>
+                                    <p><b>Lớp: </b> ${response.data.loanCard.courseName}</p>
+                                    <p><b>Ngày tạo: </b> ${response.data.loanCard.createdDateStr}</p>
+                                    <p><b>Người tạo: </b> ${response.data.loanCard.createdBy}</p>
+                                    <p><b>Ngày sửa: </b> ${response.data.loanCard.modifiedDateStr}</p>
+                                    <p><b>Người sửa: </b> ${response.data.loanCard.modifiedBy}</p>
+                                    <p><b>Trạng thái: </b> ${response.data.loanCard.statusName}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="text-primary text-center">DANH SÁCH MƯỢN</h4>
+                                    ${dataBook}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                );
+                $('#detailsData').modal('show');
+            }
+            else {
+                bootbox.alert(`<h5 class="text-danger">Thẻ mượn này không tồn tại !!!</h5>`)
+            }
+        }
+    });
+}
 
 loanCard.edit = function (id) {
     loanCard.openModal();
@@ -42,8 +158,12 @@ loanCard.save = function () {
                 contentType: 'application/json',
                 data: JSON.stringify(saveObj),
                 success: function (response) {
-                    if (response.data.loanCardId > 0)
-                        window.location.href = `/LoanCard/Details/${response.data.loanCardId}`;
+                    if (response.data.loanCardId > 0) {
+                        bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                            $('#addEditLoanCardModal').modal('hide');
+                            loanCard.showData();
+                        });
+                    }
                     else {
                         $('#msgResult').text(`${response.data.message}`);
                         $('#msgResult').show();
@@ -61,7 +181,10 @@ loanCard.save = function () {
                 data: JSON.stringify(saveObj),
                 success: function (response) {
                     if (response.data.loanCardId > 0) {
-                        window.location.href = `/LoanCard/Details/${response.data.loanCardId}`;
+                        bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                            $('#addEditLoanCardModal').modal('hide');
+                            loanCard.showData();
+                        });
                     } else {
                         $('#msgResult').text(`${response.data.message}`);
                         $('#msgResult').show();
@@ -163,19 +286,21 @@ loanCard.drawData = function () {
                 $('#listBooks').empty();
                 $.each(response.data, function (i, v) {
                     $('#listBooks').append(
-                        ` <div class="col-sm-6">
-                               <br/>
+                        ` <div class=" row col-12">
+                            <div class="col-sm-6">
                                 <p class="text-break"><b>Tên sách:</b> ${v.bookName}</p>
                                 <p class="text-break"><b>Tác giả:</b> ${v.author}</p>
                                  <p class="text-break"><b>Thể loại:</b> ${v.categoryName}</p>
-                                <hr/>
-                                <br/>
                             </div>
                             <div class="col-4">
-                                <img src="/img/${v.imagePath}" class="img_book"/>
+                                <img src="/img/${v.imagePath}" class="img_book"/>                             
                             </div>
                             <div class="col-2">
-                                <a href="javascript:void(0)" onclick="loanCard.deleteBook(${v.bookId})" title="Xóa"><i class="fa fa-times-circle text-danger" style="width: 40px; height: 40px; margin-top: 30px;"></i></a>
+                                <a href="javascript:void(0)" onclick="loanCard.deleteBook(${v.bookId})" title="Xóa"><i class="fa fa-times-circle text-danger" style="width: 40px; height: 40px; margin-top: 30px; margin-left: 15px"></i></a>
+                            </div>
+                        </div>
+                            <div class="col-10">
+                               <hr/>
                             </div>`
                     );
                 });
@@ -212,6 +337,7 @@ loanCard.checkStudent = function () {
                     $('#Email').text(response.data.email);
                     $('#Address').text(response.data.addressStr);
                     $('#StatusName').text(response.data.statusName);
+                    $('#imgStudent').attr('src', `/img/${response.data.avatarPath}`);
                 }
                 else {
                     $('#StudentId').empty();
@@ -259,6 +385,110 @@ loanCard.checkBook = function () {
         });
     }
 }
+loanCard.delete = function (id) {
+    bootbox.confirm({
+        title: '<h4 class="text-danger">THÔNG BÁO</h4>',
+        message: `Bạn có muốn xóa <b class="text-primary">Thẻ mượn</b> có <b class="text-success">ID: ${id}</b> này không?`,
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    url: `/LoanCard/Delete/${id}`,
+                    method: "PATCH",
+                    contentType: 'JSON',
+                    success: function (response) {
+                        if (response.data.loanCardId > 0) {
+                            bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                                $('#addEditLoanCardModal').modal('hide');
+                                loanCard.showData();
+                            });
+                        } else {
+                            bootbox.alert(`<h5 class="text-danger">${response.data.message} !!!</h5>`);
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+loanCard.changeStatusToCompleted = function (id) {
+    bootbox.confirm({
+        title: '<h4 class="text-danger">THÔNG BÁO</h4>',
+        message: `Bạn có muốn chuyển chuyển trạng thái <b class="text-primary">Hoàn thành</b> Thẻ mượn có <b class="text-success">ID: ${id}</b>?`,
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> Không'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> Có'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    url: `/LoanCard/ChangeStatusToCompleted/${id}`,
+                    method: "PATCH",
+                    contentType: 'JSON',
+                    success: function (response) {
+                        if (response.data.loanCardId > 0) {
+                            bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                                $('#addEditLoanCardModal').modal('hide');
+                                loanCard.showData();
+                            });
+                        } else {
+                            bootbox.alert(`<h5 class="text-danger">${response.data.message} !!!</h5>`);
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+loanCard.extendLoanCard = function (id) {
+    bootbox.prompt({
+        title: '<h4 class="text-danger">THÔNG BÁO</h4>',
+        message: `Bạn muốn gia hạn <b class='text-primary'>Thẻ mượn</b> có <b class='text-success'>ID: ${id}</b> thêm bao nhiêu ngày? <br>`,
+        inputType: 'radio',
+        inputOptions: [{
+            text: '3 Ngày',
+            value: 3,
+        },
+        {
+            text: '7 Ngày',
+            value: 7,
+        }],
+        callback: function (result) {
+            if (result > 0) {
+                $.ajax({
+                    url: `/LoanCard/ExtendLoanCard/${id}/${result}`,
+                    method: "PATCH",
+                    contentType: 'JSON',
+                    success: function (response) {
+                        if (response.data.loanCardId > 0) {
+                            bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                                $('#addEditLoanCardModal').modal('hide');
+                                loanCard.showData();
+                            });
+                        } else {
+                            bootbox.alert(`<h5 class="text-danger">${response.data.message} !!!</h5>`);
+                        }
+                    }
+                });
+            }  
+        }
+    });
+}
 
 loanCard.resetForm = function () {
     $('#fromCheckStudent').trigger('reset');
@@ -294,98 +524,8 @@ loanCard.openModal = function () {
     $('#addEditLoanCardModal').modal('show');
 }
 
-loanCard.delete = function (id) {
-    bootbox.confirm({
-        title: '<h2 class="text-danger">Cảnh báo</h2>',
-        message: `Bạn có muốn xóa <b class="text-primary">Thẻ mượn</b> có <b class="text-success">ID: ${id}</b> này không?`,
-        buttons: {
-            cancel: {
-                label: '<i class="fa fa-times"></i> Không',
-                className: 'btn-success'
-            },
-            confirm: {
-                label: '<i class="fa fa-check"></i> Có',
-                className: 'btn-danger'
-            }
-        },
-        callback: function (result) {
-            if (result) {
-                $.ajax({
-                    url: `/LoanCard/Delete/${id}`,
-                    method: "PATCH",
-                    contentType: 'JSON',
-                    success: function () {
-                        window.location.href = "/LoanCard/Index";
-                    }
-                });
-            }
-        }
-    });
-}
-
-loanCard.changeStatusToCompleted = function (id) {
-    bootbox.confirm({
-        title: '<h2 class="text-danger">Cảnh báo</h2>',
-        message: `Bạn có muốn chuyển chuyển trạng thái <b class="text-primary">Hoàn thành</b> Thẻ mượn có <b class="text-success">ID: ${id}</b>?`,
-        buttons: {
-            cancel: {
-                label: '<i class="fa fa-times"></i> Không'
-            },
-            confirm: {
-                label: '<i class="fa fa-check"></i> Có'
-            }
-        },
-        callback: function (result) {
-            if (result) {
-                $.ajax({
-                    url: `/LoanCard/ChangeStatusToCompleted/${id}`,
-                    method: "PATCH",
-                    contentType: 'JSON',
-                    success: function (data) {
-                        console.log(data);
-                        if (data) {
-                            window.location.href = `/LoanCard/Index`;
-                        }
-                    }
-                });
-            }
-        }
-    });
-}
-
-loanCard.extendLoanCard = function (id) {
-    bootbox.prompt({
-        title: '<h2 class="text-danger">Gia hạn Thẻ mượn</h2>',
-        message: `Bạn muốn gia hạn <b class='text-primary'>Thẻ mượn</b> có <b class='text-success'>ID: ${id}</b> thêm bao nhiêu ngày? <br>`,
-        inputType: 'radio',
-        inputOptions: [{
-            text: '3 Ngày',
-            value: 3,
-        },
-        {
-            text: '7 Ngày',
-            value: 7,
-        }],
-        callback: function (result) {
-            if (result > 0) {
-                $.ajax({
-                    url: `/LoanCard/ExtendLoanCard/${id}/${result}`,
-                    method: "PATCH",
-                    contentType: 'JSON',
-                    success: function (data) {
-                        console.log(data);
-                        if (data) {
-                            window.location.href = `/LoanCard/Index`;
-                        }
-                    }
-                });
-            }  
-        }
-    });
-}
-
-$(document).ready(function () {
-    $("#tbLoanCard").dataTable(
+loanCard.drawDataTable = function () {
+    table = $("#tbLoanCard").DataTable(
         {
             "language": {
                 "sProcessing": "Đang xử lý...",
@@ -434,4 +574,12 @@ $(document).ready(function () {
             "order": [[0, 'desc']]
         }
     );
+};
+
+loanCard.init = function () {
+    loanCard.showData();
+}
+
+$(document).ready(function () {
+    loanCard.init();
 });

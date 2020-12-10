@@ -1,5 +1,4 @@
-﻿@model List<LoanCardView>
-@{
+﻿@{
     ViewData["Title"] = "LoanCard List";
     var maxDate = DateTime.Now.ToString("yyyy/MM/dd");
 }
@@ -8,15 +7,12 @@
         width: 120px;
         height: 130px;
         margin-top: 0px;
+        border: 2px solid #7FFF00;
     }
 </style>
 <div class="text-left">
     <br />
     <h3 class="display-4 text-success text-center">QUẢN LÝ THẺ MƯỢN</h3>
-    @if (TempData["Message"] != null)
-    {
-        <p class="alert alert-success">@TempData["Message"]</p>
-    }
     <a href="javascript:;" onclick="loanCard.openModal()" class="btn btn-primary" style="width: auto;">+ Tạo thẻ mượn</a>
     <hr />
     <table id="tbLoanCard" class="table table-bordered table-hover table-primary">
@@ -32,45 +28,6 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var loanCard in Model)
-            {
-                if (loanCard.StatusName != "Deleted")
-                {
-                    var actions = "";
-                    switch (loanCard.StatusId)
-                    {
-                        case 4:
-                            {
-                                actions = $"<a href='javascript:void(0)' class='text-danger ml-2' onclick='loanCard.delete({loanCard.LoanCardId})' title='Xóa'><i class='fas fa-trash'></i></a>";
-                                break;
-                            }
-                        default:
-                            {
-                                actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='loanCard.extendLoanCard({loanCard.LoanCardId})' title='Gia hạn'><i class='fa fa-plus-circle'></i></a>";
-                                actions += $"<a href='javascript: void(0)' class='text-success ml-2' onclick='loanCard.changeStatusToCompleted({loanCard.LoanCardId})' title='Hoàn thành'><i class='fas fa-check-circle'></i></a>";
-                                break;
-                            }
-                    }
-                    <tr>
-                        <td>@loanCard.LoanCardId</td>
-                        <td>@loanCard.LoanOfDateStr</td>
-                        <td>@loanCard.ReturnOfDateStr</td>
-                        <td>@loanCard.StudentId</td>
-                        <td>@loanCard.Books</td>
-                        <td class="text-center">
-                            <span class="@(loanCard.StatusId == 1? "btn btn-primary": (loanCard.StatusId == 2? "btn btn-warning" : (loanCard.StatusId == 3? "btn btn-danger" : (loanCard.StatusId == 3? "btn btn-success" : "btn btn-info"))))"
-                                  style="width: 100px; height: 40px;">
-                                @loanCard.StatusName
-                            </span>
-                        </td>
-                        <td>
-                            <a asp-controller="LoanCard" asp-action="Details" asp-route-id="@loanCard.LoanCardId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
-                            <a href="javascript:void(0)" class="text-warning ml-2" onclick="loanCard.edit(@loanCard.LoanCardId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                            @Html.Raw(actions)
-                        </td>
-                    </tr>
-                }
-            }
         </tbody>
     </table>
 </div>
@@ -153,11 +110,11 @@
                                     <p><b>Trạng thái:</b>&nbsp;<span class="infoBook" id="StatusNameBook"></span></p>
                                 </div>
                                 <div class="row col-12">
-                                    <div class="col-9 text-center" id="dataImg">
-                                        <img src="/img/none-imgbook.png" class="m-2" style="width: 300px; height: 350px;" id="ImgBook" />
+                                    <div class="col-sm-9 text-center" id="dataImg">
+                                        <img src="/img/none-imgbook.png" class="m-2" style="width: 300px; height: 350px;border: 4px solid #808080;" id="ImgBook" />
                                     </div>
-                                    <div class="col-3 text-center" id="addBook">
-                                        <a href="javascript:;" class="btn btn-warning" onclick="loanCard.addBook()" style="width: 100px; margin-top: 125px;">Chọn</a>
+                                    <div class="col-sm-3 text-center" id="addBook">
+                                        <a href="javascript:;" class="btn btn-warning" onclick="loanCard.addBook()" style="width: 100px; margin-top: 50px;">Chọn</a>
                                     </div>
                                 </div>
                             </div>
@@ -170,7 +127,7 @@
                         <div class="row" id="dataLoanCard">
                             <form class="col-12" id="fromEditLoanCard">
                                 <h5 class="text-warning">Thông tin Thẻ mượn</h5>
-                                <p class="text-center">Mã Thẻ mượn: <span id="loanCard_id"></span></p>
+                                <p class="text-center"><b>Mã Thẻ mượn: <span id="loanCard_id"></span></b></p>
                                 <div class="col-12">
                                     <div class="row form-group">
                                         <label for="StudentId" class="col-3">Mã học sinh: </label>
@@ -205,8 +162,6 @@
                                 </div>
                             </form>
                         </div>
-
-
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="text-info">Thông tin Học sinh</h5>
@@ -215,15 +170,24 @@
                                 <h6 id="msgInfo" class="alert alert-danger text-center"></h6>
                             </div>
                             <div class="col-12" id="dataInfoStudent">
-                                <p><b>Mã học sinh:</b>&nbsp;<span class="infoStudent" id="StudentId"></span></p>
-                                <p><b>Tên học sinh:</b>&nbsp;<span class="infoStudent" id="StudentName"></span></p>
-                                <p><b>Tên lớp:</b>&nbsp;<span class="infoStudent" id="CourseName"></span></p>
-                                <p><b>Giới tính:</b>&nbsp;<span class="infoStudent" id="Gender"></span></p>
-                                <p><b>Ngày sinh:</b>&nbsp;<span class="infoStudent" id="Dob"></span></p>
-                                <p><b>Số điện thoại:</b>&nbsp;<span class="infoStudent" id="PhoneNumber"></span></p>
-                                <p><b>Email:</b>&nbsp;<span class="infoStudent" id="Email"></span></p>
-                                <p><b>Địa chỉ:</b>&nbsp;<span class="infoStudent" id="Address"></span></p>
-                                <p><b>Trạng thái:</b>&nbsp;<span class="infoStudent" id="StatusName"></span></p>
+                                <div class=" row col-12">
+                                    <div class="col-8">
+                                        <p><b>Mã học sinh:</b>&nbsp;<span class="infoStudent text-break" id="StudentId"></span></p>
+                                        <p><b>Tên học sinh:</b>&nbsp;<span class="infoStudent text-break" id="StudentName"></span></p>
+                                        <p><b>Tên lớp:</b>&nbsp;<span class="infoStudent text-break" id="CourseName"></span></p>
+                                        <p><b>Giới tính:</b>&nbsp;<span class="infoStudent text-break" id="Gender"></span></p>
+                                        <p><b>Ngày sinh:</b>&nbsp;<span class="infoStudent text-break" id="Dob"></span></p>
+                                        <p><b>Số điện thoại:</b>&nbsp;<span class="infoStudent text-break" id="PhoneNumber"></span></p>
+                                    </div>
+                                    <div class="col-4">
+                                        <img class="m-1" src="~/img/none-avatar.png" style="width: 120px; height: 150px; border: 4px solid orange;" id="imgStudent" />
+                                    </div>
+                                </div>
+                                <div class=" col-12">
+                                    <p><b>Email:</b>&nbsp;<span class="infoStudent text-break" id="Email"></span></p>
+                                    <p><b>Địa chỉ:</b>&nbsp;<span class="infoStudent text-break" id="Address"></span></p>
+                                    <p><b>Trạng thái:</b>&nbsp;<span class="infoStudent text-break" id="StatusName"></span></p>
+                                </div>
                             </div>
                         </div>
                         <hr />

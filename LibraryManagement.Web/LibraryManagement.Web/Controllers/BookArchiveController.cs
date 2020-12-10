@@ -16,10 +16,10 @@ namespace LibraryManagement.Web.Controllers
             return View();
         }
         [HttpGet]
-        [Route("/bookarchive/gets")]
+        [Route("/bookArchive/gets")]
         public JsonResult Gets()
         {
-            var bookArchive = ApiHelper<List<BookArchiveView>>.HttpGetAsync("bookarchive/gets");
+            var bookArchive = ApiHelper<List<BookArchiveView>>.HttpGetAsync("bookArchive/gets");
             return Json(new { data = bookArchive });
         }
         [HttpGet]
@@ -29,29 +29,27 @@ namespace LibraryManagement.Web.Controllers
             var bookArchive = ApiHelper<BookArchiveView>.HttpGetAsync(@$"bookArchive/get/{bookArchiveId}");
             return Json(new { data = bookArchive });
         }
-        [HttpPost]
-        [Route("/bookarchive/save")]
+        [HttpGet]
+        [Route("/BookArchive/Details/{bookArchiveId}")]
+        public IActionResult Details(int bookArchiveId)
+        {
+            var bookArchive = ApiHelper<BookArchiveView>.HttpGetAsync(@$"bookArchive/get/{bookArchiveId}");
+            return View(bookArchive);
+        }
+        [HttpPatch]
+        [Route("/bookArchive/save")]
         public JsonResult Save([FromBody] SaveBookArchiveReq request)
         {
-            var result = ApiHelper<SaveBookArchiveRes>.HttpAsync($"bookarchive/save", "POST", request);
+            var result = ApiHelper<SaveBookArchiveRes>.HttpAsync($"bookArchive/save", "POST", request);
             return Json(new { data = result });
         }
 
         [HttpPatch]
-        [Route("/bookarchive/delete/{id}")]
+        [Route("/bookArchive/delete/{id}")]
         public IActionResult Delete(int id)
         {
-            var result = ApiHelper<SaveBookArchiveRes>.HttpPatchAsync(@$"bookarchive/delete/{id}");
+            var result = ApiHelper<SaveBookArchiveRes>.HttpPatchAsync(@$"bookArchive/delete/{id}");
             return Json(new { data = result });
-        }
-
-        [HttpGet]
-        [Route("/bookarchive/status/gets")]
-        public JsonResult GetStatus()
-        {
-            var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.BookArchive},{ false}");
-            /**/
-            return Json(new { data = status });
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 
 var category = {} || category;
-
+var table = $('#tbCategory').DataTable();
 
 category.showData = function () {
     $.ajax({
@@ -9,15 +9,15 @@ category.showData = function () {
         method: 'GET',
         dataType: 'JSON',
         success: function (response) {
+            table.clear().destroy();
             $('#tbCategory>tbody').empty();
-            $.each(response.data, function (i, v) {
+             $.each(response.data, function (i, v) {
                 $('#tbCategory>tbody').append(
                     `<tr>
                         <td>${v.categoryId}</td>
                         <td>${v.categoryName}</td>
                         <td>${v.createdDateStr}</td>
                         <td>${v.createdBy}</td>
-                        <td>${v.statusName}</td>
                         <td>${v.modifiedDateStr}</td>
                         <td>${v.modifiedBy}</td>
                         <td>
@@ -26,37 +26,24 @@ category.showData = function () {
                         </td>
                     </tr>`
                 );
-            });
-        }
-    });
-}
-
-category.initStatus = function () {
-    $.ajax({
-        url: '/category/status/gets',
-        method: 'GET',
-        dataType: 'JSON',
-        success: function (response) {
-            $('#Status').empty();
-            $.each(response.data, function (i, v) {
-                $('#Status').append(
-                    `<option value=${v.id}>${v.name}</option>`
-                );
-            });
+             });
+            category.drawDataTable();
         }
     });
 }
 
 category.delete = function (categoryId, categoryName) {
     bootbox.confirm({
-        title: '<h2 class="text-danger">Warning</h2>',
-        message: `Do you want to <b class="text-primary">Delete</b>  <b class="text-success">${categoryName}</b> danh mục?`,
+        title: '<h2 class="text-danger">Cảnh báo</h2>',
+        message: `Bạn có muốn <b class="text-primary">Xóa</b> Thể loại sách: <b class="text-success">${categoryName}</b>?`,
         buttons: {
             cancel: {
-                label: '<i class="fa fa-times"></i> No'
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
             },
             confirm: {
-                label: '<i class="fa fa-check"></i> Yes'
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
             }
         },
         callback: function (result) {
@@ -67,11 +54,13 @@ category.delete = function (categoryId, categoryName) {
                     dataType: 'JSON',
                     contentType: 'application/json',
                     success: function (response) {
-                        
-                        bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`);
                         if (response.data.categoryId > 0) {
-                            $('#addEditCategoryModal').modal('hide');
-                            category.showData();
+                            bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                                $('#addEditCategoryModal').modal('hide');
+                                category.showData();
+                            });
+                        } else {
+                            bootbox.alert(`<h5 class="text-danger">${response.data.message} !!!</h5>`);
                         }
                     }
                 });
@@ -86,8 +75,7 @@ category.save = function () {
     if ($('#fromAddEditCategory').valid()) {
         var saveObj = {};
         saveObj.categoryId = parseInt($('#CategoryId').val());
-        saveObj.categoryName = $('#CategoryName').val();      
-        saveObj.statusId = parseInt($('#Status').val());
+        saveObj.categoryName = $('#CategoryName').val(); 
         $.ajax({
             url: '/category/save',
             method: 'POST',
@@ -95,10 +83,16 @@ category.save = function () {
             contentType: 'application/json',
             data: JSON.stringify(saveObj),
             success: function (response) {
-                bootbox.alert(`<h2 class="text-success">${response.data.message}</h2>`);
+                console.log(response.data.categoryId);
                 if (response.data.categoryId > 0) {
                     $('#addEditCategoryModal').modal('hide');
-                    category.showData();
+                    bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                        category.showData();
+                        category.resetForm();
+                    });
+                } else {
+                    $('#msgResult').text(`${response.data.message}`);
+                    $('#msgResult').show();
                 }
             }
         });
@@ -112,27 +106,84 @@ category.edit = function (id) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (reponse) {
+            category.resetForm();
             console.log(reponse);
             $('#CategoryId').val(reponse.data.categoryId);
             $('#CategoryName').val(reponse.data.categoryName);
-            $('#Status').val(reponse.data.status);
-            $('#addEditCategoryModal').find('.modal-title').text('Update Category');
+            $('#modalCategoryTitle').text('CẬP NHẬT THỂ LOẠI SÁCH');
             $('#addEditCategoryModal').modal('show');
         }
     });
 
 };
 
+category.resetForm = function () {
+    $('#addEditCategoryModal').modal('hide');
+    $('#fromAddEditCategory').trigger('reset');
+    $('#msgResult').hide();
+    $('#fromAddEditCategory').validate().resetForm();
+}
+
 category.openModal = function () {
-    
-    document.getElementById('msg').style.display = 'none';
+    category.resetForm();
+    $('#modalCategoryTitle').text('THÊM MỚI THỂ LOẠI SÁCH');
     $('#addEditCategoryModal').modal('show');
 }
 
+category.drawDataTable = function () {
+    table = $("#tbCategory").DataTable(
+        {
+                "language": {
+                    "sProcessing": "Đang xử lý...",
+                    "sLengthMenu": "Xem _MENU_ mục",
+                    "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                    "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                    "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Tìm:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Đầu",
+                        "sPrevious": "Trước",
+                        "sNext": "Tiếp",
+                        "sLast": "Cuối"
+                    }
+                },
+                "columnDefs": [
+                    {
+                        "targets": 1,
+                        "orderable": false
+                    },
+                    {
+                        "targets": 2,
+                        "orderable": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": 3,
+                        "orderable": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": 5,
+                        "orderable": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": 6,
+                        "orderable": false,
+                        "searchable": false
+                    }
+                ],
+                "order": [[0, 'desc']]
 
-category.init = function () {
-    category.showData();
-    category.initStatus();
+            }
+    );
+}
+
+category.init =  function () {
+     category.showData();
 }
 
 $(document).ready(function () {

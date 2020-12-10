@@ -17,13 +17,14 @@ namespace LibraryManagement.Web.Controllers
         private const int maxBook = 3;
         public IActionResult Index()
         {
-            var loanCards = ApiHelper<List<LoanCardView>>.HttpGetAsync("loanCard/gets");
-            return View(loanCards);
+            return View();
         }
-        public IActionResult Details(int id)
+        [HttpGet]
+        [Route("/loanCard/gets")]
+        public JsonResult Gets()
         {
-            var loanCard = ApiHelper<LoanCardDetailView>.HttpGetAsync(@$"loanCard/get/{id}");
-            return View(loanCard);
+            var loanCards = ApiHelper<List<LoanCardView>>.HttpGetAsync("loanCard/gets");
+            return Json(new { data = loanCards });
         }
         [HttpPatch]
         public IActionResult Delete(int id)
@@ -35,7 +36,7 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpGet]
         [Route("/loanCard/get/{id}")]
@@ -79,7 +80,7 @@ namespace LibraryManagement.Web.Controllers
         }
         [HttpPatch]
         [Route("/LoanCard/ExtendLoanCard/{id}/{dayNumber}")]
-        public IActionResult ExtendLoanCard(int id, int dayNumber)
+        public JsonResult ExtendLoanCard(int id, int dayNumber)
         {
             var request = new ExtendLoanCardReq()
             {
@@ -88,10 +89,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/extendLoanCard", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToCompleted(int id)
+        public JsonResult ChangeStatusToCompleted(int id)
         {
             var request = new StatusLoanCardReq()
             {
@@ -100,7 +101,7 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpGet]
         [Route("/LoanCard/DataCartBook")]
@@ -178,16 +179,6 @@ namespace LibraryManagement.Web.Controllers
         {
             HttpContext.Session.Clear();
             return Ok(true);
-        }
-        public IActionResult ResultMessage(SaveLoanCardRes result)
-        {
-            if (result != null)
-            {
-                TempData["Message"] = result.Message;
-                return Ok(true);
-            }
-            TempData["Message"] = result.Message;
-            return Ok(false);
         }
     }
 }

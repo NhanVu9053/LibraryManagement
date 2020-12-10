@@ -22,13 +22,14 @@ namespace LibraryManagement.Web.Controllers
         }
         public IActionResult Index()
         {
-            var students = ApiHelper<List<StudentView>>.HttpGetAsync("student/gets");
-            return View(students);
+            return View();
         }
-        public IActionResult Details(int id)
+        [HttpGet]
+        [Route("/student/gets")]
+        public JsonResult Gets()
         {
-            var student = ApiHelper<StudentView>.HttpGetAsync(@$"student/get/{id}");
-            return View(student);
+            var students = ApiHelper<List<StudentView>>.HttpGetAsync("student/gets");
+            return Json(new { data = students });
         }
         [HttpGet]
         [Route("/student/get/{id}")]
@@ -63,11 +64,10 @@ namespace LibraryManagement.Web.Controllers
             {
                 EditAvatar(request.Avatar, request.AvatarPath, avatarPathOld);
             }
-            TempData["Message"] = result.Message;
             return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult Delete(int id)
+        public JsonResult Delete(int id)
         {
             var request = new StatusStudentReq()
             {
@@ -76,10 +76,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToBlocked(int id)
+        public JsonResult ChangeStatusToBlocked(int id)
         {
             var request = new StatusStudentReq()
             {
@@ -88,10 +88,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToActive(int id)
+        public JsonResult ChangeStatusToActive(int id)
         {
             var request = new StatusStudentReq()
             {
@@ -100,17 +100,7 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return ResultMessage(result);
-        }
-        public IActionResult ResultMessage(SaveStudentRes result)
-        {
-            if (result != null)
-            {
-                TempData["Message"] = result.Message;
-                return Ok(true);
-            }
-            TempData["Message"] = result.Message;
-            return Ok(false);
+            return Json(new { data = result });
         }
         public string ProcessAvatarPath(IFormFile file)
         {

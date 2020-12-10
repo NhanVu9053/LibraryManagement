@@ -1,5 +1,4 @@
-﻿@model List<BookView>
-@{
+﻿@{
     ViewData["Title"] = "Book List";
     var imagePath = $"/img/none-imgbook.png";
     var maxDate = DateTime.Now.ToString("yyyy/MM/dd");
@@ -8,10 +7,6 @@
 <div class="text-left">
     <br />
     <h3 class="display-4 text-success text-center">QUẢN LÝ SÁCH</h3>
-    @if (TempData["Message"] != null)
-    {
-        <p class="alert alert-success">@TempData["Message"]</p>
-    }
     <a href="javascript:;" onclick="book.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm sách mới</a>
     <hr />
     <table id="tbBooks" class="table table-bordered table-hover table-primary">
@@ -27,46 +22,6 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var book in Model)
-            {
-                if (book.StatusName != "Deleted")
-                {
-                    var actions = "";
-                    switch (book.StatusId)
-                    {
-                        case 1:
-                            {
-                                actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='book.changeStatusToPending({book.BookId})' title='Tạm dừng'><i class='far fa-stop-circle'></i></a>";
-                                break;
-                            }
-                        case 3:
-                            {
-                                actions = $"<a href='javascript: void(0)' class='text-success ml-2' onclick='book.changeStatusToStochking({book.BookId})' title='Cho mượn'><i class='far fa-play-circle'></i></a>";
-                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='book.delete({book.BookId})' title='Xóa'><i class='fas fa-trash'></i></a>";
-                                break;
-                            }
-                    }
-                    <tr>
-                        <td>@book.BookId</td>
-                        <td>@book.BookName</td>
-                        <td>@book.CategoryName</td>
-                        <td>@book.DopStr</td>
-                        <td class="text-center">
-                            <span class="@(book.StatusId == 1? "btn btn-primary": (book.StatusId == 2? "btn btn-danger" : (book.StatusId == 3? "btn btn-warning" : "btn btn-info")))" style="width: 100px; height: 40px;">
-                                @book.StatusName
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <img src="/img/@book.ImagePath" style="width: 60px; height: 70px;" />
-                        </td>
-                        <td>
-                            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.BookId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
-                            <a href="javascript:void(0)" class="text-warning ml-2" onclick="book.edit(@book.BookId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                            @Html.Raw(actions)
-                        </td>
-                    </tr>
-                }
-            }
         </tbody>
     </table>
 </div>

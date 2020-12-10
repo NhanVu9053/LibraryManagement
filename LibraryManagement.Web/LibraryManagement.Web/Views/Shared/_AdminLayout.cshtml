@@ -118,6 +118,29 @@
                         @RenderBody()
                     </div>
                 </section>
+                <!-- The Modal -->
+                <div class="modal" id="detailsData">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title text-warning" id="dataModalTitle"></h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body" id="dataModal">
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
@@ -146,8 +169,8 @@
     <script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/js/scripts.js"></script>
 
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>*@
-    <script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/assets/demo/chart-area-demo.js"></script>
-    <script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/assets/demo/chart-bar-demo.js"></script>
+    @*<script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/assets/demo/chart-area-demo.js"></script>
+    <script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/assets/demo/chart-bar-demo.js"></script>*@
     @*<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>*@
     <script src="~/Assets/startbootstrap-sb-admin-gh-pages/dist/assets/demo/datatables-demo.js"></script>

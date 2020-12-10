@@ -49,7 +49,6 @@ namespace LibraryManagement.Web.Controllers
         public JsonResult GetStatus()
         {
             var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Category},{ false}");
-            /**/
             return Json(new { data = status });
         }
     }
