@@ -73,18 +73,18 @@ student.details = function (studentId) {
                         <div class="col-xl-6 col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <p><b>StudentId:</b> ${response.data.studentId}</p>
-                                    <p><b>Tên lớp:</b> ${response.data.courseName}</p>
-                                    <p><b>Giới tính:</b> ${(response.data.gender == true ? "Nam" : "Nữ")}</p>
-                                    <p><b>Ngày sinh:</b> ${response.data.dobStr}</p>
-                                    <p><b>Số điện thoại:</b> ${response.data.phoneNumber}</p>
-                                    <p><b>Email:</b> ${response.data.email}</p>
-                                    <p><b>Địa chỉ:</b>${response.data.addressStr}</p>
-                                    <p><b>Trạng thái:</b> ${response.data.statusName}</p>
-                                    <p><b>Ngày tạo:</b> ${response.data.createdDateStr}</p>
-                                    <p><b>Người tạo:</b> ${response.data.createdBy}</p>
-                                    <p><b>Ngày cập nhật:</b> ${response.data.modifiedDateStr}</p>
-                                    <p><b>Người cập nhật:</b> ${response.data.modifiedBy}</p>
+                                    <p><b>Mã học sinh: </b> ${response.data.studentId}</p>
+                                    <p><b>Tên lớp: </b> ${response.data.courseName}</p>
+                                    <p><b>Giới tính: </b> ${(response.data.gender == true ? "Nam" : "Nữ")}</p>
+                                    <p><b>Ngày sinh: </b> ${response.data.dobStr}</p>
+                                    <p><b>Số điện thoại: </b> ${response.data.phoneNumber}</p>
+                                    <p><b>Email: </b> ${response.data.email}</p>
+                                    <p><b>Địa chỉ: </b>${response.data.addressStr}</p>
+                                    <p><b>Trạng thái: </b> ${response.data.statusName}</p>
+                                    <p><b>Ngày tạo: </b> ${response.data.createdDateStr}</p>
+                                    <p><b>Người tạo: </b> ${response.data.createdByName}</p>
+                                    <p><b>Ngày cập nhật: </b> ${response.data.modifiedDateStr}</p>
+                                    <p><b>Người cập nhật: </b> ${response.data.modifiedByName}</p>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,6 @@ student.edit = function (id) {
             $('#Province').val(response.data.provinceId);
             $('#District').val(response.data.districtId);
             $('#Ward').val(response.data.wardId);
-            console.log(response.data.provinceId, response.data.districtId, response.data.wardId);
             $('#Address').val(response.data.address);
             $('#image_upload_preview').attr('src', `/img/${response.data.avatarPath}`);
             $('#modalStudentTitle').text('CẬP NHẬT SÁCH');
@@ -169,7 +168,6 @@ student.save = function () {
         }
         formData.append("avatarPath", $('#AvatarPath').val());
         formData.append('avatar', $('#Avatar')[0].files[0]);
-        console.log(formData);
         $.ajax({
             url: '/student/save',
             method: 'POST',
@@ -196,69 +194,6 @@ student.save = function () {
             $("#Email-error").text('Email không hợp lệ');
         }
     }
-}
-//---------------- Contact Info -----------------
-student.initProvinces = function () {
-    $.ajax({
-        url: '/contactInfo/getProvinces',
-        method: 'GET',
-        dataType: 'JSON',
-        success: function (response) {
-            $('#Province').empty();
-            $('#Province').append(`<option selected for="ProvinceId" value="">-Chọn-</option>`);
-            $.each(response.data, function (i, v) {
-                $('#Province').append(
-                    `<option value=${v.provinceId}>${v.provinceName}</option>`
-                );
-            });
-        }
-    });
-}
-
-student.changeProvince = function (id) {
-    student.initDistricts(id);
-    $("#Ward").append(`<option selected value="">-Chọn-</option>`);
-}
-
-student.initDistricts = function (provinceId , ditrictId) {
-    $.ajax({
-        url: `/contactInfo/getDistricts/${provinceId}`,
-        method: "GET",
-        contentType: "json",
-        success: function (response) {
-            $("#District").empty();
-            $("#District").append(`<option selected value="">-Chọn-</option>`);
-            $.each(response.data, function (i, v) {
-                $("#District").append(`
-                    <option value=${v.districtId}>${v.districtName}</option>
-                `);
-            });
-            $('#District').val(ditrictId);
-        }
-    });
-    $("#Ward").empty();
-}
-
-student.changeDistrict = function (id) {
-    student.initWards(id);
-}
-
-student.initWards = function (districtId, wardId) {
-    $.ajax({
-        url: `/contactInfo/getWards/${districtId}`,
-        method: "GET",
-        contentType: "json",
-        success: function (response) {
-            $("#Ward").empty();
-            $("#Ward").append(`<option selected value="">-Chọn-</option>`);
-            $.each(response.data, function (i, v) {
-                $("#Ward").append(`
-                    <option value=${v.wardId}>${v.wardName}</option>
-                `);
-            });
-            $('#Ward').val(wardId);
-        }
-    });
 }
 
 
@@ -304,10 +239,12 @@ student.changeStatusToBlocked = function (id) {
         message: `Bạn có muốn <b class="text-primary">Khóa</b> Học sinh có ID <b class="text-success">${id}</b>?`,
         buttons: {
             cancel: {
-                label: '<i class="fa fa-times"></i> Không'
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
             },
             confirm: {
-                label: '<i class="fa fa-check"></i> Có'
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
             }
         },
         callback: function (result) {
@@ -338,10 +275,12 @@ student.changeStatusToActive = function (id) {
         message: `Bạn có muốn chuyển trạng thái <b class="text-primary">Hoạt động</b> Học sinh có ID <b class="text-success">${id}</b>?`,
         buttons: {
             cancel: {
-                label: '<i class="fa fa-times"></i> Không'
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
             },
             confirm: {
-                label: '<i class="fa fa-check"></i> Có'
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
             }
         },
         callback: function (result) {
@@ -362,6 +301,70 @@ student.changeStatusToActive = function (id) {
                     }
                 });
             }
+        }
+    });
+}
+
+//---------------- Contact Info -----------------
+student.initProvinces = function () {
+    $.ajax({
+        url: '/contactInfo/getProvinces',
+        method: 'GET',
+        dataType: 'JSON',
+        success: function (response) {
+            $('#Province').empty();
+            $('#Province').append(`<option selected for="ProvinceId" value="">-Chọn-</option>`);
+            $.each(response.data, function (i, v) {
+                $('#Province').append(
+                    `<option value=${v.provinceId}>${v.provinceName}</option>`
+                );
+            });
+        }
+    });
+}
+
+student.changeProvince = function (id) {
+    student.initDistricts(id);
+    $("#Ward").append(`<option selected value="">-Chọn-</option>`);
+}
+
+student.initDistricts = function (provinceId, ditrictId) {
+    $.ajax({
+        url: `/contactInfo/getDistricts/${provinceId}`,
+        method: "GET",
+        contentType: "json",
+        success: function (response) {
+            $("#District").empty();
+            $("#District").append(`<option selected value="">-Chọn-</option>`);
+            $.each(response.data, function (i, v) {
+                $("#District").append(`
+                    <option value=${v.districtId}>${v.districtName}</option>
+                `);
+            });
+            $('#District').val(ditrictId);
+        }
+    });
+    $("#Ward").empty();
+}
+
+student.changeDistrict = function (id) {
+    student.initWards(id);
+}
+
+student.initWards = function (districtId, wardId) {
+    $.ajax({
+        url: `/contactInfo/getWards/${districtId}`,
+        method: "GET",
+        contentType: "json",
+        success: function (response) {
+            $("#Ward").empty();
+            $("#Ward").append(`<option selected value="">-Chọn-</option>`);
+            $.each(response.data, function (i, v) {
+                $("#Ward").append(`
+                    <option value=${v.wardId}>${v.wardName}</option>
+                `);
+            });
+            $('#Ward').val(wardId);
         }
     });
 }
@@ -389,7 +392,8 @@ student.drawDataTable = function () {
             "columnDefs": [
                 {
                     "targets": 1,
-                    "orderable": false
+                    "orderable": false,
+                    "width": "18%"
                 },
                 {
                     "targets": 2,
@@ -397,15 +401,18 @@ student.drawDataTable = function () {
                 },
                 {
                     "targets": 3,
-                    "orderable": false
+                    "orderable": false,
+                    "width": "5%"
                 },
                 {
                     "targets": 4,
-                    "orderable": false
+                    "orderable": false,
+                    "width": "10%"
                 },
                 {
                     "targets": 5,
-                    "orderable": false
+                    "orderable": false,
+                    "width": "18%"
                 },
                 {
                     "targets": 6,

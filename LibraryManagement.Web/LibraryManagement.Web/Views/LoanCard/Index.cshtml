@@ -17,7 +17,7 @@
     <hr />
     <table id="tbLoanCard" class="table table-bordered table-hover table-primary">
         <thead class="thead-dark">
-            <tr>
+            <tr class="text-center">
                 <th>Mã ID</th>
                 <th>Ngày mượn</th>
                 <th>Ngày trả</th>
@@ -49,7 +49,7 @@
                     <div class="col-xl-6 col-md-12">
                         <h5 class="text-center text-warning">NHẬP THÔNG TIN</h5>
                         <br />
-                        <div class="row col-12">
+                        <div class="row col-12" id="inputCheckStudent">
                             <div class="col-9">
                                 <form id="fromCheckStudent">
                                     <div class="row form-group">
@@ -129,7 +129,7 @@
                                 <h5 class="text-warning">Thông tin Thẻ mượn</h5>
                                 <p class="text-center"><b>Mã Thẻ mượn: <span id="loanCard_id"></span></b></p>
                                 <div class="col-12">
-                                    <div class="row form-group">
+                                    @*<div class="row form-group">
                                         <label for="StudentId" class="col-3">Mã học sinh: </label>
                                         <div class="col-9">
                                             <input type="number" class="form-control" placeholder="Mã học sinh"
@@ -139,7 +139,7 @@
                                                    data-rule-min="1"
                                                    data-msg-min="Mã học sinh không hợp lệ">
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <div class="row form-group">
                                         <label for="LoanOfDate" class="col-3">Ngày mượn:</label>
                                         <div class="col-9">

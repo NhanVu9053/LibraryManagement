@@ -13,16 +13,10 @@ namespace LibraryManagement.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
-           ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
+            TempData["checkLogin"] = Request.Cookies["email"];
+            ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
             ViewBag.ListBook = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
             ViewBag.TopLoan= ApiHelper<List<BookView>>.HttpGetAsync("book/toploan");
             ViewBag.TopNew = ApiHelper<List<BookView>>.HttpGetAsync("book/topnew");
@@ -32,7 +26,8 @@ namespace LibraryManagement.Web.Controllers
         [Route("Home/Category/{categoryId}")]
         public IActionResult Category(int categoryId, int? page)
         {
-            int pageSize = 12;
+            TempData["checkLogin"] = Request.Cookies["email"];
+            int pageSize = 6;
             int pageNumber = (page ?? 1);
             var categories = ApiHelper<List<BookView>>.HttpGetAsync($"book/getby/{categoryId}");
             ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");

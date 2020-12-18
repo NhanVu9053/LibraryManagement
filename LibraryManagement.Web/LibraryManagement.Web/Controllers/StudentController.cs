@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using LibraryManagement.Web.Models.Student;
 using LibraryManagement.Web.Models.Wiki;
 using LibraryManagement.Web.Ultilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Web.Controllers
 {
+    //[Authorize(Roles = "System Admin")]
     public class StudentController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -22,85 +24,145 @@ namespace LibraryManagement.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                TempData["email"] = Request.Cookies["email"];
+                TempData["avatar"] = Request.Cookies["avatar"];
+                TempData["name"] = Request.Cookies["name"];
+                return View();
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/student/gets")]
-        public JsonResult Gets()
+        public IActionResult Gets()
         {
-            var students = ApiHelper<List<StudentView>>.HttpGetAsync("student/gets");
-            return Json(new { data = students });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var students = ApiHelper<List<StudentView>>.HttpGetAsync("student/gets");
+                return Json(new { data = students });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/student/get/{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
-            var student = ApiHelper<StudentView>.HttpGetAsync(@$"student/get/{id}");
-            return Json(new { data = student });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var student = ApiHelper<StudentView>.HttpGetAsync(@$"student/get/{id}");
+                return Json(new { data = student });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/student/status/gets")]
-        public JsonResult GetStatus()
+        public IActionResult GetStatus()
         {
-            var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Student},{false}");
-            return Json(new { data = status });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Student},{false}");
+                return Json(new { data = status });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPost]
         [Route("/student/save")]
-        public JsonResult Save([FromForm] SaveStudentReq request)
+        public IActionResult Save([FromForm] SaveStudentReq request)
         {
-
-            var avatarPathOld = request.AvatarPath;
-            if (request.Avatar != null)
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                request.AvatarPath = ProcessAvatarPath(request.Avatar);
+                var avatarPathOld = request.AvatarPath;
+                if (request.Avatar != null)
+                {
+                    request.AvatarPath = ProcessAvatarPath(request.Avatar);
+                }
+                request.CreatedBy = Request.Cookies["userId"];
+                request.ModifiedBy = Request.Cookies["userId"];
+                var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/save", "POST", request);
+                if (result.Message == "Thao tác tạo mới Student thành công" && request.AvatarPath != "none-avatar.png")
+                {
+                    CreateAvatar(request.Avatar, request.AvatarPath);
+                }
+                if (result.Message == "Thao tác cập nhật Student thành công")
+                {
+                    EditAvatar(request.Avatar, request.AvatarPath, avatarPathOld);
+                }
+                return Json(new { data = result });
             }
-            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/save", "POST", request);
-            if (result.Message == "Thao tác tạo mới Student thành công" && request.AvatarPath != "none-avatar.png")
+            else
             {
-                CreateAvatar(request.Avatar, request.AvatarPath);
+                return View("~/Views/Home/AccessDenied.cshtml");
             }
-            if (result.Message == "Thao tác cập nhật Student thành công")
-            {
-                EditAvatar(request.Avatar, request.AvatarPath, avatarPathOld);
-            }
-            return Json(new { data = result });
         }
         [HttpPatch]
-        public JsonResult Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var request = new StatusStudentReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                StudentId = id,
-                StatusId = 4,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusStudentReq()
+                {
+                    StudentId = id,
+                    StatusId = 4,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToBlocked(int id)
+        public IActionResult ChangeStatusToBlocked(int id)
         {
-            var request = new StatusStudentReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                StudentId = id,
-                StatusId = 3,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusStudentReq()
+                {
+                    StudentId = id,
+                    StatusId = 3,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToActive(int id)
+        public IActionResult ChangeStatusToActive(int id)
         {
-            var request = new StatusStudentReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                StudentId = id,
-                StatusId = 1,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusStudentReq()
+                {
+                    StudentId = id,
+                    StatusId = 1,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveStudentRes>.HttpAsync($"student/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         public string ProcessAvatarPath(IFormFile file)
         {

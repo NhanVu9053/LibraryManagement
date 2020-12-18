@@ -11,7 +11,7 @@ namespace LM.BAL.Interface
     {
         Task<BookArchiveView> Get(int bookArchiveId);
         Task<IEnumerable<BookArchiveView>> Gets();
-        Task<SaveBookArchiveRes> Save(SaveBookArchiveReq bookArchiveId);
-        Task<SaveBookArchiveRes> Delete(int id);
+        Task<SaveBookArchiveRes> Save(SaveBookArchiveReq request);
+        Task<SaveBookArchiveRes> Delete(StatusBookArchiveReq request);
     }
 }

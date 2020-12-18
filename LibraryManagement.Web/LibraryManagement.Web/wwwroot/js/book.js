@@ -81,9 +81,9 @@ book.details = function (bookId) {
                                 <p><b>Số sách còn trong kho:</b> ${response.data.quanityRemain}</p>
                                 <p><b>Trạng thái:</b> ${response.data.statusName}</p>
                                 <p><b>Ngày tạo:</b> ${response.data.createdDateStr}</p>
-                                <p><b>Người tạo:</b> ${response.data.createdBy}</p>
+                                <p><b>Người tạo:</b> ${response.data.createdByName}</p>
                                 <p><b>Ngày cập nhật:</b> ${response.data.modifiedDateStr}</p>
-                                <p><b>Người cập nhật:</b> ${response.data.modifiedBy}</p>
+                                <p><b>Người cập nhật:</b> ${response.data.modifiedByName}</p>
                                 </div>
                             </div>
                         </div>

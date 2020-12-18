@@ -23,101 +23,164 @@ namespace LibraryManagement.Web.Controllers
         [Route("book/index")]
         public IActionResult Index()
         {
-            return View();
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                TempData["email"] = Request.Cookies["email"];
+                TempData["avatar"] = Request.Cookies["avatar"];
+                TempData["name"] = Request.Cookies["name"];
+                return View();
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/book/gets")]
-        public JsonResult Gets()
+        public IActionResult Gets()
         {
-            var books = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
-            return Json(new { data = books });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var books = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
+                return Json(new { data = books });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/book/get/{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
-            var books = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
-            return Json(new { data = books });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var books = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
+                return Json(new { data = books });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
-        //public IActionResult Details(int id)
-        //{
-        //    var data = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
-        //    return View(data);
-        //}
         [HttpGet]
         [Route("/book/status/gets")]
-        public JsonResult GetStatus()
+        public IActionResult GetStatus()
         {
-            var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Book},{false}");
-            return Json(new { data = status });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var status = ApiHelper<List<Status>>.HttpGetAsync($"wiki/status/{(int)Common.Table.Book},{false}");
+                return Json(new { data = status });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPost]
         [Route("/book/save")]
-        public JsonResult Save([FromForm] SaveBookReq request)
+        public IActionResult Save([FromForm] SaveBookReq request)
         {
-            var imagePathOld = request.ImagePath;
-            if (request.Image != null)
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                request.ImagePath = ProcessImagePath(request.Image);
+                var imagePathOld = request.ImagePath;
+                if (request.Image != null)
+                {
+                    request.ImagePath = ProcessImagePath(request.Image);
+                }
+                request.CreatedBy = Request.Cookies["userId"];
+                request.ModifiedBy = Request.Cookies["userId"];
+                var result = ApiHelper<SaveBookRes>.HttpAsync($"book/save", "POST", request);
+                if (result.Message == "Thao tác tạo mới sách thành công")
+                {
+                    CreateImg(request.Image, request.ImagePath);
+                }
+                if (result.Message == "Thao tác cập nhật sách thành công")
+                {
+                    EditImg(request.Image, request.ImagePath, imagePathOld);
+                }
+                return Json(new { data = result });
             }
-            var result = ApiHelper<SaveBookRes>.HttpAsync($"book/save", "POST", request);
-            if (result.Message == "Thao tác tạo mới sách thành công")
+            else
             {
-                CreateImg(request.Image, request.ImagePath);
+                return View("~/Views/Home/AccessDenied.cshtml");
             }
-            if (result.Message == "Thao tác cập nhật sách thành công")
-            {
-                EditImg(request.Image, request.ImagePath, imagePathOld);
-            }
-            return Json(new { data = result });
         }
         [HttpPatch]
         public IActionResult Delete(int id)
         {
-            var request = new StatusBookReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                BookId = id,
-                StatusId = 4,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusBookReq()
+                {
+                    BookId = id,
+                    StatusId = 4,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToOver(int id)
+        public IActionResult ChangeStatusToOver(int id)
         {
-            var request = new StatusBookReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                BookId = id,
-                StatusId = 2,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus","PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusBookReq()
+                {
+                    BookId = id,
+                    StatusId = 2,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToStochking(int id)
+        public IActionResult ChangeStatusToStochking(int id)
         {
-            var request = new StatusBookReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                BookId = id,
-                StatusId = 1,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusBookReq()
+                {
+                    BookId = id,
+                    StatusId = 1,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToPending(int id)
+        public IActionResult ChangeStatusToPending(int id)
         {
-            var request = new StatusBookReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                BookId = id,
-                StatusId = 3,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusBookReq()
+                {
+                    BookId = id,
+                    StatusId = 3,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         public string ProcessImagePath(IFormFile file)
         {

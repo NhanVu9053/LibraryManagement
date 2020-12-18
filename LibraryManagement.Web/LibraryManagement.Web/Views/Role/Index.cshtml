@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Role List";
+}
+
+<div class="text-left">
+    <br />
+    <h3 class="display-4 text-success text-center">QUẢN LÝ ROLE</h3>
+    <a href="javascript:;" onclick="role.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm Role</a>
+    <hr />
+    <table id="tbRoles" class="table table-bordered table-hover table-primary mt-2">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>#ID</th>
+                <th>Tên Role</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="addEditRoleModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title text-primary" id="modalRoleTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="fromAddEditRole">
+                    <input hidden name="RoleId" id="RoleId" value="" />
+                    <div class="row form-group">
+                            <label for="RoleName" class="col-xl-2 col-sm-12">Tên Role:</label>
+                            <div class="col-xl-8 col-sm-12">
+                                <input type="text" class="form-control" placeholder="Tên Role"
+                                       id="RoleName" name="RoleName"
+                                       data-rule-required="true"
+                                       data-msg-required="Tên Role không được để trống"
+                                       data-rule-maxlength="250"
+                                       data-msg-maxlength="Tên Role quá dài">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
+                <a href="javascript:;" class="btn btn-success" onclick="role.save()">Lưu</a>
+                <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+    <script src="~/js/role.js" asp-append-version="true"></script>
+}

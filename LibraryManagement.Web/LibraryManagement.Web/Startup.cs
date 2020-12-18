@@ -47,7 +47,7 @@ namespace LibraryManagement.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -56,7 +56,7 @@ namespace LibraryManagement.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }

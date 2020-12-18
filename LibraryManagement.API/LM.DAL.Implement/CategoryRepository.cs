@@ -12,7 +12,7 @@ namespace LM.DAL.Implement
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        public async Task<SaveCategoryRes> Delete(int categoryId)
+        public async Task<SaveCategoryRes> Delete(StatusCategoryReq request)
         {
             var result = new SaveCategoryRes()
             {
@@ -22,8 +22,8 @@ namespace LM.DAL.Implement
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@CategoryId", categoryId);
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@CategoryId", request.CategoryId);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
                                                                     sql: "sp_DeleteCategory",
                                                                     param: parameters,
@@ -53,7 +53,7 @@ namespace LM.DAL.Implement
                                                         commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<SaveCategoryRes> Save(SaveCategoryReq categoryId)
+        public async Task<SaveCategoryRes> Save(SaveCategoryReq request)
         {
             var result = new SaveCategoryRes()
             {
@@ -64,11 +64,10 @@ namespace LM.DAL.Implement
             {
 
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@CategoryId", categoryId.CategoryId);
-                parameters.Add("@CategoryName", categoryId.CategoryName);
-                //parameters.Add("@StatusId", categoryId.StatusId);
-                parameters.Add("@CreatedBy", "admin");
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@CategoryId", request.CategoryId);
+                parameters.Add("@CategoryName", request.CategoryName);
+                parameters.Add("@CreatedBy", request.CreatedBy);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
                 result =  await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
                                                             sql: "sp_SaveCategory",
                                                             parameters,

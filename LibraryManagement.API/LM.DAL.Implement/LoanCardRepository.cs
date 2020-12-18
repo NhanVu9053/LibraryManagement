@@ -117,7 +117,6 @@ namespace LM.DAL.Implement
                 parameters.Add("@StudentId", request.StudentId);
                 parameters.Add("@LoanOfDate", request.LoanOfDate);
                 parameters.Add("@ReturnOfDate", request.ReturnOfDate);
-                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@CreatedBy", request.CreatedBy);
                 parameters.Add("@ModifiedBy", request.ModifiedBy);
                 parameters.Add("@BookIds", request.BookIds);

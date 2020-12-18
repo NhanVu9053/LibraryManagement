@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Access Denied";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="alert alert-danger">
+        <h1>
+            @ViewBag.Title
+        </h1>
+        <hr />
+        <h5>
+            Bạn không có quyền xem tài nguyên này!
+        </h5>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-success" style="width:auto">
+        Click vào đây để về trang chủ
+    </a>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

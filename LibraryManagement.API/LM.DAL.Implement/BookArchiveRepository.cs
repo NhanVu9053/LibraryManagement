@@ -12,7 +12,7 @@ namespace LM.DAL.Implement
 {
     public class BookArchiveRepository : BaseRepository, IBookArchiveRepository
     {
-        public async Task<SaveBookArchiveRes> Delete(int id)
+        public async Task<SaveBookArchiveRes> Delete(StatusBookArchiveReq request)
         {
             var result = new SaveBookArchiveRes()
             {
@@ -22,8 +22,8 @@ namespace LM.DAL.Implement
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@bookArchiveId", id);
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@BookArchiveId", request.BookArchiveId);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
                                                                     sql: "sp_DeleteBookArchive",
                                                                     param: parameters,
@@ -53,7 +53,7 @@ namespace LM.DAL.Implement
                                                        commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<SaveBookArchiveRes> Save(SaveBookArchiveReq bookArchiveId)
+        public async Task<SaveBookArchiveRes> Save(SaveBookArchiveReq request)
         {
             var resut = new SaveBookArchiveRes
             {
@@ -64,10 +64,10 @@ namespace LM.DAL.Implement
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@BookArchiveId", bookArchiveId.BookArchiveId);
-                parameters.Add("@Value", bookArchiveId.Value);
-                parameters.Add("@IsPlus", bookArchiveId.IsPlus);
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@BookArchiveId", request.BookArchiveId);
+                parameters.Add("@Value", request.Value);
+                parameters.Add("@IsPlus", request.IsPlus);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
 
                 return await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
                                                             sql: "sp_UpdateBookArchive",

@@ -86,8 +86,8 @@ namespace LM.DAL.Implement
                 parameters.Add("@WardId", request.WardId);
                 parameters.Add("@Address", request.Address);
                 parameters.Add("@AvatarPath", request.AvatarPath);
-                parameters.Add("@CreatedBy", "admin");
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@CreatedBy", request.CreatedBy);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
 
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveStudentRes>(cnn: connection,
                                                                     sql: "sp_SaveStudent",

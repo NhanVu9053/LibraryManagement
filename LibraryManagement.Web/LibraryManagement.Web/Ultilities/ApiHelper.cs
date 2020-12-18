@@ -77,5 +77,42 @@ namespace LibraryManagement.Web.Ultilities
 
             }
         }
+        public static T HttpPostAsync(string apiName)
+        {
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(@$"{Common.apiUrl}/{apiName}");
+            httpWebRequest.Method = "POST";
+            var response = httpWebRequest.GetResponse();
+            {
+                string responseData;
+                Stream responseStream = response.GetResponseStream();
+                try
+                {
+                    using (StreamReader sr = new StreamReader(responseStream))
+                    {
+                        responseData = sr.ReadToEnd();
+                    }
+                }
+                finally
+                {
+                    ((IDisposable)responseStream).Dispose();
+                }
+                return JsonConvert.DeserializeObject<T>(responseData);
+
+            }
+        }
+        public static T HttpDeleteAsync(string apiName)
+        {
+            string result = string.Empty;
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(@$"{Common.apiUrl}/{apiName}");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "DELETE";
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<T>(result);
+        }
     }
 }
