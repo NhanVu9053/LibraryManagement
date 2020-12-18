@@ -32,7 +32,7 @@ namespace LibraryManagement.Web.Controllers
         [Route("Home/Category/{categoryId}")]
         public IActionResult Category(int categoryId, int? page)
         {
-            int pageSize = 6;
+            int pageSize = 12;
             int pageNumber = (page ?? 1);
             var categories = ApiHelper<List<BookView>>.HttpGetAsync($"book/getby/{categoryId}");
             ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
@@ -69,7 +69,7 @@ namespace LibraryManagement.Web.Controllers
         
         public IActionResult Search(string resultid, int? page)
         {
-            int pageSize = 6;
+            int pageSize = 12;
             int pageNumber = (page ?? 1);
             ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/search/{resultid}");
             ViewBag.search = resultid;
