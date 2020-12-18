@@ -35,7 +35,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPatch("api/category/delete")]
-        public async Task<OkObjectResult> IsDelete(StatusCategoryReq request)
+        public async Task<OkObjectResult> Delete(StatusCategoryReq request)
         {
             var result = await categoryService.Delete(request);
             return Ok(result);
