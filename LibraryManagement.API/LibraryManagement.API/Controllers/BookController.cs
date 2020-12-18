@@ -25,13 +25,13 @@ namespace LibraryManagement.API.Controllers
             var books = await bookService.Gets();
             return Ok(books);
         }
-        [HttpGet("api/book/toploan")]
+        [HttpGet("api/book/topLoan")]
         public async Task<OkObjectResult> GetTopLoan()
         {
             var books = await bookService.GetTopLoanBook();
             return Ok(books);
         }
-        [HttpGet("api/book/topnew")]
+        [HttpGet("api/book/topNew")]
         public async Task<OkObjectResult> GetTopNew()
         {
             var books = await bookService.GetTopNewBook();
@@ -64,8 +64,8 @@ namespace LibraryManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("api/book/getby/{categoryId}")]
-        public async Task<OkObjectResult> GetbyCategoryId(int categoryId)
+        [HttpGet("api/book/getByCategory/{categoryId}")]
+        public async Task<OkObjectResult> GetsBookByCategoryId(int categoryId)
         {
             var book = await bookService.GetByCategoryId(categoryId);
             return Ok(book);

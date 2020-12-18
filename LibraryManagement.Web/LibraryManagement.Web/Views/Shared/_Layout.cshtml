@@ -37,6 +37,11 @@
 
     <!-- Modernizr JS -->
     <script src="~/Assets/tmart/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style>
+        #EmailLogin-error, #LoginPassword-error {
+            color: red !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -67,29 +72,8 @@
                                     <li class="drop"><a asp-controller="Home" asp-action="Index">Home</a></li>
                                     <li class="drop">
                                         <a>Danh Mục</a>
-                                        <ul class="dropdown">
-                                            @foreach (var category in dataCategories)
-                                            {
-                                                <li><a href="/Home/Category/@category.CategoryId">@category.CategoryName</a></li>
-                                            }
-                                        </ul>
+                                        <ul class="dropdown" id="dataCategory"></ul>
                                     </li>
-                                    <li class="drop">
-                                        @*<a>Blog</a>*@
-                                        @*<ul class="dropdown">
-                                                <li><a href="blog.html">blog 3 column</a></li>
-                                                <li><a href="blog-details.html">Blog details</a></li>
-                                            </ul>*@
-                                    </li>
-
-                                    <!-- End Single Mega MEnu -->
-                                    <!-- Start Single Mega MEnu -->
-                                    <!-- End Single Mega MEnu -->
-
-                                    @*<li><a href="contact.html">contact</a></li>*@
-                                </ul>
-                             
-                                
                                 </ul>
                             </nav>
 
@@ -306,7 +290,7 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootbox.js/bootbox.min.js"></script>
-    <script src="~/js/login.js" asp-append-version="true"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 

@@ -16,37 +16,23 @@ namespace LibraryManagement.Web.Controllers
         public IActionResult Index()
         {
             TempData["checkLogin"] = Request.Cookies["email"];
-            ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
-            ViewBag.ListBook = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
-            ViewBag.TopLoan= ApiHelper<List<BookView>>.HttpGetAsync("book/toploan");
-            ViewBag.TopNew = ApiHelper<List<BookView>>.HttpGetAsync("book/topnew");
-            ViewBag.Random = ApiHelper<List<BookView>>.HttpGetAsync("book/random");
             return View();
         }
-        [Route("Home/Category/{categoryId}")]
-        public IActionResult Category(int categoryId, int? page)
+        [Route("Home/GetBookByCategory/{categoryId}")]
+        public IActionResult GetBookByCategory(int categoryId, int? page)
         {
             TempData["checkLogin"] = Request.Cookies["email"];
             int pageSize = 6;
             int pageNumber = (page ?? 1);
-            var categories = ApiHelper<List<BookView>>.HttpGetAsync($"book/getby/{categoryId}");
-            ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
-            ViewBag.Category = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/getby/{categoryId}");
-            ViewBag.ListBook = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
-            ViewBag.CategoryId = categoryId;
-            var books= ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
-            if (categories.Count != 0)
+            var books = ApiHelper<List<BookView>>.HttpGetAsync($"book/getByCategory/{categoryId}");
+            if(books.Count != 0)
             {
-                ViewBag.title = books[0].CategoryName;
-            }
-            else
-            {
-                ViewBag.title = "Không có Danh mục";
+                ViewBag.Title = books[0].CategoryName;
             }
             return View(books.ToPagedList(pageNumber, pageSize));
         }
 
-        [Route("Home/Book/get/{id}")]
+        [Route("Home/ViewProduct/{id}")]
         public IActionResult ViewProduct(int id)
         {
             ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
@@ -55,10 +41,7 @@ namespace LibraryManagement.Web.Controllers
             {
                 ViewBag.ErrorMessage = "Không tìm thấy sản phẩm!";
                 return View("~/Views/Error/PageNotFound.cshtml");
-            }
-
-            ViewBag.Categories = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/gets");
-           
+            }           
             return View(book);
         }
         
@@ -70,18 +53,7 @@ namespace LibraryManagement.Web.Controllers
             ViewBag.search = resultid;
            var result= ApiHelper<List<BookView>>.HttpGetAsync($"book/search/{resultid}");
             return View(result.ToPagedList(pageNumber, pageSize));
-        } 
-
-        //public IActionResult Listtype( int? page)
-        //{
-          
-        //    int pageSize = 6;
-        //    int pageNumber = (page ?? 1);
-        //    var games = ApiHelper<List<BookView>>.HttpGetAsync($"Book/gets");
-        //    return View(games.ToPagedList(pageNumber, pageSize));
-          
-        //}
-
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

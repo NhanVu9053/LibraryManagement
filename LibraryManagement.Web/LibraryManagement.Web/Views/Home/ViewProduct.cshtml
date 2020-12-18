@@ -2,22 +2,15 @@
 @{
     ViewData["Title"] = "ViewProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var categories = ViewBag.Categories;
-    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
     ViewBag.Title = $"{Model.CategoryName}--{Model.BookName}";
 }
-
-<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/img/bg3.jpg) no-repeat scroll center center / cover;">
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/img/bg3.jpg) no-repeat scroll center center;">
     <div class="ht__bradcaump__wrap">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="bradcaump__inner text-center">
                         <h2 class="bradcaump-title">@Model.CategoryName</h2>
-                        <nav class="bradcaump-inner">
-                            <span class="breadcrumb-item" href="index.html">@Model.BookName</span>
-                           
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -68,7 +61,12 @@
                         <div class="pro__details">
                             <h2>Danh Mục:  @Model.CategoryName</h2>
                         </div>
-
+                        <div class="pro__details">
+                            <h2>Trạng thái:  @Model.StatusName</h2>
+                        </div>
+                        <div class="pro__details">
+                            <h2>Số lượng còn:  @Model.QuanityRemain</h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,13 +100,6 @@
                           
                         </div>
                     </div>
-                    <!-- End Single Content -->
-                    <!-- Start Single Content -->
-               
-                    <!-- End Single Content -->
-                    <!-- Start Single Content -->
-                   
-                    <!-- End Single Content -->
                 </div>
             </div>
         </div>
