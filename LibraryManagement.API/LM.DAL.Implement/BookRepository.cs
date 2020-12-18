@@ -67,6 +67,20 @@ namespace LM.DAL.Implement
             }
         }
 
+        public async Task<IEnumerable<BookView>> GetRandomBook()
+        {
+            try
+            {
+                return await SqlMapper.QueryAsync<BookView>(cnn: connection,
+                                                        sql: "sp_GetRandomBook",
+                                                        commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IEnumerable<BookView>> Gets()
         {
             try

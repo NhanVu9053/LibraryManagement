@@ -1,5 +1,5 @@
 ﻿@{ 
-    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
+    var dataCategories = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
 }
 <!DOCTYPE html>
 
@@ -68,18 +68,18 @@
                                     <li class="drop">
                                         <a>Danh Mục</a>
                                         <ul class="dropdown">
-                                            @foreach (var category in dataCategory)
+                                            @foreach (var category in dataCategories)
                                             {
                                                 <li><a asp-controller="Home" asp-action="Category" asp-route-id="@category.CategoryId">@category.CategoryName</a></li>
                                             }
                                         </ul>
                                     </li>
                                     <li class="drop">
-                                        <a href="blog.html">Blog</a>
-                                        <ul class="dropdown">
-                                            <li><a href="blog.html">blog 3 column</a></li>
-                                            <li><a href="blog-details.html">Blog details</a></li>
-                                        </ul>
+                                        <a>Blog</a>
+                                        @*<ul class="dropdown">
+                                                <li><a href="blog.html">blog 3 column</a></li>
+                                                <li><a href="blog-details.html">Blog details</a></li>
+                                            </ul>*@
                                     </li>
 
                                     <!-- End Single Mega MEnu -->
@@ -87,6 +87,9 @@
                                     <!-- End Single Mega MEnu -->
 
                                     <li><a href="contact.html">contact</a></li>
+                                </ul>
+                             
+                                
                                 </ul>
                             </nav>
 
@@ -112,6 +115,35 @@
             </div>
             <!-- End Mainmenu Area -->
         </header>
+
+        <div class="body__overlay"></div>
+        <!-- Start Offset Wrapper -->
+        <div class="offset__wrapper">
+            <!-- Start Search Popap -->
+            <div class="search__area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="search__inner">
+                                <form asp-controller="Home" asp-action="Search" method="get">
+                                    <input placeholder="Search here... " type="text" name="resultid" autocomplete="off">
+                                    <button type="submit"></button>
+                                </form>
+                                <div class="search__close__btn">
+                                    <span class="search__close__btn_icon"><i class="zmdi zmdi-close"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Search Popap -->
+            <!-- Start Offset MEnu -->
+            <!-- End Offset MEnu -->
+            <!-- Start Cart Panel -->
+            <!-- End Cart Panel -->
+        </div>
+        <!-- End Offset Wrapper -->
         <!-- End Header Style -->
         <section class="htc__product__area pb--100 bg__white">
             <div class="container">

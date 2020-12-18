@@ -6,29 +6,14 @@
     var dataBook = ViewBag.ListBook != null ? ViewBag.ListBook as List<BookView> : new List<BookView>();
     var topLoan = ViewBag.TopLoan != null ? ViewBag.TopLoan as List<BookView> : new List<BookView>();
     var topNew = ViewBag.TopNew != null ? ViewBag.TopNew as List<BookView> : new List<BookView>();
+    var rnd = ViewBag.Random != null ? ViewBag.Random as List<BookView> : new List<BookView>();
 }
 
 <div class="body__overlay"></div>
 <!-- Start Offset Wrapper -->
 <div class="offset__wrapper">
     <!-- Start Search Popap -->
-    <div class="search__area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="search__inner">
-                        <form action="#" method="get">
-                            <input placeholder="Search here... " type="text">
-                            <button type="submit"></button>
-                        </form>
-                        <div class="search__close__btn">
-                            <span class="search__close__btn_icon"><i class="zmdi zmdi-close"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  
     <!-- End Search Popap -->
     <!-- Start Offset MEnu -->
     <!-- End Offset MEnu -->
@@ -47,12 +32,12 @@
                     <div class="slider__activation__wrap owl-carousel owl-theme">
 
                         <!-- Start Single Slide -->
-                        <div class="slide slider__full--screen slider-height-inherit slider-text-right" style=" background: rgba(0, 0, 0, 0) url(img/BookBanner7.jpg) no-repeat scroll center center / cover;">
+                        <div class="slide slider__full--screen slider-height-inherit slider-text-right" style=" background: rgba(0, 0, 0, 0) url(img/BookBanner9.jpg) no-repeat scroll center center / cover;">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-10 col-lg-8 col-md-offset-2 col-lg-offset-4 col-sm-12 col-xs-12">
                                         <div class="slider__inner">
-                                            <h1>New Book <span class="text--theme">Mượn ngay</span></h1>
+                                            <h1>Read Book <span class="text--theme">EveryDay</span></h1>
                                             <div class="slider__btn">
                                                 @*<a class="htc__btn" href="cart.html">shop now</a>*@
                                             </div>
@@ -63,7 +48,7 @@
                         </div>
                         <!-- End Single Slide -->
                         <!-- Start Single Slide -->
-                        <div class="slide slider__full--screen slider-height-inherit  slider-text-left" style="  background: rgba(0, 0, 0, 0) url(Assets/tmart/images/slider/bg/BookBanner2.jpg) no-repeat scroll center center / cover;">
+                        <div class="slide slider__full--screen slider-height-inherit  slider-text-left" style="background: rgba(0, 0, 0, 0) url(img/bookbanner10.jpg) no-repeat scroll center center / cover;">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
@@ -108,7 +93,7 @@
 <div class="only-banner ptb--100 bg__white">
     <div class="container">
         <div class="only-banner-img">
-            <a href="shop-sidebar.html"><img src="~/Assets/tmart/images/slider/bg/BookBanner3.jpg" alt="new product"></a>
+            <a href="shop-sidebar.html"><img src="~/img/bg5.jpg" alt="new product"></a>
         </div>
     </div>
 </div>
@@ -136,7 +121,7 @@
                         <div class="product__details">
                             <div class="product__inner">
                                 <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@toploan.BookId">
-                                    <img src="~/img/73613712-e803-4ab0-8e5a-82bf1cd24a16_book4.png" alt="blog images" />
+                                    <img src="~/img/@toploan.ImagePath" alt="blog images" />
 
                                 </a>
                                 @*<div class="blog__hover__info">*@
@@ -179,7 +164,7 @@
                         <div class="product__details">
                             <div class="product__inner">
                                 <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@topnew.BookId">
-                                    <img src="~/img/cc24300d-5dc3-4207-b73b-c51661f9d7e0_book6.png" alt="blog images" />
+                                    <img src="~/img/@topnew.ImagePath" alt="blog images" />
 
                                 </a>
                                 @*<div class="blog__hover__info">*@
@@ -187,6 +172,50 @@
                                 <div class="product__price">
                                     <span style="text-align: center; font-size: 1.5em; margin-left: 140px">@topnew.StatusName</span>
                                 </div>
+                                @*</div>*@
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- End Single Blog -->
+                <!-- Start Single Blog -->
+                <!-- End Single Blog -->
+            </div>
+        </div>
+    </div>
+</section>
+<section class="htc__blog__area bg__white pb--130">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="section__title section__title--2 text-center">
+                    <h2 class="text__a clip-text clip-textGif" style="font-size: 31px;color: #FF4136;border-bottom: 1px solid #d5d5d5">
+                        Có thể bạn thích
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="product">
+                <!-- Start Single Blog -->
+                @foreach (var rand in rnd)
+                {
+                    <div class="col-md-4 single__pro col-lg-4 cat--1 col-sm-4 col-xs-12">
+                        <div class="product__details">
+                            <div class="product__inner">
+                                <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@rand.BookId">
+                                    <img src="~/img/@rand.ImagePath" alt="blog images" />
+
+                                </a>
+                                @*<div class="blog__hover__info">*@
+                                @*<div class="blog__hover__action">*@
+                            <div class="product__price">
+                                <span style="text-align: center; font-size: 1.5em; margin-left: 140px">@rand.StatusName</span>
+                               
+                            </div>
                                 @*</div>*@
                                 @*</div>*@
                             </div>

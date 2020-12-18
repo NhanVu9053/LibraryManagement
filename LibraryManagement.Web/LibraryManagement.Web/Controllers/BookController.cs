@@ -20,6 +20,7 @@ namespace LibraryManagement.Web.Controllers
         {
             this.webHostEnvironment = webHostEnvironment;
         }
+        [Route("book/index")]
         public IActionResult Index()
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

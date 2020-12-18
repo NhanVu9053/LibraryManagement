@@ -18,5 +18,6 @@ namespace LM.BAL.Interface
         Task<IEnumerable<BookView>> GetByCategoryId(int categoryId);
         Task<IEnumerable<BookView>> Search(string resultid);
         //void CheckStatusBookIsOver(int id);
+        Task<IEnumerable<BookView>> GetRandomBook();
     }
 }

@@ -20,6 +20,7 @@ namespace LibraryManagement.Web.Controllers
             ViewBag.ListBook = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
             ViewBag.TopLoan= ApiHelper<List<BookView>>.HttpGetAsync("book/toploan");
             ViewBag.TopNew = ApiHelper<List<BookView>>.HttpGetAsync("book/topnew");
+            ViewBag.Random = ApiHelper<List<BookView>>.HttpGetAsync("book/random");
             return View();
         }
         [Route("Home/Category/{categoryId}")]
@@ -36,7 +37,7 @@ namespace LibraryManagement.Web.Controllers
             var books= ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
             if (categories.Count != 0)
             {
-                ViewBag.title = categories.FirstOrDefault().CategoryName;
+                ViewBag.title = books[0].CategoryName;
             }
             else
             {
@@ -60,6 +61,17 @@ namespace LibraryManagement.Web.Controllers
            
             return View(book);
         }
+        
+        public IActionResult Search(string resultid, int? page)
+        {
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+            ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/search/{resultid}");
+            ViewBag.search = resultid;
+           var result= ApiHelper<List<BookView>>.HttpGetAsync($"book/search/{resultid}");
+            return View(result.ToPagedList(pageNumber, pageSize));
+        } 
+
         //public IActionResult Listtype( int? page)
         //{
           

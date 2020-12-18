@@ -11,6 +11,7 @@ namespace LibraryManagement.Web.Controllers
 {
     public class BookArchiveController : Controller
     {
+        [Route("bookarchive/index")]
         public IActionResult Index()
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

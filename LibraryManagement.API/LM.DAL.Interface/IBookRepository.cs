@@ -17,5 +17,6 @@ namespace LM.DAL.Interface
         Task<IEnumerable<BookView>> Search(string resultid);
         Task<IEnumerable<BookView>> GetTopLoanBook();
         Task<IEnumerable<BookView>> GetTopNewBook();
+        Task<IEnumerable<BookView>> GetRandomBook();
     }
 }

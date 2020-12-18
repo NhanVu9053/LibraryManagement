@@ -37,6 +37,12 @@ namespace LibraryManagement.API.Controllers
             var books = await bookService.GetTopNewBook();
             return Ok(books);
         }
+        [HttpGet("api/book/random")]
+        public async Task<OkObjectResult> GetRandom()
+        {
+            var books = await bookService.GetRandomBook();
+            return Ok(books);
+        }
         [HttpGet("api/book/get/{id}")]
         public async Task<OkObjectResult> Get(int id)
         {
@@ -66,7 +72,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet("api/book/search/{resultid}")]
-        public async Task<OkObjectResult> GetbyCategoryId(string resultid)
+        public async Task<OkObjectResult> Search(string resultid)
         {
             var book = await bookService.Search(resultid);
             return Ok(book);
