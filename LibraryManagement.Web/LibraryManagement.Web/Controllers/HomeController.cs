@@ -64,7 +64,7 @@ namespace LibraryManagement.Web.Controllers
         
         public IActionResult Search(string resultid, int? page)
         {
-            int pageSize = 6;
+            int pageSize = 12;
             int pageNumber = (page ?? 1);
             ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/search/{resultid}");
             ViewBag.search = resultid;

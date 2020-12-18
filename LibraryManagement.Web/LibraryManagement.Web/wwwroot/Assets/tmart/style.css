@@ -5141,3 +5141,8 @@ a.shipping-calculator-button {
     font-size: 23px;
     background-color: yellow;
 }
+@media (min-width: 1px) {
+    .product_img {
+        width: 30% ;
+    }
+}
