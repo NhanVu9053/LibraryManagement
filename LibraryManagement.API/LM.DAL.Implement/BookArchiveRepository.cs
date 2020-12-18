@@ -17,12 +17,13 @@ namespace LM.DAL.Implement
             var result = new SaveBookArchiveRes()
             {
                 BookArchiveId = 0,
-                Message = "Something went wrong, please contact administrator."
+                Message = "Đã xảy ra sự cố, vui lòng liên hệ với administrator."
             };
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@bookArchiveId", id);
+                parameters.Add("@ModifiedBy", "admin");
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
                                                                     sql: "sp_DeleteBookArchive",
                                                                     param: parameters,
@@ -31,7 +32,7 @@ namespace LM.DAL.Implement
             }
             catch (Exception ex)
             {
-                return result;
+                throw ex;
             }
         }
 
@@ -57,21 +58,26 @@ namespace LM.DAL.Implement
             var resut = new SaveBookArchiveRes
             {
                 BookArchiveId = 0,
-                Message = ""
+                Message = "Đã xảy ra sự cố, vui lòng liên hệ với administrator."
             };
 
-            
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@BookArchiveId", bookArchiveId.BookArchiveId);        
-            parameters.Add("@StatusId", bookArchiveId.StatusId);
-            parameters.Add("@Value", bookArchiveId.Value);
-            parameters.Add("@IsPlus", bookArchiveId.IsPlus);
-            parameters.Add("@ModifiedBy", bookArchiveId.ModifiedBy);
+            try
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@BookArchiveId", bookArchiveId.BookArchiveId);
+                parameters.Add("@Value", bookArchiveId.Value);
+                parameters.Add("@IsPlus", bookArchiveId.IsPlus);
+                parameters.Add("@ModifiedBy", "admin");
 
-            return await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
-                                                        sql: "sp_UpdateBookArchive",
-                                                        parameters,
-                                                        commandType: CommandType.StoredProcedure);
+                return await SqlMapper.QueryFirstOrDefaultAsync<SaveBookArchiveRes>(cnn: connection,
+                                                            sql: "sp_UpdateBookArchive",
+                                                            parameters,
+                                                            commandType: CommandType.StoredProcedure);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 
         }
     }

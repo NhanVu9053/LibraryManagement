@@ -33,7 +33,7 @@ namespace LibraryManagement.API.Controllers
         }
         [HttpPost, HttpPatch]
         [Route("api/category/save")]
-        public async Task<OkObjectResult> SaveCourse(SaveCategoryReq request)
+        public async Task<OkObjectResult> Save(SaveCategoryReq request)
         {
             var result = await categoryService.Save(request);
             return Ok(result);

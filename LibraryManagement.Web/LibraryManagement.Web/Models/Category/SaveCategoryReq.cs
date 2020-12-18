@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.Web.Models.Category
 {
-    public class SaveCategoryReq
+    public class SaveCategoryReq : ReqModel
     {
         public int CategoryId { get; set; }
-        [Required]
-        [Display(Name =" Tên Danh Mục")]
         public string CategoryName { get; set; }    
-        [Required]
-        [Display(Name ="Chọn trạng thái")]
-        public int StatusId { get; set; }
     }
 }

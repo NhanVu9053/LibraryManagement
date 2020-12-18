@@ -8,13 +8,9 @@
 <div class="text-left">
     <br />
     <h3 class="display-4 text-success text-center">QUẢN LÝ HỌC SINH</h3>
-    @if (TempData["Message"] != null)
-    {
-        <p class="alert alert-success">@TempData["Message"]</p>
-    }
     <a href="javascript:;" onclick="student.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm học sinh</a>
     <hr />
-    <table id="tbStudents" class="table table-bordered table-hover table-primary">
+    <table id="tbStudents" class="table table-bordered table-hover table-primary mt-2">
         <thead class="thead-dark">
             <tr>
                 <th>#ID</th>
@@ -29,53 +25,6 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var student in Model)
-            {
-                if (student.StatusName != "Deleted")
-                {
-                    if(student.AvatarPath == "none-avatar.png")
-                    {
-                        student.AvatarPath = "none-avatar.png?v=aAV3uOswN-3pO2CQXqL8QINyLxyvHnj8hSbQVotuF2w";
-                    }
-                    var actions = "";
-                    switch (student.StatusId)
-                    {
-                        case 1:
-                            {
-                                actions = $"<a href='javascript: void(0)' class='text-dark ml-2' onclick='student.changeStatusToBlocked({student.StudentId})' title='Khóa'><i class='fa fa-ban'></i></a>";
-                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='student.delete({student.StudentId})' title='Xóa'><i class='fas fa-trash'></i></a>";
-                                break;
-                            }
-                        case 3:
-                            {
-                                actions = $"<a href='javascript: void(0)' class='text-success ml-2' onclick='student.changeStatusToActive({student.StudentId})' title='Hoạt dộng'><i class='far fa-play-circle'></i></a>";
-                                actions += $"<a href='javascript: void(0)' class='text-danger ml-2' onclick='student.delete({student.StudentId})' title='Xóa'><i class='fas fa-trash'></i></a>";
-                                break;
-                            }
-                    }
-            <tr>
-                <td>@student.StudentId</td>
-                <td>@student.StudentName</td>
-                <td>@student.CourseName</td>
-                <td>@(student.Gender == true ? "Nam" : "Nữ")</td>
-                <td>@student.PhoneNumber</td>
-                <td>@student.Email</td>
-                <td class="text-center">
-                    <span class="@(student.StatusId == 1? "btn btn-primary": (student.StatusId == 2? "btn btn-success" : (student.StatusId == 3? "btn btn-danger" : "btn btn-info")))" style="width: 100px; height: 40px;">
-                        @student.StatusName
-                    </span>
-                </td>
-                <td class="text-center">
-                    <img src="/img/@student.AvatarPath" style="width: 60px; height: 70px;" />
-                </td>
-                <td>
-                    <a asp-controller="Student" asp-action="Details" asp-route-id="@student.StudentId" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
-                    <a href="javascript:void(0)" class="text-warning ml-2" onclick="student.edit(@student.StudentId)" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                    @Html.Raw(actions)
-                </td>
-            </tr>
-                }
-            }
         </tbody>
     </table>
 </div>
@@ -161,7 +110,9 @@
                                            data-rule-required="true"
                                            data-msg-required="Số điện thoại không được để trống"
                                            data-rule-maxlength="20"
-                                           data-msg-maxlength="Số điện thoại quá dài"/>
+                                           data-msg-maxlength="Số điện thoại quá dài" />
+
+                                    <label id="msgPhone" class="error"></label>
                                 </div>
                             </div>
                             <div class="row form-group col-xs-12">
@@ -208,15 +159,6 @@
                                            data-msg-maxlength="Địa chỉ quá dài">
                                 </div>
                             </div>
-                             @*<div class="row form-group">
-                                <label for="StatusId" class="col-3">Trạng thái:</label>
-                                <div class="col-9">
-                                    <select class="form-control" id="Status" name="Status"
-                                            data-rule-required="true"
-                                            data-msg-required="Chưa chọn trạng thái học sinh">
-                                    </select>
-                                </div>
-                            </div>*@
                             <div class="row form-group">
                                 <label for="Avatar" class="col-3">Hình ảnh:</label>
                                 <div class="col-9">
@@ -242,7 +184,7 @@
                 <div class="col-12">
                     <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
                 </div>
-                <a href="javascript:;" class="btn btn-success" onclick="student.save()">Lưu</a>
+                <a href="javascript:;" class="btn btn-success" onclick="student.checkSave()">Lưu</a>
                 <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
             </div>
 

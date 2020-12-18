@@ -4,14 +4,9 @@ using System.Text;
 
 namespace LM.Domain.Request.Category
 {
-   public class SaveCategoryReq
+   public class SaveCategoryReq : ReqModel
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int StatusId { get; set; }
-        
-        public int CreatedBy { get; set; }
-       
-
     }
 }

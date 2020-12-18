@@ -39,7 +39,7 @@ namespace LibraryManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("api/bookArchive/Delete/{id}")]
+        [HttpPatch("api/bookArchive/delete/{id}")]
         public async Task<SaveBookArchiveRes> Delete(int id)
         {
             return await bookArchiveService.Delete(id);

@@ -3,16 +3,18 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<a href="javascript:void(0);" class="btn btn-info" onclick="category.openModal()">Create</a>
-<div class="text-center my-2">
-    <table id="tbCategory" class="table table-bordered mt-2">
+<br />
+<h3 class="display-4 text-success text-center">QUẢN LÝ THỂ LOẠI SÁCH</h3>
+<a href="javascript:;" onclick="category.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm Thể loại</a>
+<hr />
+<div class="my-2">
+    <table id="tbCategory" class="table table-bordered table-hover table-primary">
         <thead class="thead-dark">
-            <tr>
+            <tr class="text-center">
                 <th>#ID</th>
                 <th>Tên Danh Mục</th>
                 <th>Ngày tạo</th>
                 <th>Người tạo</th>
-                <th>Trạng thái</th>
                 <th>Ngày sửa</th>
                 <th>Người sửa</th>
                 <th>Thao tác</th>
@@ -31,28 +33,21 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
+                <h4 class="modal-title text-primary" id="modalCategoryTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <h4 class="text-danger" id="msg" style="display: none"></h4>
                 <form id="fromAddEditCategory">
                     <input hidden name="CategoryId" id="CategoryId" value="0" />
                     <div class="row form-group">
-                        <label for="CategoryName" class="col-3">Category name:</label>
-                        <div class="col-9">
-                            <input type="text" class="form-control" placeholder="category name"
+                        <label for="CategoryName" class="col-2">Thể loại:</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" placeholder="Tên Thể loại sách"
                                    id="CategoryName" name="CategoryName"
                                    data-rule-required="true"
                                    data-msg-required="Xin nhập tên danh mục sách">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <label for="StatusId" class="col-3">Status:</label>
-                        <div class="col-9">
-                            <select class="form-control" id="Status" name="Status">
-                            </select>
                         </div>
                     </div>
                 </form>
@@ -61,8 +56,11 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <a href="javascript:;" class="btn btn-success" onclick="category.save()">Save</a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <div class="col-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
+                <a href="javascript:;" class="btn btn-success" onclick="category.save()">Lưu</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModal">Hủy</button>
             </div>
 
         </div>

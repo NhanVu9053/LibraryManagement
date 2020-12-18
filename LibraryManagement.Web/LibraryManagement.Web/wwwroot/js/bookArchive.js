@@ -1,7 +1,6 @@
 ﻿
-
 var bookArchive = {} || bookArchive;
-
+var table = $('#tbBookArchive').DataTable();
 
 bookArchive.showData = function () {
     $.ajax({
@@ -9,58 +8,45 @@ bookArchive.showData = function () {
         method: 'GET',
         dataType: 'JSON',
         success: function (response) {
-           
-            $('#tbbookArchive>tbody').empty();
+            table.clear().destroy();
+            $('#tbBookArchive>tbody').empty();
             $.each(response.data, function (i, v) {
-                $('#tbbookArchive>tbody').append(
-                    `<tr>
+                $('#tbBookArchive>tbody').append(
+                    ` <tr>
                         <td>${v.bookArchiveId}</td>
                         <td>${v.bookId}</td>
-                        <td>${v.bookName}</td>
-                        <td>${v.categoryName}</td>
+                        <td class="text-left">
+                           ${v.bookName}
+                        </td>
                         <td>${v.quantity}</td>
-                        <td>${v.quantityRemain}</td>                        
-                        <td>${v.modifiedDateStr}</td>
-                        <td>${v.modifiedBy}</td>
-                        <td>${v.statusName}</td>
+                        <td>${v.quantityRemain}</td>
                         <td>
-                             <a href="javascript:;" class="text-warning  ml-2" onclick="bookArchive.edit(${v.bookArchiveId},${true})"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                             <a href="javascript:;" class="text-warning  ml-2" onclick="bookArchive.edit(${v.bookArchiveId},${false})"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                             <a href="javascript:;" class="text-danger ml-2" onclick="bookArchive.delete(${v.bookArchiveId})"><i class='fas fa-trash'></i></a>
+                            <a href="javascript:;" onclick="bookArchive.details(${v.bookArchiveId})" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
+                            <a href="javascript:;" class="text-success  ml-2" onclick="bookArchive.edit(${v.bookArchiveId},true,'${v.bookName}')" title="Tăng SL"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a href="javascript:;" class="text-warning  ml-2" onclick="bookArchive.edit(${v.bookArchiveId},false,'${v.bookName}')" title="Giảm SL"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                            <a href="javascript:;" class="text-danger ml-2" onclick="bookArchive.delete(${v.bookArchiveId},'${v.bookName}')" title="Xóa"><i class='fas fa-trash'></i></a>
                         </td>
                     </tr>`
                 );
             });
+            bookArchive.drawDataTable();
         }
     });
 }
 
-bookArchive.initStatus = function () {
-    $.ajax({
-        url: '/bookArchive/status/gets',
-        method: 'GET',
-        dataType: 'JSON',
-        success: function (response) {
-            $('#Status').empty();
-            $.each(response.data, function (i, v) {
-                $('#Status').append(
-                    `<option value=${v.id}>${v.name}</option>`
-                );
-            });
-        }
-    });
-}
 
-bookArchive.delete = function (bookArchiveId) {
+bookArchive.delete = function (bookArchiveId, bookName) {
     bootbox.confirm({
-        title: '<h2 class="text-danger">Warning</h2>',
-        message: `Do you want to <b class="text-primary">Delete</b>  <b class="text-success"></b> `,
+        title: '<h2 class="text-danger">Thông báo</h2>',
+        message: `Bạn có muốn xóa <b class="text-primary">Kho sách</b> lưu sách <b class="text-success"> ${bookName}</b> này không?`,
         buttons: {
             cancel: {
-                label: '<i class="fa fa-times"></i> No'
+                label: '<i class="fa fa-times"></i> Không',
+                className: 'btn-success'
             },
             confirm: {
-                label: '<i class="fa fa-check"></i> Yes'
+                label: '<i class="fa fa-check"></i> Có',
+                className: 'btn-danger'
             }
         },
         callback: function (result) {
@@ -71,11 +57,13 @@ bookArchive.delete = function (bookArchiveId) {
                     dataType: 'JSON',
                     contentType: 'application/json',
                     success: function (response) {
-
-                        bootbox.alert(`<h4 class="alert alert-danger">${response.data.message} !!!</h4>`);
-                        if (response.data.bookArchiveId > 0) {
-                            $('#addEditbookArchiveModal').modal('hide');
-                            bookArchive.showData();
+                        if (response.data.categoryId > 0) {
+                            bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                                $('#editBookArchiveModal').modal('hide');
+                                bookArchive.showData();
+                            });
+                        } else {
+                            bootbox.alert(`<h5 class="text-danger">${response.data.message} !!!</h5>`);
                         }
                     }
                 });
@@ -84,68 +72,150 @@ bookArchive.delete = function (bookArchiveId) {
     });
 }
 
+bookArchive.edit = function (id, isPlus, bookName) {
+    bookArchive.openModal();
+    $('#bookName').text(`Tên sách: ${bookName}`);
+    $('#BookArchiveId').val(id);
+    $('#IsPlus').val(isPlus);
+    if (isPlus) {
+        $('#modalBookArchiveTitle').text('CẬP NHẬT(TĂNG) SỐ LƯỢNG KHO');
+    } else {
+        $('#modalBookArchiveTitle').text('CẬP NHẬT(GIẢM) SỐ LƯỢNG KHO');
+    }
+};
 
 bookArchive.save = function () {
-
-    if ($('#fromAddEditbookArchive').valid()) {
+    $('#msgResult').hide();
+    if ($('#fromEditbookArchive').valid()) {
         var saveObj = {};
-        var xx = $('#bookArchiveId').val();
-
-        var bookArchiveId = parseInt(xx);
-        saveObj.BookArchiveId = bookArchiveId;
-        
-        saveObj.Value = parseInt($('#value').val());       
-        saveObj.StatusId = parseInt($('#Status').val());
-        $.ajax({
-            url: '/bookarchive/save',
-            method: 'POST',
-            dataType: 'JSON',
-            contentType: 'application/json',
-            data: JSON.stringify(saveObj),
-            success: function (response) {
-                bootbox.alert(`<h2 class="text-success">${response.data.message}</h2>`);
-                if (response.data.bookArchiveId > 0) {
-                    $('#addEditbookArchiveModal').modal('hide');
-                    bookArchive.showData();
+        saveObj.bookArchiveId = parseInt($('#BookArchiveId').val());
+        saveObj.isPlus = ('true' === $('#IsPlus').val());
+        saveObj.value = parseInt($('#Value').val());
+        if (saveObj.bookArchiveId > 0) {
+            $.ajax({
+                url: '/bookarchive/save',
+                method: 'PATCH',
+                dataType: 'JSON',
+                contentType: 'application/json',
+                data: JSON.stringify(saveObj),
+                success: function (response) {
+                    if (response.data.bookArchiveId > 0) {
+                        $('#editBookArchiveModal').modal('hide');
+                        bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
+                            bookArchive.showData();
+                        });
+                    }
+                    else {
+                        $('#msgResult').text(`${response.data.message}`);
+                        $('#msgResult').show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
 
-bookArchive.edit = function (id,isPlus) {
+bookArchive.details = function (bookArchiveId) {
+    $('#dataModal').empty();
     $.ajax({
-        url: `get/${id}`,
+        url: `/bookArchive/get/${bookArchiveId}`,
         method: 'GET',
-        dataType: 'json',
+        dataType: 'JSON',
         contentType: 'application/json',
-        success: function (reponse) {
-            console.log(reponse);
-            $('#bookArchiveId').val(reponse.data.bookArchiveId);
-            $('#value').val(reponse.data.value);
-            
-            //$('#CategoryName').val(reponse.data.categoryName);
-            $('#Status').val(reponse.data.status);
-            $('#addEditbookArchiveModal').find('.modal-title').text('Update bookArchive');
-            $('#addEditbookArchiveModal').modal('show');
+        success: function (response) {
+            if (response.data.bookArchiveId > 0) {
+                $('#dataModalTitle').text('THÔNG TIN KHO SÁCH');
+                $('#dataModal').append(
+                    `<h5 class="text-info m-2 text-center">Kho sách: ${response.data.bookName}</h5>
+                    <div class="row justify-content-center col-xl-12">
+                        <div class="col-xl-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p><b>Mã Kho sách:</b> ${response.data.bookArchiveId}</p>
+                                    <p><b>Mã Sách:</b> ${response.data.bookId}</p>
+                                    <p><b>Tên sách:</b> ${response.data.bookName}</p>
+                                    <p><b>Thể loại:</b> ${response.data.categoryName}</p>
+                                    <p><b>Tổng số lượng:</b> ${response.data.quantity}</p>
+                                    <p><b>Số lượng còn:</b> ${response.data.quantityRemain}</p>
+                                    <p><b>Ngày tạo:</b> ${response.data.createdDateStr}</p>
+                                    <p><b>Người tạo:</b> ${response.data.createdBy}</p>
+                                    <p><b>Ngày cập nhật:</b> ${response.data.modifiedDateStr}</p>
+                                    <p><b>Người cập nhật:</b> ${response.data.modifiedBy}</p>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-xl-6 col-md-12 text-center">
+                                <img src="/img/${response.data.imagePath}" class="m-5 img_book_details"/>
+                            </div>
+                    </div> `
+                );
+                $('#detailsData').modal('show');
+            }
+            else {
+                bootbox.alert(`<h5 class="text-danger">Kho lưu trữ này không tồn tại !!!</h5>`)
+            }
         }
     });
+}
 
-};
+bookArchive.resetForm = function () {
+    $('#editBookArchiveModal').modal('hide');
+    $('#fromEditbookArchive').trigger('reset');
+    $('#msgResult').hide();
+    $('#fromEditbookArchive').validate().resetForm();
+}
 
 bookArchive.openModal = function () {
 
-    document.getElementById('msg').style.display = 'none';
-    $('#addEditbookArchiveModal').modal('show');
+    bookArchive.resetForm();
+    $('#modalBookArchiveTitle').text('CẬP NHẬT SỐ LƯỢNG KHO');
+    $('#editBookArchiveModal').modal('show');
 }
 
 
+bookArchive.drawDataTable = function () {
+    table = $("#tbBookArchive").DataTable(
+        {
+            "language": {
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ mục",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+                }
+            },
+            "columnDefs": [
+                {
+                    "targets": 1,
+                    "orderable": false
+                },
+                {
+                    "targets": 2,
+                    "orderable": false
+                },
+                {
+                    "targets": 5,
+                    "orderable": false,
+                    "searchable": false
+                }
+            ],
+            "order": [[0, 'desc']]
+        }
+    );
+}
 bookArchive.init = function () {
     bookArchive.showData();
-    bookArchive.initStatus();
 }
 
 $(document).ready(function () {
     bookArchive.init();
 });
-

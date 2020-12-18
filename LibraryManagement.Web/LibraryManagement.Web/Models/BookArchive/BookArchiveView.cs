@@ -16,5 +16,8 @@ namespace LibraryManagement.Web.Models.BookArchive
         public int StatusId { get; set; }
         public string ModifiedDateStr { get; set; }
         public string ModifiedBy { get; set; }
+        public string CreatedByStr { get; set; }
+        public string CreatedBy { get; set; }
+        public string ImagePath { get; set; }
     }
 }

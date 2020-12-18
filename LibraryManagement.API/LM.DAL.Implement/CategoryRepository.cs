@@ -17,12 +17,13 @@ namespace LM.DAL.Implement
             var result = new SaveCategoryRes()
             {
                 CategoryId = 0,
-                Message = "Có gì đó sai sót, xin vui lòng liên hệ Admin"
+                Message = "Đã xảy ra sự cố, vui lòng liên hệ với administrator."
             };
             try
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@CategoryId", categoryId);
+                parameters.Add("@ModifiedBy", "admin");
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
                                                                     sql: "sp_DeleteCategory",
                                                                     param: parameters,
@@ -31,7 +32,7 @@ namespace LM.DAL.Implement
             }
             catch (Exception ex)
             {
-                return result;
+                throw ex;
             }
         }
 
@@ -57,19 +58,27 @@ namespace LM.DAL.Implement
             var result = new SaveCategoryRes()
             {
                 CategoryId = 0,
-                Message = "Something went wrong, please contact administrator."
+                Message = "Đã xảy ra sự cố, vui lòng liên hệ với administrator."
             };
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@CategoryId", categoryId.CategoryId);
-            parameters.Add("@CategoryName", categoryId.CategoryName);
-            parameters.Add("@StatusId", categoryId.StatusId);
-            
-            parameters.Add("@CreatedBy", categoryId.CreatedBy);
-            return await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
-                                                        sql: "sp_SaveCategory",
-                                                        parameters,
-                                                        commandType: CommandType.StoredProcedure);
-        }
+            try
+            {
 
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@CategoryId", categoryId.CategoryId);
+                parameters.Add("@CategoryName", categoryId.CategoryName);
+                //parameters.Add("@StatusId", categoryId.StatusId);
+                parameters.Add("@CreatedBy", "admin");
+                parameters.Add("@ModifiedBy", "admin");
+                result =  await SqlMapper.QueryFirstOrDefaultAsync<SaveCategoryRes>(cnn: connection,
+                                                            sql: "sp_SaveCategory",
+                                                            parameters,
+                                                            commandType: CommandType.StoredProcedure);
+                return result;
+            }
+            catch
+            {
+                return result;
+            }
+        }
     }
 }

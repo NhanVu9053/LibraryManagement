@@ -23,8 +23,7 @@ namespace LibraryManagement.Web.Controllers
         [Route("book/index")]
         public IActionResult Index()
         {
-            var books = ApiHelper<List<BookView>>.HttpGetAsync("book/gets");
-            return View(books);
+            return View();
         }
         [HttpGet]
         [Route("/book/gets")]
@@ -40,11 +39,11 @@ namespace LibraryManagement.Web.Controllers
             var books = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
             return Json(new { data = books });
         }
-        public IActionResult Details(int id)
-        {
-            var data = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
-            return View(data);
-        }
+        //public IActionResult Details(int id)
+        //{
+        //    var data = ApiHelper<BookView>.HttpGetAsync(@$"book/get/{id}");
+        //    return View(data);
+        //}
         [HttpGet]
         [Route("/book/status/gets")]
         public JsonResult GetStatus()
@@ -70,7 +69,6 @@ namespace LibraryManagement.Web.Controllers
             {
                 EditImg(request.Image, request.ImagePath, imagePathOld);
             }
-            TempData["Message"] = result.Message;
             return Json(new { data = result });
         }
         [HttpPatch]
@@ -83,10 +81,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToOver(int id)
+        public JsonResult ChangeStatusToOver(int id)
         {
             var request = new StatusBookReq()
             {
@@ -95,10 +93,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus","PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToStochking(int id)
+        public JsonResult ChangeStatusToStochking(int id)
         {
             var request = new StatusBookReq()
             {
@@ -107,10 +105,10 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return ResultMessage(result);
+            return Json(new { data = result });
         }
         [HttpPatch]
-        public IActionResult ChangeStatusToPending(int id)
+        public JsonResult ChangeStatusToPending(int id)
         {
             var request = new StatusBookReq()
             {
@@ -119,17 +117,7 @@ namespace LibraryManagement.Web.Controllers
                 ModifiedBy = "admin"
             };
             var result = ApiHelper<SaveBookRes>.HttpAsync($"book/changeStatus", "PATCH", request);
-            return ResultMessage(result);
-        }
-        public IActionResult ResultMessage(SaveBookRes result)
-        {
-            if (result != null)
-            {
-                TempData["Message"] = result.Message;
-                return Ok(true);
-            }
-            TempData["Message"] = result.Message;
-            return Ok(false);
+            return Json(new { data = result });
         }
         public string ProcessImagePath(IFormFile file)
         {
