@@ -6,7 +6,8 @@ using LM.BAL.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.API.Controllers
-{   [ApiController]
+{   
+    [ApiController]
     public class WikiController : ControllerBase
     {
         private readonly IWikiService wikiService;

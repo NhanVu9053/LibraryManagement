@@ -29,13 +29,13 @@ namespace LM.BAL.Implement
             return await categoryRepository.Gets();
         }
 
-        public async Task<SaveCategoryRes> Save(SaveCategoryReq categoryId)
+        public async Task<SaveCategoryRes> Save(SaveCategoryReq request)
         {
-            return await categoryRepository.Save(categoryId);
+            return await categoryRepository.Save(request);
         }
-        public async Task<SaveCategoryRes> Delete(int categoryId)
+        public async Task<SaveCategoryRes> Delete(StatusCategoryReq request)
         {
-            return await categoryRepository.Delete(categoryId);
+            return await categoryRepository.Delete(request);
         }
     }
 }

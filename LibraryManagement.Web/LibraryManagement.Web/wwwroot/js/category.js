@@ -17,9 +17,9 @@ category.showData = function () {
                         <td>${v.categoryId}</td>
                         <td>${v.categoryName}</td>
                         <td>${v.createdDateStr}</td>
-                        <td>${v.createdBy}</td>
+                        <td>${v.createdByName}</td>
                         <td>${v.modifiedDateStr}</td>
-                        <td>${v.modifiedBy}</td>
+                        <td>${v.modifiedByName}</td>
                         <td>
                              <a href="javascript:;" class="text-warning  ml-2" onclick="category.edit(${v.categoryId})"><i class='fas fa-edit'></i></a>
                              <a href="javascript:;" class='text-danger ml-2' onclick="category.delete(${v.categoryId},'${v.categoryName}')"><i class='fas fa-trash'></i></a>

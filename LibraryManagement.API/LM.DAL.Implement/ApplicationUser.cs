@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibraryManagement.API.ModelDb
+namespace LM.DAL.Implement
 {
     public class ApplicationUser : IdentityUser
     {
@@ -13,8 +13,9 @@ namespace LibraryManagement.API.ModelDb
         [MaxLength(100)]
         public string FullName { get; set; }
         [Required]
-        public DateTime HireDate { get; set; }
+        public DateTime Dob { get; set; }
         [Required]
+        public DateTime HireDate { get; set; }
         public bool Gender { get; set; }
         [Required]
         public int ProvinceId { get; set; }
@@ -26,15 +27,19 @@ namespace LibraryManagement.API.ModelDb
         [MaxLength(200)]
         public string Address { get; set; }
         [Required]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         [Required]
-        public string CreateBy { get; set; }
+        [MaxLength(450)]
+        public string CreatedBy { get; set; }
         [Required]
         public DateTime ModifiedDate { get; set; }
         [Required]
+        [MaxLength(450)]
         public string ModifiedBy { get; set; }
         [Required]
+        [MaxLength(200)]
+        public string AvatarPath { get; set; }
+        [Required]
         public int StatusId { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

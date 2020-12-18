@@ -17,97 +17,149 @@ namespace LibraryManagement.Web.Controllers
         private const int maxBook = 3;
         public IActionResult Index()
         {
-            return View();
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                TempData["email"] = Request.Cookies["email"];
+                TempData["avatar"] = Request.Cookies["avatar"];
+                TempData["name"] = Request.Cookies["name"];
+                return View();
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/loanCard/gets")]
-        public JsonResult Gets()
+        public IActionResult Gets()
         {
-            var loanCards = ApiHelper<List<LoanCardView>>.HttpGetAsync("loanCard/gets");
-            return Json(new { data = loanCards });
-        }
-        [HttpPatch]
-        public IActionResult Delete(int id)
-        {
-            var request = new StatusLoanCardReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                LoanCardId = id,
-                StatusId = 5,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var loanCards = ApiHelper<List<LoanCardView>>.HttpGetAsync("loanCard/gets");
+                return Json(new { data = loanCards });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/loanCard/get/{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
-            var loanCard = ApiHelper<LoanCardDetailView>.HttpGetAsync(@$"loanCard/get/{id}");
-            var dataBook = loanCard.bookList as List<BookView>;
-            HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataBook));
-            return Json(new { data = loanCard });
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var loanCard = ApiHelper<LoanCardDetailView>.HttpGetAsync(@$"loanCard/get/{id}");
+                var dataBook = loanCard.bookList as List<BookView>;
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataBook));
+                return Json(new { data = loanCard });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPost]
         [Route("/LoanCard/Save")]
-        public JsonResult Save([FromBody] SaveLoanCardReq request)
+        public IActionResult Save([FromBody] SaveLoanCardReq request)
         {
-            var cart = HttpContext.Session.GetString("cart");
-            var bookIds = "";
-            if(cart != null && cart.Length > 0 && request.StudentId > 0)
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                var dataCart = JsonConvert.DeserializeObject<List<BookView>>(cart);
-                for(var i = 0; i < dataCart.Count; i++)
+                var cart = HttpContext.Session.GetString("cart");
+                var bookIds = "";
+                if (cart != null && cart.Length > 0 && request.StudentId > 0)
                 {
-                    if (i == 0)
+                    var dataCart = JsonConvert.DeserializeObject<List<BookView>>(cart);
+                    for (var i = 0; i < dataCart.Count; i++)
                     {
-                        bookIds += dataCart[i].BookId;
-                        continue;
+                        if (i == 0)
+                        {
+                            bookIds += dataCart[i].BookId;
+                            continue;
+                        }
+                        bookIds += "," + dataCart[i].BookId;
                     }
-                    bookIds += "," + dataCart[i].BookId;
                 }
+                if (request.LoanCardId == 0)
+                {
+                    request.LoanOfDate = DateTime.Now;
+                    request.ReturnOfDate = DateTime.Now;
+                }
+                request.BookIds = bookIds;
+                request.CreatedBy = Request.Cookies["userId"];
+                request.ModifiedBy = Request.Cookies["userId"];
+                var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/save", "POST", request);
+                return Json(new { data = result });
             }
-            if(request.LoanCardId == 0)
+            else
             {
-                request.LoanOfDate = DateTime.Now;
-                request.ReturnOfDate = DateTime.Now;
+                return View("~/Views/Home/AccessDenied.cshtml");
             }
-            request.BookIds = bookIds;
-            request.CreatedBy = "admin";
-            request.ModifiedBy = "admin";
-            var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/save", "POST", request);
-            TempData["Message"] = result.Message;
-            return Json(new {data = result });
         }
         [HttpPatch]
         [Route("/LoanCard/ExtendLoanCard/{id}/{dayNumber}")]
-        public JsonResult ExtendLoanCard(int id, int dayNumber)
+        public IActionResult ExtendLoanCard(int id, int dayNumber)
         {
-            var request = new ExtendLoanCardReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                LoanCardId = id,
-                DayNumber = dayNumber,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/extendLoanCard", "PATCH", request);
-            return Json(new { data = result });
+                var request = new ExtendLoanCardReq()
+                {
+                    LoanCardId = id,
+                    DayNumber = dayNumber,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/extendLoanCard", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpPatch]
-        public JsonResult ChangeStatusToCompleted(int id)
+        public IActionResult ChangeStatusToCompleted(int id)
         {
-            var request = new StatusLoanCardReq()
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
             {
-                LoanCardId = id,
-                StatusId = 4,
-                ModifiedBy = "admin"
-            };
-            var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
-            return Json(new { data = result });
+                var request = new StatusLoanCardReq()
+                {
+                    LoanCardId = id,
+                    StatusId = 4,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
+        }
+
+        [HttpPatch]
+        public IActionResult Delete(int id)
+        {
+            if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
+            {
+                var request = new StatusLoanCardReq()
+                {
+                    LoanCardId = id,
+                    StatusId = 5,
+                    ModifiedBy = Request.Cookies["userId"]
+                };
+                var result = ApiHelper<SaveLoanCardRes>.HttpAsync($"loanCard/changeStatus", "PATCH", request);
+                return Json(new { data = result });
+            }
+            else
+            {
+                return View("~/Views/Home/AccessDenied.cshtml");
+            }
         }
         [HttpGet]
         [Route("/LoanCard/DataCartBook")]
-        public JsonResult DataCartBook()
+        public IActionResult DataCartBook()
         {
-            var cart = HttpContext.Session.GetString("cart");//get key cart
+            var cart = HttpContext.Session.GetString("cart");
             List<BookView> dataCart = new List<BookView>();
             if (cart != null && cart.Length != 0)
             {
@@ -118,9 +170,9 @@ namespace LibraryManagement.Web.Controllers
         }
         [HttpPost]
         [Route("/LoanCard/AddCartBook/{id}")]
-        public JsonResult AddCartBook(int id)
+        public IActionResult AddCartBook(int id)
         {
-            var cart = HttpContext.Session.GetString("cart");//get key cart
+            var cart = HttpContext.Session.GetString("cart");
             List<BookView> dataCart = new List<BookView>();
             if (id > 0)
             {

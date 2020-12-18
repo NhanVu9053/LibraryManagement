@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Interface;
+﻿using LM.BAL.Interface;
 using LM.Domain.Request.BookArchive;
-using LM.Domain.Request.Category;
-using LM.Domain.Response.BookArchive;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[ApiController]
-    public class BookArchiveController : Controller
+    [ApiController]
+    public class BookArchiveController : ControllerBase
     {
         private readonly IBookArchiveService bookArchiveService;
 
@@ -39,10 +34,11 @@ namespace LibraryManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("api/bookArchive/delete/{id}")]
-        public async Task<SaveBookArchiveRes> Delete(int id)
+        [HttpPatch("api/bookArchive/delete")]
+        public async Task<OkObjectResult> Delete(StatusBookArchiveReq request)
         {
-            return await bookArchiveService.Delete(id);
+            var result = await bookArchiveService.Delete(request);
+            return Ok(result);
         }
     }
 }

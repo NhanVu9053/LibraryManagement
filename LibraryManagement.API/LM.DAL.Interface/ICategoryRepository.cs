@@ -11,7 +11,7 @@ namespace LM.DAL.Interface
     {
         Task<CategoryView> Get(int categoryId);
         Task<IEnumerable<CategoryView>> Gets();
-        Task<SaveCategoryRes> Save(SaveCategoryReq categoryId);
-        Task<SaveCategoryRes> Delete(int categoryId);
+        Task<SaveCategoryRes> Save(SaveCategoryReq request);
+        Task<SaveCategoryRes> Delete(StatusCategoryReq request);
     }
 }

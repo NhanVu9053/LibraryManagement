@@ -127,11 +127,10 @@ namespace LM.DAL.Implement
                 parameters.Add("@Page", request.Page);
                 parameters.Add("@Description", request.Description);
                 parameters.Add("@CategoryId", request.CategoryId);
-                //parameters.Add("@StatusId", request.StatusId);
                 parameters.Add("@ImagePath", request.ImagePath);
                 parameters.Add("@Quantity", request.Quantity);
-                parameters.Add("@CreatedBy", "admin");
-                parameters.Add("@ModifiedBy", "admin");
+                parameters.Add("@CreatedBy", request.CreatedBy);
+                parameters.Add("@ModifiedBy", request.ModifiedBy);
 
                 result = await SqlMapper.QueryFirstOrDefaultAsync<SaveBookRes>(cnn: connection,
                                                                     sql: "sp_SaveBook",

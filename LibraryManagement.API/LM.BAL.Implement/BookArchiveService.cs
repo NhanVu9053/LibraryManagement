@@ -18,9 +18,9 @@ namespace LM.BAL.Implement
             this.bookArchiveRepository = bookArchiveRepository;
         }
 
-        public Task<SaveBookArchiveRes> Delete(int id)
+        public Task<SaveBookArchiveRes> Delete(StatusBookArchiveReq request)
         {
-            return bookArchiveRepository.Delete(id);
+            return bookArchiveRepository.Delete(request);
         }
 
         public async Task<BookArchiveView> Get(int bookArchiveId)
@@ -33,9 +33,9 @@ namespace LM.BAL.Implement
             return await bookArchiveRepository.Gets();
         }
 
-        public async Task<SaveBookArchiveRes> Save(SaveBookArchiveReq bookArchiveId)
+        public async Task<SaveBookArchiveRes> Save(SaveBookArchiveReq request)
         {
-            return await bookArchiveRepository.Save(bookArchiveId);
+            return await bookArchiveRepository.Save(request);
         }
     }
 }

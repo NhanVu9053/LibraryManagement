@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LibraryManagement.API.ModelDb;
+using LibraryManagement.API.Database;
 using LM.BAL.Implement;
 using LM.BAL.Interface;
 using LM.DAL.Implement;
@@ -51,6 +51,10 @@ namespace LibraryManagement.API
             services.AddScoped<IBookArchiveRepository, BookArchiveRepository>();
             services.AddScoped<IContactInfoService, ContactInfoService>();
             services.AddScoped<IContactInfoRepository, ContactInfoRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +73,7 @@ namespace LibraryManagement.API
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseRouting();
 

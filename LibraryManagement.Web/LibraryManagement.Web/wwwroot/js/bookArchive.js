@@ -35,6 +35,49 @@ bookArchive.showData = function () {
 }
 
 
+bookArchive.details = function (bookArchiveId) {
+    $('#dataModal').empty();
+    $.ajax({
+        url: `/bookArchive/get/${bookArchiveId}`,
+        method: 'GET',
+        dataType: 'JSON',
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.data.bookArchiveId > 0) {
+                $('#dataModalTitle').text('THÔNG TIN KHO SÁCH');
+                $('#dataModal').append(
+                    `<h5 class="text-info m-2 text-center">Kho sách: ${response.data.bookName}</h5>
+                    <div class="row justify-content-center col-xl-12">
+                        <div class="col-xl-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p><b>Mã Kho sách:</b> ${response.data.bookArchiveId}</p>
+                                    <p><b>Mã Sách:</b> ${response.data.bookId}</p>
+                                    <p><b>Tên sách:</b> ${response.data.bookName}</p>
+                                    <p><b>Thể loại:</b> ${response.data.categoryName}</p>
+                                    <p><b>Tổng số lượng:</b> ${response.data.quantity}</p>
+                                    <p><b>Số lượng còn:</b> ${response.data.quantityRemain}</p>
+                                    <p><b>Ngày tạo:</b> ${response.data.createdDateStr}</p>
+                                    <p><b>Người tạo:</b> ${response.data.createdByName}</p>
+                                    <p><b>Ngày cập nhật:</b> ${response.data.modifiedDateStr}</p>
+                                    <p><b>Người cập nhật:</b> ${response.data.modifiedByName}</p>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-xl-6 col-md-12 text-center">
+                                <img src="/img/${response.data.imagePath}" class="m-5 img_book_details"/>
+                            </div>
+                    </div> `
+                );
+                $('#detailsData').modal('show');
+            }
+            else {
+                bootbox.alert(`<h5 class="text-danger">Kho lưu trữ này không tồn tại !!!</h5>`)
+            }
+        }
+    });
+}
+
 bookArchive.delete = function (bookArchiveId, bookName) {
     bootbox.confirm({
         title: '<h2 class="text-danger">Thông báo</h2>',
@@ -57,7 +100,7 @@ bookArchive.delete = function (bookArchiveId, bookName) {
                     dataType: 'JSON',
                     contentType: 'application/json',
                     success: function (response) {
-                        if (response.data.categoryId > 0) {
+                        if (response.data.bookArchive > 0) {
                             bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
                                 $('#editBookArchiveModal').modal('hide');
                                 bookArchive.showData();
@@ -115,48 +158,6 @@ bookArchive.save = function () {
     }
 }
 
-bookArchive.details = function (bookArchiveId) {
-    $('#dataModal').empty();
-    $.ajax({
-        url: `/bookArchive/get/${bookArchiveId}`,
-        method: 'GET',
-        dataType: 'JSON',
-        contentType: 'application/json',
-        success: function (response) {
-            if (response.data.bookArchiveId > 0) {
-                $('#dataModalTitle').text('THÔNG TIN KHO SÁCH');
-                $('#dataModal').append(
-                    `<h5 class="text-info m-2 text-center">Kho sách: ${response.data.bookName}</h5>
-                    <div class="row justify-content-center col-xl-12">
-                        <div class="col-xl-6 col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p><b>Mã Kho sách:</b> ${response.data.bookArchiveId}</p>
-                                    <p><b>Mã Sách:</b> ${response.data.bookId}</p>
-                                    <p><b>Tên sách:</b> ${response.data.bookName}</p>
-                                    <p><b>Thể loại:</b> ${response.data.categoryName}</p>
-                                    <p><b>Tổng số lượng:</b> ${response.data.quantity}</p>
-                                    <p><b>Số lượng còn:</b> ${response.data.quantityRemain}</p>
-                                    <p><b>Ngày tạo:</b> ${response.data.createdDateStr}</p>
-                                    <p><b>Người tạo:</b> ${response.data.createdBy}</p>
-                                    <p><b>Ngày cập nhật:</b> ${response.data.modifiedDateStr}</p>
-                                    <p><b>Người cập nhật:</b> ${response.data.modifiedBy}</p>
-                                </div>
-                            </div>
-                        </div>
-                            <div class="col-xl-6 col-md-12 text-center">
-                                <img src="/img/${response.data.imagePath}" class="m-5 img_book_details"/>
-                            </div>
-                    </div> `
-                );
-                $('#detailsData').modal('show');
-            }
-            else {
-                bootbox.alert(`<h5 class="text-danger">Kho lưu trữ này không tồn tại !!!</h5>`)
-            }
-        }
-    });
-}
 
 bookArchive.resetForm = function () {
     $('#editBookArchiveModal').modal('hide');

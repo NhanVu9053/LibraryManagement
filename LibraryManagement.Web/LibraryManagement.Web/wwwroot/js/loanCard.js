@@ -90,9 +90,9 @@ loanCard.details = function (loanCardId) {
                                     <p><b>Tên học sinh: </b> ${response.data.loanCard.studentName}</p>
                                     <p><b>Lớp: </b> ${response.data.loanCard.courseName}</p>
                                     <p><b>Ngày tạo: </b> ${response.data.loanCard.createdDateStr}</p>
-                                    <p><b>Người tạo: </b> ${response.data.loanCard.createdBy}</p>
+                                    <p><b>Người tạo: </b> ${response.data.loanCard.createdByName}</p>
                                     <p><b>Ngày sửa: </b> ${response.data.loanCard.modifiedDateStr}</p>
-                                    <p><b>Người sửa: </b> ${response.data.loanCard.modifiedBy}</p>
+                                    <p><b>Người sửa: </b> ${response.data.loanCard.modifiedByName}</p>
                                     <p><b>Trạng thái: </b> ${response.data.loanCard.statusName}</p>
                                 </div>
                             </div>
@@ -126,7 +126,8 @@ loanCard.edit = function (id) {
         success: function (response) {
             $('#loanCard_id').text(response.data.loanCard.loanCardId).show();
             $('#LoanCardId').val(response.data.loanCard.loanCardId);
-            $('#editStudentId').val(response.data.loanCard.studentId);
+            $('#inputCheckStudent').hide();
+            //$('#editStudentId').val(response.data.loanCard.studentId);
             var loanOfDateStr = response.data.loanCard.loanOfDate.toString();
             $('#LoanOfDate').val(loanOfDateStr.slice(0, 10));
             var returnOfDateStr = response.data.loanCard.returnOfDate.toString();
@@ -513,6 +514,7 @@ loanCard.resetForm = function () {
 
 loanCard.openModal = function () {
     loanCard.resetForm();
+    $('#inputCheckStudent').show();
     $('#modalLoanCardTitle').text('THÊM MỚI THẺ MƯỢN');
     $('#dataInfoStudent').hide();
     $('#msgInfo').hide();

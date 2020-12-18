@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Implement;
-using LM.BAL.Interface;
+﻿using LM.BAL.Interface;
 using LM.Domain.Request.Category;
-using LM.Domain.Response.Category;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
@@ -39,10 +34,11 @@ namespace LibraryManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("api/category/Delete/{id}")]
-        public async Task<SaveCategoryRes> IsDelete(int id)
+        [HttpPatch("api/category/delete")]
+        public async Task<OkObjectResult> IsDelete(StatusCategoryReq request)
         {
-            return await categoryService.Delete(id);
+            var result = await categoryService.Delete(request);
+            return Ok(result);
         }
     }
 }

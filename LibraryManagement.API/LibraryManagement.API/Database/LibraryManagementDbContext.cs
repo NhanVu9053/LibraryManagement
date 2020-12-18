@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using LM.DAL.Implement;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibraryManagement.API.ModelDb
+namespace LibraryManagement.API.Database
 {
     public class LibraryManagementDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -13,10 +14,9 @@ namespace LibraryManagement.API.ModelDb
         {
 
         }
-        //public DbSet<Wiki> Wikis { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Ignore<Wiki>();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

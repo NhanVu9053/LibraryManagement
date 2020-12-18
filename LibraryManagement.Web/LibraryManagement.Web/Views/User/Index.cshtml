@@ -1,7 +1,246 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "User List";
+    var avatarPath = $"/img/none-avatar.png";
+    var maxDate = DateTime.Now.ToString("yyyy/MM/dd");
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="text-left">
+    <br />
+    <h3 class="display-4 text-success text-center">QUẢN LÝ TÀI KHOẢN</h3>
+    <a href="javascript:;" onclick="user.openModal()" class="btn btn-primary" style="width: auto;">+ Thêm tài khoản</a>
+    <hr />
+    <table id="tbUsers" class="table table-bordered table-hover table-primary mt-2">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Tên đăng nhập</th>
+                <th>Họ và tên</th>
+                <th>Số điện thoại</th>
+                <th>Giới tính</th>
+                <th>Chức vụ</th>
+                <th>Trạng thái</th>
+                <th>Ảnh đại diện</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="addEditUserModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title text-primary" id="modalUserTitle"></h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="fromAddEditUser">
+                    <input hidden name="UserId" id="UserId" value="" />
+                    <input hidden name="AvatarPath" id="AvatarPath" value="" />
+                    <div class="row col-xl-12">
+                        <div class="col-xl-8 col-md-12">
+                            <div class="row form-group">
+                                <label for="Email" class="col-3">Tên đăng nhập:</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" placeholder="Email"
+                                           id="Email" name="Email"
+                                           onkeyup="user.checkEmail()"
+                                           data-rule-required="true"
+                                           data-msg-required="Tên đăng nhập không được để trống"
+                                           data-rule-maxlength="50"
+                                           data-msg-maxlength="Tên đăng nhập quá dài">
+                                    <label id="msgEmail" class="error"></label>
+                                </div>
+                            </div>
+                            <div class="row form-group" id="pw">
+                                <label for="Password" class="col-3">Mật khẩu:</label>
+                                <div class="col-9">
+                                    <input type="password" class="form-control" placeholder="Mật khẩu"
+                                           onkeyup="user.checkPassword()"
+                                           id="Password" name="Password">
+                                    <label id="msgPassword" class="error"></label>
+                                </div>
+                            </div>
+                            <div class="row form-group" id="cpw">
+                                <label for="ConfirmPassword" class="col-3">Nhập lại mật khẩu:</label>
+                                <div class="col-9">
+                                    <input type="password" class="form-control" placeholder="Nhập lại mật khẩu"
+                                           onkeyup="user.checkConfirmPassword()"
+                                           id="ConfirmPassword" name="ConfirmPassword">
+                                    <label id="msgConfirmPassword" class="error"></label>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="FullName" class="col-3">Họ và tên:</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" placeholder="Họ và tên"
+                                           id="FullName" name="FullName"
+                                           data-rule-required="true"
+                                           data-msg-required="Họ và tên không được để trống"
+                                           data-rule-maxlength="100"
+                                           data-msg-maxlength="Họ và tên quá dài">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="Gender" class="col-3">Giới tính:</label>
+                                <div class="col-9">
+                                    <select class="custom-select" id="Gender" name="Gender"
+                                            data-rule-required="true"
+                                            data-msg-required="Chưa chọn giới tính">
+                                        <option selected value="">-Chọn-</option>
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="Dob" class="col-3">Ngày sinh:</label>
+                                <div class="col-9">
+                                    <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
+                                           id="Dob" name="Dob"
+                                           max="@maxDate"
+                                           data-rule-required="true"
+                                           data-msg-required="Ngày sinh không được để trống">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="HireDate" class="col-3">Ngày bắt đầu làm:</label>
+                                <div class="col-9">
+                                    <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
+                                           id="HireDate" name="HireDate"
+                                           max="@maxDate"
+                                           data-rule-required="true"
+                                           data-msg-required="Ngày bắt đầu làm không được để trống">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="RoleId" class="col-3">Chức vụ:</label>
+                                <div class="col-9">
+                                    <select class="form-control" id="Roles" name="Roles"
+                                            data-rule-required="true"
+                                            data-msg-required="Chưa chọn chức vụ">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="PhoneNumber" class="col-3">Số điện thoại:</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" placeholder="Số điện thoại"
+                                           id="PhoneNumber" name="PhoneNumber"
+                                           onkeyup="user.checkPhone()"
+                                           data-rule-required="true"
+                                           data-msg-required="Số điện thoại không được để trống">
+                                    <label id="msgPhone" class="error"></label>
+                                </div>
+                            </div>
+                            <div class="row form-group col-xs-12">
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="ProvinceId">Tỉnh/thành:</label>
+                                        <select id="Province" name="Province" class="custom-select" onchange="user.changeProvince(this.value)"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Tỉnh/thành">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="DistrictId">Quận/huyện:</label>
+                                        <select id="District" name="District" class="custom-select" onchange="user.changeDistrict(this.value)"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Quận/huyện">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="WardId">Phường/xã:</label>
+                                        <select id="Ward" name="Ward" class="custom-select"
+                                                data-rule-required="true"
+                                                data-msg-required="Chưa chọn Phường/xã">
+                                            <option selected value="">-Chọn-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="Address" class="col-3">Địa chỉ:</label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" placeholder="Địa chỉ"
+                                           id="Address" name="Address"
+                                           data-rule-required="true"
+                                           data-msg-required="Địa chỉ không được để trống"
+                                           data-rule-maxlength="100"
+                                           data-msg-maxlength="Địa chỉ quá dài">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label for="Avatar" class="col-3">Hình ảnh:</label>
+                                <div class="col-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input form-control" placeholder="Ảnh đại diện"
+                                               id="Avatar" name="Avatar">
+                                        <label class="custom-file-label" for="Avatar" id="labelFile">Chọn file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-12">
+                            <div class="m-5">
+                                <img src="@avatarPath" id="image_upload_preview" asp-append-version="true" style="width:300px; height: 300px;" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div class="col-12">
+                    <h5 class="alert alert-danger text-break text-center" id="msgResult"></h5>
+                </div>
+                <a href="javascript:;" class="btn btn-success" onclick="user.checkSave()">Lưu</a>
+                <button type="button" class="btn btn-danger" id="closeModal" data-dismiss="modal">Hủy</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_upload_preview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#Avatar").change(function () {
+            readURL(this);
+        });
+
+        $(document).ready(function () {
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        });
+    </script>
+    <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+    <script src="~/js/user.js" asp-append-version="true"></script>
+}
