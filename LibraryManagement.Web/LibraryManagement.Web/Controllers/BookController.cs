@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Web.Models.Book;
+using LibraryManagement.Web.Models.Category;
 using LibraryManagement.Web.Models.Wiki;
 using LibraryManagement.Web.Ultilities;
 using Microsoft.AspNetCore.Hosting;
@@ -190,6 +191,35 @@ namespace LibraryManagement.Web.Controllers
                 fileName = $"{Guid.NewGuid()}_{file.FileName}";
             }
             return fileName;
+        }
+
+        [HttpGet]
+        [Route("/book/topLoan")]
+        public IActionResult TopLoan()
+        {
+            var books = ApiHelper<List<BookView>>.HttpGetAsync("book/topLoan");
+            return Json(new { data = books });
+        }
+        [HttpGet]
+        [Route("/book/topNew")]
+        public IActionResult TopNew()
+        {
+            var books = ApiHelper<List<BookView>>.HttpGetAsync("book/topNew");
+            return Json(new { data = books });
+        }
+        [HttpGet]
+        [Route("/book/random")]
+        public IActionResult Random()
+        {
+            var books = ApiHelper<List<BookView>>.HttpGetAsync("book/random");
+            return Json(new { data = books });
+        }
+        [HttpGet]
+        [Route("/book/getsCategory")]
+        public IActionResult GetsCategory()
+        {
+            var categories = ApiHelper<List<CategoryView>>.HttpGetAsync("category/gets");
+            return Json(new { data = categories });
         }
         public void CreateImg(IFormFile file, string fileName)
         {
