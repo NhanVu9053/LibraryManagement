@@ -26,6 +26,7 @@ login.save = function () {
                 contentType: 'application/json',
                 data: JSON.stringify(saveObj),
                 success: function (response) {
+                  
                     if (response.data.userId != null) {
                         $('#loginUser').modal('hide');
                         bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
