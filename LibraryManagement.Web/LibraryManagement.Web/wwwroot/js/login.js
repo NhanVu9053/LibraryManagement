@@ -17,8 +17,6 @@ login.save = function () {
         var saveObj = {};
         saveObj.email = $('#EmailLogin').val();
         saveObj.password = $('#LoginPassword').val();
-        //saveObj.rememberMe = document.getElementById('RememberMe').checked;
-        //console.log(saveObj);
             $.ajax({
                 url: '/user/login',
                 method: 'POST',

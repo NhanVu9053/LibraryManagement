@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Web.Ultilities;
-using LibraryManagement.Web.Views.ContactInfo;
+using LibraryManagement.Web.Models.ContactInfo;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Web.Controllers

@@ -83,7 +83,6 @@ category.save = function () {
             contentType: 'application/json',
             data: JSON.stringify(saveObj),
             success: function (response) {
-                console.log(response.data.categoryId);
                 if (response.data.categoryId > 0) {
                     $('#addEditCategoryModal').modal('hide');
                     bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
@@ -107,7 +106,6 @@ category.edit = function (id) {
         contentType: 'application/json',
         success: function (reponse) {
             category.resetForm();
-            console.log(reponse);
             $('#CategoryId').val(reponse.data.categoryId);
             $('#CategoryName').val(reponse.data.categoryName);
             $('#modalCategoryTitle').text('CẬP NHẬT THỂ LOẠI SÁCH');

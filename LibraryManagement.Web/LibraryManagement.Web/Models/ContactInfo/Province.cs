@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibraryManagement.Web.Views.ContactInfo
+namespace LibraryManagement.Web.Models.ContactInfo
 {
     public class Province
     {

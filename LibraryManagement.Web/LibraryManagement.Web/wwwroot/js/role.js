@@ -34,7 +34,6 @@ role.edit = function (id) {
         contentType: 'application/json',
         success: function (response) {
             role.resetForm();
-            console.log(response);
             $('#RoleId').val(response.data.roleId);
             $('#RoleName').val(response.data.roleName);
             $('#modalRoleTitle').text('CẬP NHẬT ROLE');
@@ -55,7 +54,6 @@ role.save = function () {
             nameUrl = 'edit';
             nameMethod = 'PATCH';
         }
-        console.log(saveObj.roleId);
         $.ajax({
             url: `/role/${nameUrl}`,
             method: `${nameMethod}`,
