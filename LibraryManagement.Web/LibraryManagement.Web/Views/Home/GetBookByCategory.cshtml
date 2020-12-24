@@ -43,7 +43,7 @@
                 {
                     foreach (var book in Model)
                     {
-                        <div class="col-md-6 col-sm-6 col-xs-12 grid-item cat2 cat3 product_img" style="position: absolute; left: 0%; top: 0px;">
+                        <div class="col-4 col-md-6 col-sm-6 col-xs-12 grid-item cat2 cat3 product_img">
                             <div class="single-portfolio-card mb--30">
                                 <div class="portfolio-img">
                                     <a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@book.BookId">
@@ -58,8 +58,8 @@
                                     </div>
                                 </div>
                                 <div class="portfolio-title portfolio-card-title text-center">
-                                    <h3><a asp-controller="Home" asp-action="ViewProduct" asp-route-id="@book.BookId">@book.BookName</a></h3>
-                                    <span class="product__span" style="text-align: center; font-size: 1.5em; margin-left: 20px">@book.StatusName</span>
+                                    <span><a style="font-size: 2em; color: #FF4136; text-shadow: 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 3px 3px #000;">@book.StatusName</a></span>
+                                   
                                 </div>
                             </div>
                         </div>

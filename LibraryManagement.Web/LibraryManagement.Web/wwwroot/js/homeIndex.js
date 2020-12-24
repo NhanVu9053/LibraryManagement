@@ -68,7 +68,7 @@ function initTopNewBook() {
 }
 function initRandomBook() {
     $.ajax({
-        url: `/book/topNew`,
+        url: `/book/random`,
         method: 'GET',
         dataType: 'JSON',
         contentType: 'application/json',

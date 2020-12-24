@@ -252,6 +252,11 @@
     color: #FF4136;
     text-shadow: 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 3px 3px #000;
 }
+/*.category__product {
+    font-size: 4em;
+    color: #FF4136;
+    text-shadow: 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 1px 1px #FFF, 1px 3px 3px #000;
+}*/
 .product__action li {
     position: relative;
     width: 50%;

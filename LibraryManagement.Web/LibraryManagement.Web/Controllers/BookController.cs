@@ -146,6 +146,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/Book/ChangeStatusToStochking/{id}")]
         public IActionResult ChangeStatusToStochking(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
