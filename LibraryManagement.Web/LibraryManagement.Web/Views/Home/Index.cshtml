@@ -1,12 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
-    var dataBook = ViewBag.ListBook != null ? ViewBag.ListBook as List<BookView> : new List<BookView>();
-    var topLoan = ViewBag.TopLoan != null ? ViewBag.TopLoan as List<BookView> : new List<BookView>();
-    var topNew = ViewBag.TopNew != null ? ViewBag.TopNew as List<BookView> : new List<BookView>();
-    var rnd = ViewBag.Random != null ? ViewBag.Random as List<BookView> : new List<BookView>();
 }
 
 <div class="body__overlay"></div>
@@ -38,7 +32,6 @@
                                         <div class="slider__inner">
                                             <h1>Read Book <span class="text--theme">EveryDay</span></h1>
                                             <div class="slider__btn">
-                                                @*<a class="htc__btn" href="cart.html">shop now</a>*@
                                             </div>
                                         </div>
                                     </div>

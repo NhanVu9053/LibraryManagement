@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request.User
+﻿namespace LM.Domain.Request.User
 {
     public class StatusUserReq : StatusReq
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.ContactInfo
+﻿namespace LM.Domain.Response.ContactInfo
 {
     public class Province
     {

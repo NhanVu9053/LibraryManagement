@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[Authorize(Roles = "System Admin")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -21,16 +20,11 @@ namespace LibraryManagement.API.Controllers
             this.signInManager = signInManager;
             this.userService = userService;
         }
-        //[AllowAnonymous]
         [HttpPost]
         [Route("/api/user/login")]
         public async Task<OkObjectResult> Login(LoginReq request)
         {
             var result = await userService.Login(request);
-            //if(result.UserId != null)
-            //{
-            //    Response.Cookies.Append("userId", result.UserId);
-            //}
             return Ok(result);
         }
         [HttpGet("api/user/gets")]
@@ -49,8 +43,6 @@ namespace LibraryManagement.API.Controllers
         [Route("/api/user/create")]
         public async Task<OkObjectResult> Create(SaveUserReq request)
         {
-            //var currentUserId = Request.Cookies["userId"];
-            //request.ModifiedBy = currentUserId;
             var result = await userService.Create(request);
             return Ok(result);
         }
@@ -58,8 +50,6 @@ namespace LibraryManagement.API.Controllers
         [Route("/api/user/edit")]
         public async Task<OkObjectResult> Edit(SaveUserReq request)
         {
-            //var currentUserId = Request.Cookies["userId"];
-            //request.ModifiedBy = currentUserId;
             var result = await userService.Edit(request);
             return Ok(result);
         }
@@ -67,12 +57,9 @@ namespace LibraryManagement.API.Controllers
         [Route("api/user/changeStatus")]
         public async Task<OkObjectResult> ChangeStatus(StatusUserReq request)
         {
-            //var currentUserId = Request.Cookies["userId"];
-            //request.ModifiedBy = currentUserId;
             var result = await userService.ChangeStatus(request);
             return Ok(result);
         }
-        //[AllowAnonymous]
         [HttpPost]
         [Route("/api/user/logOut")]
         public async Task<OkObjectResult> Logout()

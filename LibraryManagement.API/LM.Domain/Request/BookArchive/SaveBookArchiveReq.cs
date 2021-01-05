@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request.BookArchive
+﻿namespace LM.Domain.Request.BookArchive
 {
-   public class SaveBookArchiveReq : ReqModel
+    public class SaveBookArchiveReq : ReqModel
     {
         public int BookArchiveId { get; set; }
         public int Value { get; set; }

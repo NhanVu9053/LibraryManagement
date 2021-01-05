@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request
+﻿namespace LM.Domain.Request
 {
     public class ReqModel
     {

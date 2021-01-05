@@ -1,7 +1,5 @@
 ﻿using LM.Domain.Request;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LM.Domain.Response
 {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiController]
     public class LoanCardController : ControllerBase
     {

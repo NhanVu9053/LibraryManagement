@@ -127,7 +127,6 @@ loanCard.edit = function (id) {
             $('#loanCard_id').text(response.data.loanCard.loanCardId).show();
             $('#LoanCardId').val(response.data.loanCard.loanCardId);
             $('#inputCheckStudent').hide();
-            //$('#editStudentId').val(response.data.loanCard.studentId);
             var loanOfDateStr = response.data.loanCard.loanOfDate.toString();
             $('#LoanOfDate').val(loanOfDateStr.slice(0, 10));
             var returnOfDateStr = response.data.loanCard.returnOfDate.toString();

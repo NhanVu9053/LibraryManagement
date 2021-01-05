@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Interface;
+﻿using LM.BAL.Interface;
 using LM.Domain.Request.Book;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -77,11 +72,5 @@ namespace LibraryManagement.API.Controllers
             var book = await bookService.Search(resultid);
             return Ok(book);
         }
-        //[HttpPatch]
-        //[Route("api/book/checkStatusBookIsOver")]
-        //public void CheckStatusBookIsOver(int id)
-        //{
-        //    bookService.CheckStatusBookIsOver(id);
-        //}
     }
 }

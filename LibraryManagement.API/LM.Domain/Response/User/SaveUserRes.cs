@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.User
+﻿namespace LM.Domain.Response.User
 {
     public class SaveUserRes : ResultRes
     {
@@ -10,7 +6,6 @@ namespace LM.Domain.Response.User
         public string Email { get; set; }
         public string FullName { get; set; }
         public string Avatarpath { get; set; }
-        //public string ReturnUrl { get; set; }
         public string RoleName { get; set; }
     }
 }

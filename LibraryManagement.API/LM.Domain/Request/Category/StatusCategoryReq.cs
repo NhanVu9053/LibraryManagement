@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request.Category
+﻿namespace LM.Domain.Request.Category
 {
     public class StatusCategoryReq : StatusReq
     {

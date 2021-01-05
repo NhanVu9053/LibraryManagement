@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request.LoanCard
+﻿namespace LM.Domain.Request.LoanCard
 {
     public class StatusLoanCardReq : StatusReq
     {

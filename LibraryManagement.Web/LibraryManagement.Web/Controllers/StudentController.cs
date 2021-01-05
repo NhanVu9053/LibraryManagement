@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using LibraryManagement.Web.Models.Student;
+﻿using LibraryManagement.Web.Models.Student;
 using LibraryManagement.Web.Models.Wiki;
 using LibraryManagement.Web.Ultilities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace LibraryManagement.Web.Controllers
 {
-    //[Authorize(Roles = "System Admin")]
     public class StudentController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;

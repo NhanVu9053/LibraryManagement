@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.LoanCard
+﻿namespace LM.Domain.Response.LoanCard
 {
     public class SaveLoanCardRes
     {

@@ -4,9 +4,6 @@
 @{
     ViewData["Title"] = "Search";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var dataCategory = ViewBag.ListCategory != null ? ViewBag.ListCategory as List<CategoryView> : new List<CategoryView>();
-    var dataBook = ViewBag.ListBook != null ? ViewBag.ListBook as List<BookView> : new List<BookView>();
-    var id = ViewBag.CategoryId;
     var search = ViewBag.search;
 }
 
@@ -16,11 +13,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="bradcaump__inner text-center">
-                        @*<h2 class="bradcaump-title">@ctName</h2>*@
                         <nav class="bradcaump-inner">
-                            @*<a class="breadcrumb-item" href="index.html">Home</a>
-                                <span class="brd-separetor">/</span>
-                                <span class="breadcrumb-item active">portfolio card 2 column</span>*@
                         </nav>
                     </div>
                 </div>
@@ -44,10 +37,9 @@
 
                                     <img src="~/img/@book.ImagePath">
                                 </a>
-                                <div @*class="portfolio-icon"*@>
+                                <div>
 
                                     <a class="img-poppu" href="~/img/03db34cb-abfe-49f3-9e6a-2f8f8b204ba6_book2.png">
-                                        @*<i class="zmdi zmdi-instagram"></i>*@
                                     </a>
                                 </div>
                             </div>
