@@ -36,7 +36,7 @@ loanCard.showData = function () {
                             <td>${v.books}</td>
                             <td class="text-center">
                                 <span class="${(v.statusId == 1? "btn btn-primary": (v.statusId == 2? "btn btn-warning" : (v.statusId == 3? "btn btn-danger" : (v.statusId == 3? "btn btn-success" : "btn btn-info"))))}"
-                                      style="width: 100px; height: 40px;">
+                                      style="width: 110px; height: 40px;">
                                     ${v.statusName}
                                 </span>
                             </td>
@@ -430,7 +430,7 @@ loanCard.changeStatusToCompleted = function (id) {
                 label: '<i class="fa fa-check"></i> Có'
             }
         },
-        callback: function (result) {
+        callback: function (result) {           
             if (result) {
                 $.ajax({
                     url: `/LoanCard/ChangeStatusToCompleted/${id}`,

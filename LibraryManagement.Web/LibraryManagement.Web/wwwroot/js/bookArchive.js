@@ -201,7 +201,9 @@ bookArchive.drawDataTable = function () {
                 },
                 {
                     "targets": 2,
-                    "orderable": false
+                    "orderable": false,
+                    "width" :"45%"
+
                 },
                 {
                     "targets": 5,

@@ -32,7 +32,7 @@ book.showData = function () {
                         <td>${v.categoryName}</td>
                         <td>${v.dopStr}</td>
                         <td class="text-center">
-                            <span class="${(v.statusId == 1? 'btn btn-primary': (v.statusId == 2? 'btn btn-danger' : (v.statusId == 3? 'btn btn-warning' : 'btn btn-info')))}" style="width: 100px; height: 40px;">
+                            <span class="${(v.statusId == 1? 'btn btn-primary': (v.statusId == 2? 'btn btn-danger' : (v.statusId == 3? 'btn btn-warning' : 'btn btn-info')))}" style="width: 110px; height: 40px;">
                                ${v.statusName}
                             </span>
                         </td>

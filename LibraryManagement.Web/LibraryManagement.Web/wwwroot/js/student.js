@@ -35,7 +35,7 @@ student.showData = function () {
                         <td>${v.phoneNumber}</td>
                         <td>${v.email}</td>
                         <td class="text-center">
-                            <span class="${(v.statusId == 1 ? "btn btn-primary" : (v.statusId == 2 ? "btn btn-success" : (v.statusId == 3? "btn btn-danger" : "btn btn-info")))}" style="width: 100px; height: 40px;">
+                            <span class="${(v.statusId == 1 ? "btn btn-primary" : (v.statusId == 2 ? "btn btn-success" : (v.statusId == 3? "btn btn-danger" : "btn btn-info")))}" style="width: 115px; height: 40px;">
                                 ${v.statusName}
                             </span>
                         </td>

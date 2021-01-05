@@ -33,7 +33,7 @@ user.showData = function () {
                         <td>${(v.gender == true ? "Nam" : "Nữ")}</td>
                         <td>${v.roleName}</td>
                         <td class="text-center">
-                            <span class="${(v.statusId == 1 ? "btn btn-primary" : (v.statusId == 2 ? "btn btn-warning" : "btn btn-info"))}" style="width: 100px; height: 40px;">
+                            <span class="${(v.statusId == 1 ? "btn btn-primary" : (v.statusId == 2 ? "btn btn-warning" : "btn btn-info"))}" style="width: 115px; height: 40px;">
                                 ${v.statusName}
                             </span>
                         </td>

@@ -117,6 +117,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/LoanCard/ChangeStatusToCompleted/{id}")]
         public IActionResult ChangeStatusToCompleted(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
