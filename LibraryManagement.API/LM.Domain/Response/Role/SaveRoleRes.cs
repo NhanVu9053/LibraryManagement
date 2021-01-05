@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.Role
+﻿namespace LM.Domain.Response.Role
 {
     public class SaveRoleRes
     {

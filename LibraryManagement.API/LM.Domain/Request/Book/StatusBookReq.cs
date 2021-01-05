@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Request.Book
+﻿namespace LM.Domain.Request.Book
 {
     public class StatusBookReq : StatusReq
     {

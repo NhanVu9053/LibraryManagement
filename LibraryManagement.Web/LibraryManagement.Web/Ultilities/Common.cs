@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LibraryManagement.Web.Ultilities
+﻿namespace LibraryManagement.Web.Ultilities
 {
     public static class Common
     {

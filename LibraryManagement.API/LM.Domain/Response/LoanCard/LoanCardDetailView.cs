@@ -1,7 +1,5 @@
 ﻿using LM.Domain.Response.Book;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LM.Domain.Response.LoanCard
 {

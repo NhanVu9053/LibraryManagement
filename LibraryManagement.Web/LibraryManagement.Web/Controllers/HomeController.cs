@@ -3,10 +3,8 @@ using LibraryManagement.Web.Models.Book;
 using LibraryManagement.Web.Models.Category;
 using LibraryManagement.Web.Ultilities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using X.PagedList;
 
 namespace LibraryManagement.Web.Controllers

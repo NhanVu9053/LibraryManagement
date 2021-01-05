@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.BookArchive
+﻿namespace LM.Domain.Response.BookArchive
 {
-   public class BookArchiveView : ResView
+    public class BookArchiveView : ResView
     {
         public int BookArchiveId { get; set; }
         public int BookId { get; set; }

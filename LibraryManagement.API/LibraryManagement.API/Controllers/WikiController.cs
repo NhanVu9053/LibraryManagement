@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Interface;
+﻿using LM.BAL.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
-{   
+{
     [ApiController]
     public class WikiController : ControllerBase
     {

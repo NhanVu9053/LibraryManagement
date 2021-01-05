@@ -2,9 +2,7 @@
 using LM.DAL.Interface;
 using LM.Domain.Request.Book;
 using LM.Domain.Response.Book;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LM.BAL.Implement
@@ -21,11 +19,6 @@ namespace LM.BAL.Implement
         {
             return await bookRepository.ChangeStatus(request);
         }
-
-        //public void CheckStatusBookIsOver(int id)
-        //{
-        //    bookRepository.CheckStatusBookIsOver(id);
-        //}
 
         public async Task<BookView> Get(int id)
         {

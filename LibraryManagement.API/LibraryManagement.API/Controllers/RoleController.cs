@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Interface;
+﻿using LM.BAL.Interface;
 using LM.Domain.Request.Role;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[Authorize(Roles = "System Admin")]
     [ApiController]
     public class RoleController : ControllerBase
     {

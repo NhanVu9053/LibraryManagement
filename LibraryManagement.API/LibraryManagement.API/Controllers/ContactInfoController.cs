@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LM.BAL.Interface;
-using Microsoft.AspNetCore.Http;
+﻿using LM.BAL.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiController]
     public class ContactInfoController : ControllerBase
     {

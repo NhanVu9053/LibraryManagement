@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.Wiki
+﻿namespace LM.Domain.Response.Wiki
 {
     public class Status
     {

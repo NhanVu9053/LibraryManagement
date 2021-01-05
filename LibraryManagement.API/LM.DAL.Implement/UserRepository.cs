@@ -1,17 +1,12 @@
-﻿using LM.DAL.Interface;
+﻿using Dapper;
+using LM.DAL.Interface;
 using LM.Domain.Request.User;
 using LM.Domain.Response.User;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
-using System.Threading;
-using Dapper;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace LM.DAL.Implement
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LM.Domain.Response.Book
+﻿namespace LM.Domain.Response.Book
 {
     public class SaveBookRes
     {

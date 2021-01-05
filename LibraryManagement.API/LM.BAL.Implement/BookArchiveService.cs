@@ -2,14 +2,12 @@
 using LM.DAL.Interface;
 using LM.Domain.Request.BookArchive;
 using LM.Domain.Response.BookArchive;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LM.BAL.Implement
 {
-   public class BookArchiveService : IBookArchiveService
+    public class BookArchiveService : IBookArchiveService
     {
         private readonly IBookArchiveRepository bookArchiveRepository;
 
