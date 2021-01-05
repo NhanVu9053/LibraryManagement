@@ -252,7 +252,6 @@ loanCard.addBook = function () {
 }
 
 loanCard.deleteBook = function (id) {
-    console.log(id);
     if (id > 0) {
         $.ajax({
             url: `/LoanCard/DeleteCartBook/${id}`,
@@ -260,7 +259,6 @@ loanCard.deleteBook = function (id) {
             dataType: 'JSON',
             contentType: 'application/json',
             success: function (response) {
-                console.log(response);
                 if (response) {
                     loanCard.drawData();
                 }
@@ -281,7 +279,6 @@ loanCard.drawData = function () {
         dataType: 'JSON',
         contentType: 'application/json',
         success: function (response) {
-            console.log(response);
             $('#msgdataBook').hide();
             if (response.data != null) {
                 $('#listBooks').empty();
@@ -324,7 +321,6 @@ loanCard.checkStudent = function () {
             dataType: 'JSON',
             contentType: 'application/json',
             success: function (response) {
-                console.log(response.data);
                 if (response.data != null) {
                     $('#msgInfo').hide();
                     $('#dataInfoStudent').show();

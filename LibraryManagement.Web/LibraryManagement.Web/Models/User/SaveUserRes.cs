@@ -11,7 +11,6 @@ namespace LibraryManagement.Web.Models.User
         public string Email { get; set; }
         public string FullName { get; set; }
         public string Avatarpath { get; set; }
-        //public string ReturnUrl { get; set; }
         public string Message { get; set; }
         public string RoleName { get; set; }
     }

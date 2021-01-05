@@ -62,7 +62,6 @@ user.details = function (userId) {
         dataType: 'JSON',
         contentType: 'application/json',
         success: function (response) {
-            console.log(response.data);
             if (response.data.userId != null) {
                 $('#dataModalTitle').text('THÔNG TIN TÀI KHOẢN');
                 $('#dataModal').append(
@@ -279,7 +278,6 @@ user.save = function () {
         }
         formData.append("avatarPath", $('#AvatarPath').val());
         formData.append('avatar', $('#Avatar')[0].files[0]);
-        console.log(formData);
         var userId = $('#UserId').val();
         var nameUrl = 'create';
         var nameMethod = 'POST';
