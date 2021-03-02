@@ -18,6 +18,7 @@ namespace LibraryManagement.Web.Controllers
         {
             this.webHostEnvironment = webHostEnvironment;
         }
+        
         public IActionResult Index()
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -123,6 +124,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/student/changeStatusToBlocked/{id}")]
         public IActionResult ChangeStatusToBlocked(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

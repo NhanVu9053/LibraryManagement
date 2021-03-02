@@ -88,8 +88,8 @@ student.details = function (studentId) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-6 col-md-12">
-                            <img src="/img/${response.data.avatarPath}" class="m-2" style="width: 400px; height: 450px;" />
+                        <div class="col-xl-6 col-md-12 text-center">
+                            <img src="/img/${response.data.avatarPath}" class="m-2" style="width: 300px; height: 400px;" />
                         </div>
                     </div>`
                 );
@@ -421,7 +421,8 @@ student.drawDataTable = function () {
                 {
                     "targets": 7,
                     "orderable": false,
-                    "searchable": false
+                    "searchable": false,
+                    "width": "10%"
                 },
                 {
                     "targets": 8,

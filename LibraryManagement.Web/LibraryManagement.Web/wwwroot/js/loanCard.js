@@ -69,7 +69,7 @@ loanCard.details = function (loanCardId) {
                                     <div class="col-sm-6 text-break">
                                         <br />
                                         <p><b>Tên sách:</b> ${v.bookName}</p>
-                                        <p><b>Tác giả:</b>${v.author}</p>
+                                        <p><b>Tác giả:</b> ${v.author}</p>
                                         <p><b>Thể loại:</b> ${v.categoryName}</p>
                                     </div>
                                     <div class="col-sm-6 text-break text-center">
@@ -82,17 +82,28 @@ loanCard.details = function (loanCardId) {
                     `<div class="row justify-content-center col-xl-12">
                         <div class="col-xl-6 col-md-12">
                             <div class="card">
-                                <div class="card-body text-break">
+                                <div class="card-body">
+ <div class="row col-12">
+ <div class="col-8 text-break">
                                     <p><b>Mã ID: </b> ${response.data.loanCard.loanCardId}</p>
                                     <p><b>Ngày mượn: </b> ${response.data.loanCard.loanOfDateStr}</p>
                                     <p><b>Ngày trả: </b> ${response.data.loanCard.returnOfDateStr}</p>
                                     <p><b>Mã học sinh: </b> ${response.data.loanCard.studentId}</p>
                                     <p><b>Tên học sinh: </b> ${response.data.loanCard.studentName}</p>
                                     <p><b>Lớp: </b> ${response.data.loanCard.courseName}</p>
+ </div>
+ <div class="col-4">
+                                    <div class="text-center">
+                                        <img src="/img/${response.data.loanCard.avatarPath}" class="m-2" style="width: 120px; height: 150px; border: 4px solid orange;" />
+                                    </div>
+ </div>
+ </div>
+ <hr/>
+
                                     <p><b>Ngày tạo: </b> ${response.data.loanCard.createdDateStr}</p>
                                     <p><b>Người tạo: </b> ${response.data.loanCard.createdByName}</p>
-                                    <p><b>Ngày sửa: </b> ${response.data.loanCard.modifiedDateStr}</p>
-                                    <p><b>Người sửa: </b> ${response.data.loanCard.modifiedByName}</p>
+                                    <p><b>Ngày cập nhật: </b> ${response.data.loanCard.modifiedDateStr}</p>
+                                    <p><b>Người cập nhật: </b> ${response.data.loanCard.modifiedByName}</p>
                                     <p><b>Trạng thái: </b> ${response.data.loanCard.statusName}</p>
                                 </div>
                             </div>

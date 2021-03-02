@@ -38,7 +38,7 @@ user.showData = function () {
                             </span>
                         </td>
                         <td class="text-center">
-                            <img src="/img/${v.avatarPath}" style="width: 60px; height: 60px;" />
+                            <img src="/img/${v.avatarPath}" style="width: 55px; height: 60px;" />
                         </td>
                         <td>
                             <a href="javascript:void(0)"  onclick="user.details('${v.userId}')" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
@@ -88,7 +88,7 @@ user.details = function (userId) {
                             </div>
                         </div>
                         <div class="col-xl-6 col-md-12 text-center">
-                            <img src="/img/${response.data.avatarPath}" class="m-2" style="width: 400px; height: 400px;" />
+                            <img src="/img/${response.data.avatarPath}" class="m-2" style="width: 300px; height: 400px;" />
                         </div>
                     </div>`
                 );
@@ -549,7 +549,8 @@ user.drawDataTable = function () {
                 {
                     "targets": 7,
                     "orderable": false,
-                    "searchable": false
+                    "searchable": false,
+                    "width": "12%"
                 }
             ]
         }

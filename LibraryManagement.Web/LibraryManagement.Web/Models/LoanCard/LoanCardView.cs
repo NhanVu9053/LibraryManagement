@@ -13,5 +13,6 @@ namespace LibraryManagement.Web.Models.LoanCard
         public string StudentName { get; set; }
         public string CourseName { get; set; }
         public int Books { get; set; }
+        public string AvatarPath { get; set; }
     }
 }

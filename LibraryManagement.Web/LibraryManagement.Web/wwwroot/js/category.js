@@ -156,7 +156,8 @@ category.drawDataTable = function () {
                     {
                         "targets": 2,
                         "orderable": false,
-                        "searchable": false
+                        "searchable": false,
+                        "width": "14%"
                     },
                     {
                         "targets": 3,

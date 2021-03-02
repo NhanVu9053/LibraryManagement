@@ -37,7 +37,7 @@ book.showData = function () {
                             </span>
                         </td>
                         <td class="text-center">
-                            <img src="/img/${v.imagePath}" style="width: 60px; height: 70px;" />
+                            <img src="/img/${v.imagePath}" style="width: 60px; height: 80px;" />
                         </td>
                         <td>
                             <a href="javascript:;" onclick="book.details(${v.bookId})" class="text-primary ml-2" title="Chi tiết"><i class="fas fa-eye"></i></a>
@@ -88,7 +88,7 @@ book.details = function (bookId) {
                             </div>
                         </div>
                             <div class="col-xl-6 col-md-12 text-center">
-                                <img src="/img/${response.data.imagePath}" class="m-2" style="width: 400px; height: 450px;"/>
+                                <img src="/img/${response.data.imagePath}" class="m-2" style="width: 375px; height: 500px;"/>
                             </div>
                     </div> `
                 );
