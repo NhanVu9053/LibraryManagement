@@ -57,7 +57,7 @@ BEGIN
 		SET @BookId = (SELECT TOP(1) BookId FROM @tbBook_Quantity)
 		SET @Quantity = (SELECT TOP(1) Quantity FROM @tbBook_Quantity)
 
-		--Code UPDATE vô các bảng OrderDetails dựa vào @BookId và @Quantity
+		--Code UPDATE vô các bảng OrderDetails dựa vào @BookId và @Quantity, @OrderId
 
 		DELETE FROM @tbBook_Quantity WHERE BookId = @BookId
 	END
