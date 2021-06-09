@@ -1,5 +1,6 @@
 ﻿using LM.BAL.Interface;
 using LM.Domain.Request.Book;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace LibraryManagement.API.Controllers
         {
             this.bookService = bookService;
         }
+        [Authorize]
         [HttpGet("api/book/gets")]
         public async Task<OkObjectResult> Gets()
         {

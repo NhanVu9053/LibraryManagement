@@ -24,14 +24,27 @@ login.save = function () {
                 contentType: 'application/json',
                 data: JSON.stringify(saveObj),
                 success: function (response) {
-                  
+                    debugger;
                     if (response.data.userId != null) {
+                        console.log(response);
+                        localStorage.setItem("token", response.data.token);
+                        console.log(localStorage.getItem("token"));
                         $('#loginUser').modal('hide');
                         bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
                             if (response.data.roleName == 'System Admin') {
-                                window.location.href = "/User/Index";
+
+                                console.log(response);
+                                localStorage.setItem("token", response.data.token);
+                                console.log(localStorage.getItem("token"));
+
+                                //window.location.href = "/User/Index";
                             } else {
-                                window.location.href = "/LoanCard/Index";
+
+                                console.log(response);
+                                localStorage.setItem("token", response.data.token);
+                                console.log(localStorage.getItem("token"));
+
+                                //window.location.href = "/LoanCard/Index";
                             }
                         });
                     }

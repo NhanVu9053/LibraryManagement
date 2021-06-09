@@ -1,9 +1,31 @@
 ﻿var student = {} || student;
 var table = $('#tbStudents').DataTable();
 
+student.checkDob = function () {
+    var yearNow = (new Date()).getFullYear();
+    var dobStr = $('#Dob').val();
+    var dobArr = dobStr.split('-');
+    if (yearNow - parseInt(dobArr[0]) < 4) {
+        $('#msgDob').text('Tuổi của học sinh không nhỏ hơn 5');
+        $('#msgDob').show();
+    } else if (yearNow - parseInt(dobArr[0]) > 20) {
+        $('#msgDob').text('Tuổi của học sinh không nhỏ hơn 20');
+        $('#msgDob').show();
+    } else {
+        $('#msgDob').empty();
+        $('#msgDob').hide();
+    }
+}
+
 student.showData = function () {
+    debugger;
+    console.log("token");
+    console.log(localStorage.getItem("token"));
     $.ajax({
         url: '/student/gets',
+        //headers: {
+        //    'authorization': `Bearer ${localStorage.getItem("token")}`
+        //},
         method: 'GET',
         dataType: 'JSON',
         success: function (response) {

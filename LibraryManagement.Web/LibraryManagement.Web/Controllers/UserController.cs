@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.Web.Models.User;
 using LibraryManagement.Web.Ultilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,17 +65,17 @@ namespace LibraryManagement.Web.Controllers
         public IActionResult Login([FromBody] LoginReq request)
         {
             var result = ApiHelper<SaveUserRes>.HttpAsync($"user/login", "POST", request);
-            if(result.Email != null)
+            if (result.Email != null)
             {
                 Response.Cookies.Append("email", result.Email);
                 Response.Cookies.Append("avatar", result.Avatarpath);
                 Response.Cookies.Append("userId", result.UserId);
                 Response.Cookies.Append("name", result.FullName);
                 Response.Cookies.Append("roleName", result.RoleName);
+                //Response.Cookies.Append("token", result.Token);
             }
             return Json(new { data = result });
         }
-
         [HttpPost]
         [Route("/user/logOut")]
         public IActionResult LogOut()
@@ -85,8 +86,37 @@ namespace LibraryManagement.Web.Controllers
             Response.Cookies.Delete("userId");
             Response.Cookies.Delete("name");
             Response.Cookies.Delete("roleName");
+            Response.Cookies.Delete("token");
             return Json(new { data = result });
         }
+        //[HttpPost]
+        //[Route("/user/login")]
+        //public IActionResult Login([FromBody] LoginReq request)
+        //{
+        //    var result = ApiHelper<SaveUserRes>.HttpAsync($"user/login", "POST", request);
+        //    if(result.Email != null)
+        //    {
+        //        Response.Cookies.Append("email", result.Email);
+        //        Response.Cookies.Append("avatar", result.Avatarpath);
+        //        Response.Cookies.Append("userId", result.UserId);
+        //        Response.Cookies.Append("name", result.FullName);
+        //        Response.Cookies.Append("roleName", result.RoleName);
+        //    }
+        //    return Json(new { data = result });
+        //}
+
+        //[HttpPost]
+        //[Route("/user/logOut")]
+        //public IActionResult LogOut()
+        //{
+        //    var result = ApiHelper<LogOutRes>.HttpPostAsync("user/logOut");
+        //    Response.Cookies.Delete("email");
+        //    Response.Cookies.Delete("avatar");
+        //    Response.Cookies.Delete("userId");
+        //    Response.Cookies.Delete("name");
+        //    Response.Cookies.Delete("roleName");
+        //    return Json(new { data = result });
+        //}
         [HttpPost]
         [Route("/user/create")]
         public IActionResult Create([FromForm] SaveUserReq request)

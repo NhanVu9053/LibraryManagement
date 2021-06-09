@@ -3,6 +3,7 @@ using LM.BAL.Implement;
 using LM.BAL.Interface;
 using LM.DAL.Implement;
 using LM.DAL.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LibraryManagement.API
 {
@@ -26,6 +29,22 @@ namespace LibraryManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<LibraryManagementDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<LibraryManagementDbContext>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
             services.AddSwaggerGen();
 
             services.AddScoped<IBookService, BookService>();
@@ -34,11 +53,6 @@ namespace LibraryManagement.API
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ILoanCardService, LoanCardService>();
             services.AddScoped<ILoanCardRepository, LoanCardRepository>();
-
-
-            services.AddDbContext<LibraryManagementDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<LibraryManagementDbContext>();
             services.AddScoped<IWikiService, WikiService>();
             services.AddScoped<IWikiRepository, WikiRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
@@ -69,10 +83,10 @@ namespace LibraryManagement.API
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
-            app.UseAuthentication();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

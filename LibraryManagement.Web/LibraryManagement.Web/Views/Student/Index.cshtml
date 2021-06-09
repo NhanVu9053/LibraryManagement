@@ -2,6 +2,7 @@
     ViewData["Title"] = "Student List";
     var avatarPath = $"/img/none-avatar.png";
     var maxDate = DateTime.Now.ToString("yyyy/MM/dd");
+    var minDate = new DateTime(1990, 01, 01);
 }
 
 <div class="text-left">
@@ -85,9 +86,12 @@
                                 <div class="col-9">
                                     <input type="date" class="form-control" my-date-format="dd/MM/yyyy"
                                            id="Dob" name="Dob"
-                                           max="@maxDate"
+                                           @*max="@maxDate"
+                                           min="@minDate"*@
+                                           onkeyup="student.checkDob()"
                                            data-rule-required="true"
                                            data-msg-required="Ngày sinh không được để trống">
+                                    <label id="msgDob" class="error"></label>
                                 </div>
                             </div>
                             <div class="row form-group">

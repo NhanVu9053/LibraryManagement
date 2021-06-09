@@ -8,5 +8,6 @@
         public string Avatarpath { get; set; }
         public string Message { get; set; }
         public string RoleName { get; set; }
+        public string Token { get; set; }
     }
 }

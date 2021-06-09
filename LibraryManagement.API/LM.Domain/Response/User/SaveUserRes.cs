@@ -7,5 +7,7 @@
         public string FullName { get; set; }
         public string Avatarpath { get; set; }
         public string RoleName { get; set; }
+        //
+        public string Token { get; set; }
     }
 }

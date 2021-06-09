@@ -2,6 +2,7 @@
 using LM.DAL.Implement;
 using LM.Domain.Request.User;
 using LM.Domain.Response.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,12 +13,15 @@ namespace LibraryManagement.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IUserService userService;
 
         public UserController(SignInManager<ApplicationUser> signInManager,
+                                UserManager<ApplicationUser> userManager,
                                  IUserService userService)
         {
             this.signInManager = signInManager;
+            this.userManager = userManager;
             this.userService = userService;
         }
         [HttpPost]
@@ -27,6 +31,7 @@ namespace LibraryManagement.API.Controllers
             var result = await userService.Login(request);
             return Ok(result);
         }
+        //[Authorize(Roles ="System Admin")]
         [HttpGet("api/user/gets")]
         public async Task<OkObjectResult> Gets()
         {
@@ -70,6 +75,13 @@ namespace LibraryManagement.API.Controllers
             {
                 IsSuccess = true
             };
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("/api/user/getUserSignIn")]
+        public async Task<OkObjectResult> GetUserSignIn()
+        {
+            var result =  await userManager.GetUserAsync(HttpContext.User);
             return Ok(result);
         }
     }

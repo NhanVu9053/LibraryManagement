@@ -1,10 +1,12 @@
 ﻿using LM.BAL.Interface;
 using LM.Domain.Request.Student;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace LibraryManagement.API.Controllers
 {
+    //[Authorize]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -14,6 +16,7 @@ namespace LibraryManagement.API.Controllers
         {
             this.studentService = studentService;
         }
+        //[Authorize(Roles = "Thủ thư")]
         [HttpGet("api/student/gets")]
         public async Task<OkObjectResult> Gets()
         {

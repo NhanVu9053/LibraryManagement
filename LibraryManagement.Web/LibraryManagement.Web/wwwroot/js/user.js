@@ -2,8 +2,15 @@
 var table = $('#tbUsers').DataTable();
 
 user.showData = function () {
+    debugger;
+    console.log("token");
+    console.log(localStorage.getItem("token"));
     $.ajax({
         url: '/user/gets',
+        //headers: {
+        //    //Authorization: 'Bearer ' + localStorage.getItem("token")
+        //    'authorization': `Bearer ${localStorage.getItem("token")}`
+        //},
         method: 'GET',
         dataType: 'JSON',
         success: function (response) {
