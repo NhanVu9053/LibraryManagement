@@ -1,5 +1,6 @@
 ﻿var loanCard = {} || loanCard;
 var table = $('#tbLoanCard').DataTable();
+var pageCurrent = 0;
 
 loanCard.showData = function () {
     $.ajax({
@@ -10,7 +11,7 @@ loanCard.showData = function () {
             table.clear().destroy();
             $('#tbLoanCard>tbody').empty();
             $.each(response.data, function (i, v) {
-                if (v.statusName != 'Deleted') {
+                if (v.statusId != 5) {
                     var actions = "";
                     switch (v.statusId) {
                         case 4:
@@ -36,7 +37,7 @@ loanCard.showData = function () {
                             <td>${v.books}</td>
                             <td class="text-center">
                                 <span class="${(v.statusId == 1? "btn btn-primary": (v.statusId == 2? "btn btn-warning" : (v.statusId == 3? "btn btn-danger" : (v.statusId == 3? "btn btn-success" : "btn btn-info"))))}"
-                                      style="width: 110px; height: 40px;">
+                                      style="width: 120px; height: 40px;">
                                     ${v.statusName}
                                 </span>
                             </td>
@@ -142,6 +143,7 @@ loanCard.edit = function (id) {
 }
 
 loanCard.save = function () {
+    pageCurrent = table.page.info().page;
     var loanCardId = parseInt($('#loanCard_id').text())
     var studentId = parseInt($('#StudentId').text());
     var checkDataBook = $('#listBooks').is(':empty');
@@ -153,7 +155,7 @@ loanCard.save = function () {
             saveObj.loanOfDate = $('#LoanOfDate').val();
             saveObj.returnOfDate = $('#ReturnOfDate').val();
             $.ajax({
-                url: '/LoanCard/Save',
+                url: '/loanCard/save',
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify(saveObj),
@@ -175,7 +177,7 @@ loanCard.save = function () {
         if (studentId > 0 && !checkDataBook) {
             saveObj.studentId = parseInt($('#StudentId').text());
             $.ajax({
-                url: `/LoanCard/Save`,
+                url: `/loanCard/save`,
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify(saveObj),
@@ -210,7 +212,7 @@ loanCard.addBook = function () {
     var bookId = parseInt($('#checkBookId').val());
     if (bookId > 0) {
         $.ajax({
-            url: `/LoanCard/AddCartBook/${bookId}`,
+            url: `/loanCard/addCartBook/${bookId}`,
             method: 'POST',
             dataType: 'JSON',
             contentType: 'application/json',
@@ -253,7 +255,7 @@ loanCard.addBook = function () {
 loanCard.deleteBook = function (id) {
     if (id > 0) {
         $.ajax({
-            url: `/LoanCard/DeleteCartBook/${id}`,
+            url: `/loanCard/deleteCartBook/${id}`,
             method: 'PATCH',
             dataType: 'JSON',
             contentType: 'application/json',
@@ -273,7 +275,7 @@ loanCard.deleteBook = function (id) {
 loanCard.drawData = function () {
     $('#msgResult').hide();
     $.ajax({
-        url: '/LoanCard/DataCartBook',
+        url: '/loanCard/dataCartBook',
         method: 'GET',
         dataType: 'JSON',
         contentType: 'application/json',
@@ -333,6 +335,13 @@ loanCard.checkStudent = function () {
                     $('#Email').text(response.data.email);
                     $('#Address').text(response.data.addressStr);
                     $('#StatusName').text(response.data.statusName);
+                    if (response.data.statusId == 1) {
+                        $('#StatusName').removeClass('text-danger font-weight-bold');
+                        $('#StatusName').addClass('text-primary font-weight-bold');
+                    } else {
+                        $('#StatusName').removeClass('text-primary font-weight-bold');
+                        $('#StatusName').addClass('text-danger font-weight-bold');
+                    }
                     $('#imgStudent').attr('src', `/img/${response.data.avatarPath}`);
                 }
                 else {
@@ -367,6 +376,13 @@ loanCard.checkBook = function () {
                     $('#Author').text(response.data.author);
                     $('#DopStr').text(response.data.dopStr);
                     $('#StatusNameBook').text(response.data.statusName);
+                    if (response.data.statusId == 1) {
+                        $('#StatusNameBook').removeClass('text-danger font-weight-bold');
+                        $('#StatusNameBook').addClass('text-primary font-weight-bold');
+                    } else {
+                        $('#StatusNameBook').removeClass('text-primary font-weight-bold');
+                        $('#StatusNameBook').addClass('text-danger font-weight-bold');
+                    }
                     $('#ImgBook').attr('src', `/img/${response.data.imagePath}`);
                     $('#dataImg').show();
                 }
@@ -382,6 +398,7 @@ loanCard.checkBook = function () {
     }
 }
 loanCard.delete = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn xóa <b class="text-primary">Thẻ mượn</b> có <b class="text-success">ID: ${id}</b> này không?`,
@@ -398,7 +415,7 @@ loanCard.delete = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/LoanCard/Delete/${id}`,
+                    url: `/loanCard/delete/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -418,6 +435,7 @@ loanCard.delete = function (id) {
 }
 
 loanCard.changeStatusToCompleted = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn chuyển chuyển trạng thái <b class="text-primary">Hoàn thành</b> Thẻ mượn có <b class="text-success">ID: ${id}</b>?`,
@@ -432,7 +450,7 @@ loanCard.changeStatusToCompleted = function (id) {
         callback: function (result) {           
             if (result) {
                 $.ajax({
-                    url: `/LoanCard/ChangeStatusToCompleted/${id}`,
+                    url: `/loanCard/changeStatusToCompleted/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -452,6 +470,7 @@ loanCard.changeStatusToCompleted = function (id) {
 }
 
 loanCard.extendLoanCard = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.prompt({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn muốn gia hạn <b class='text-primary'>Thẻ mượn</b> có <b class='text-success'>ID: ${id}</b> thêm bao nhiêu ngày? <br>`,
@@ -467,7 +486,7 @@ loanCard.extendLoanCard = function (id) {
         callback: function (result) {
             if (result > 0) {
                 $.ajax({
-                    url: `/LoanCard/ExtendLoanCard/${id}/${result}`,
+                    url: `/loanCard/extendLoanCard/${id}/${result}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -498,7 +517,7 @@ loanCard.resetForm = function () {
     $('#fromEditLoanCard').validate().resetForm();
     $('#fromEditLoanCard').hide();
     $.ajax({
-        url: '/LoanCard/ResetCartBook',
+        url: '/loanCard/resetCartBook',
         method: 'PATCH',
         dataType: 'JSON',
         contentType: 'application/json',
@@ -559,10 +578,6 @@ loanCard.drawDataTable = function () {
                     "orderable": false
                 },
                 {
-                    "targets": 5,
-                    "orderable": false
-                },
-                {
                     "targets": 6,
                     "orderable": false,
                     "searchable": false
@@ -571,6 +586,7 @@ loanCard.drawDataTable = function () {
             "order": [[0, 'desc']]
         }
     );
+    table.page(pageCurrent).draw(false);
 };
 
 loanCard.init = function () {

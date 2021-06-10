@@ -19,6 +19,7 @@ namespace LibraryManagement.Web.Controllers
                 TempData["email"] = Request.Cookies["email"];
                 TempData["avatar"] = Request.Cookies["avatar"];
                 TempData["name"] = Request.Cookies["name"];
+                TempData["role"] = Request.Cookies["roleName"];
                 return View();
             }
             else
@@ -57,7 +58,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPost]
-        [Route("/LoanCard/Save")]
+        [Route("/loanCard/save")]
         public IActionResult Save([FromBody] SaveLoanCardReq request)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -94,7 +95,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
-        [Route("/LoanCard/ExtendLoanCard/{id}/{dayNumber}")]
+        [Route("/loanCard/extendLoanCard/{id}/{dayNumber}")]
         public IActionResult ExtendLoanCard(int id, int dayNumber)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -114,7 +115,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
-        [Route("/LoanCard/ChangeStatusToCompleted/{id}")]
+        [Route("/loanCard/changeStatusToCompleted/{id}")]
         public IActionResult ChangeStatusToCompleted(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -135,6 +136,7 @@ namespace LibraryManagement.Web.Controllers
         }
 
         [HttpPatch]
+        [Route("/loanCard/delete/{id}")]
         public IActionResult Delete(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -154,7 +156,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpGet]
-        [Route("/LoanCard/DataCartBook")]
+        [Route("/loanCard/dataCartBook")]
         public IActionResult DataCartBook()
         {
             var cart = HttpContext.Session.GetString("cart");
@@ -167,7 +169,7 @@ namespace LibraryManagement.Web.Controllers
             return Json(new { data = dataCart, message = "Danh mục sách đang trống" });
         }
         [HttpPost]
-        [Route("/LoanCard/AddCartBook/{id}")]
+        [Route("/loanCard/addCartBook/{id}")]
         public IActionResult AddCartBook(int id)
         {
             var cart = HttpContext.Session.GetString("cart");
@@ -203,7 +205,7 @@ namespace LibraryManagement.Web.Controllers
             return Json(new { message = "ID sách nhập vào không tồn tại!" });
         }
         [HttpPatch]
-        [Route("/LoanCard/DeleteCartBook/{id}")]
+        [Route("/loanCard/deleteCartBook/{id}")]
         public IActionResult DeleteCartBook(int id)
         {
             var cart = HttpContext.Session.GetString("cart");
@@ -224,7 +226,7 @@ namespace LibraryManagement.Web.Controllers
             return Ok(false);
         }
         [HttpPatch]
-        [Route("/LoanCard/ResetCartBook")]
+        [Route("/loanCard/resetCartBook")]
         public IActionResult ResetCartBook()
         {
             HttpContext.Session.Clear();

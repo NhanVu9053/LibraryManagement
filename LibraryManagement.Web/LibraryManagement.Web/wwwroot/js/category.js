@@ -1,7 +1,6 @@
-﻿
-
-var category = {} || category;
+﻿var category = {} || category;
 var table = $('#tbCategory').DataTable();
+var pageCurrent = 0;
 
 category.showData = function () {
     $.ajax({
@@ -33,6 +32,7 @@ category.showData = function () {
 }
 
 category.delete = function (categoryId, categoryName) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h2 class="text-danger">Cảnh báo</h2>',
         message: `Bạn có muốn <b class="text-primary">Xóa</b> Thể loại sách: <b class="text-success">${categoryName}</b>?`,
@@ -71,7 +71,7 @@ category.delete = function (categoryId, categoryName) {
 
 
 category.save = function () {
-
+    pageCurrent = table.page.info().page;
     if ($('#fromAddEditCategory').valid()) {
         var saveObj = {};
         saveObj.categoryId = parseInt($('#CategoryId').val());
@@ -178,6 +178,7 @@ category.drawDataTable = function () {
 
             }
     );
+    table.page(pageCurrent).draw(false);
 }
 
 category.init =  function () {

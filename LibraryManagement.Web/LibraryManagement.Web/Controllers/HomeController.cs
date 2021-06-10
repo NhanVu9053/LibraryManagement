@@ -47,9 +47,13 @@ namespace LibraryManagement.Web.Controllers
         {
             int pageSize = 12;
             int pageNumber = (page ?? 1);
-            ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/search/{resultid}");
+            //ViewBag.ListCategory = ApiHelper<List<CategoryView>>.HttpGetAsync($"book/search/{resultid}");
             ViewBag.search = resultid;
-           var result= ApiHelper<List<BookView>>.HttpGetAsync($"book/search/{resultid}");
+            var result = new List<BookView>();
+            if (resultid != null && resultid != "")
+            {
+                result = ApiHelper<List<BookView>>.HttpGetAsync($"book/search/{resultid}");
+            }
             return View(result.ToPagedList(pageNumber, pageSize));
         }
 

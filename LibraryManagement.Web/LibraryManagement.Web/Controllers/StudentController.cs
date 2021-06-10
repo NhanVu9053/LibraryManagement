@@ -25,6 +25,7 @@ namespace LibraryManagement.Web.Controllers
                 TempData["email"] = Request.Cookies["email"];
                 TempData["avatar"] = Request.Cookies["avatar"];
                 TempData["name"] = Request.Cookies["name"];
+                TempData["role"] = Request.Cookies["roleName"];
                 return View();
             }
             else
@@ -104,6 +105,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/student/delete/{id}")]
         public IActionResult Delete(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -123,6 +125,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/student/changeStatusToBlocked/{id}")]
         public IActionResult ChangeStatusToBlocked(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -142,6 +145,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/student/changeStatusToActive/{id}")]
         public IActionResult ChangeStatusToActive(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

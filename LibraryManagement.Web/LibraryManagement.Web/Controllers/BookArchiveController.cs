@@ -15,6 +15,7 @@ namespace LibraryManagement.Web.Controllers
                 TempData["email"] = Request.Cookies["email"];
                 TempData["avatar"] = Request.Cookies["avatar"];
                 TempData["name"] = Request.Cookies["name"];
+                TempData["role"] = Request.Cookies["roleName"];
                 return View();
             }
             else
@@ -51,7 +52,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpGet]
-        [Route("/BookArchive/Details/{bookArchiveId}")]
+        [Route("/bookArchive/details/{bookArchiveId}")]
         public IActionResult Details(int bookArchiveId)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

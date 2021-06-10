@@ -1,5 +1,6 @@
 ﻿var student = {} || student;
 var table = $('#tbStudents').DataTable();
+var pageCurrent = 0;
 
 student.showData = function () {
     $.ajax({
@@ -148,6 +149,7 @@ student.checkSave = function () {
 }
 
 student.save = function () {
+    pageCurrent = table.page.info().page;
     if ($('#fromAddEditStudent').valid()) {
         var formData = new FormData();
         formData.append("studentId", parseInt($('#StudentId').val()));
@@ -198,6 +200,7 @@ student.save = function () {
 
 
 student.delete = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn xóa <b class="text-primary">Học sinh</b> có <b class="text-success">ID: ${id}</b> này không?`,
@@ -214,7 +217,7 @@ student.delete = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Student/Delete/${id}`,
+                    url: `/student/delete/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -234,6 +237,7 @@ student.delete = function (id) {
 }
 
 student.changeStatusToBlocked = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Khóa</b> Học sinh có ID <b class="text-success">${id}</b>?`,
@@ -250,7 +254,7 @@ student.changeStatusToBlocked = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Student/ChangeStatusToBlocked/${id}`,
+                    url: `/student/changeStatusToBlocked/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -270,6 +274,7 @@ student.changeStatusToBlocked = function (id) {
 }
 
 student.changeStatusToActive = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn chuyển trạng thái <b class="text-primary">Hoạt động</b> Học sinh có ID <b class="text-success">${id}</b>?`,
@@ -286,7 +291,7 @@ student.changeStatusToActive = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Student/ChangeStatusToActive/${id}`,
+                    url: `/student/changeStatusToActive/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -415,10 +420,6 @@ student.drawDataTable = function () {
                     "width": "18%"
                 },
                 {
-                    "targets": 6,
-                    "orderable": false
-                },
-                {
                     "targets": 7,
                     "orderable": false,
                     "searchable": false
@@ -432,6 +433,7 @@ student.drawDataTable = function () {
             "order": [[0, 'desc']]
         }
     );
+    table.page(pageCurrent).draw(false);
 };
 
 student.resetForm = function () {

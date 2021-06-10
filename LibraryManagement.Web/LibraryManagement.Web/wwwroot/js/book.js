@@ -1,5 +1,7 @@
 ﻿var book = {} || book;
 var table = $('#tbBooks').DataTable();
+var pageCurrent = 0;
+
 
 book.showData = function () {
     $.ajax({
@@ -143,6 +145,7 @@ book.checkSave = function () {
     }
 }
 book.save = function () {
+    pageCurrent = table.page.info().page;
     var formData = new FormData();
     formData.append("bookId", parseInt($('#BookId').val()));
     formData.append('image', $('#Image')[0].files[0]);
@@ -178,6 +181,7 @@ book.save = function () {
 
 
 book.delete = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn xóa <b class="text-primary">Sách</b> có <b class="text-success">ID: ${id}</b> này không?`,
@@ -194,7 +198,7 @@ book.delete = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Book/Delete/${id}`,
+                    url: `/book/delete/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -214,6 +218,7 @@ book.delete = function (id) {
 }
 
 book.changeStatusToPending = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Tạm dừng mượn</b> Sách có ID <b class="text-success">${id}</b>?`,
@@ -230,7 +235,7 @@ book.changeStatusToPending = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Book/ChangeStatusToPending/${id}`,
+                    url: `/book/changeStatusToPending/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -250,6 +255,7 @@ book.changeStatusToPending = function (id) {
 }
 
 book.changeStatusToStochking = function (id) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Cho mượn</b> Sách có ID <b class="text-success">${id}</b>?`,
@@ -266,7 +272,7 @@ book.changeStatusToStochking = function (id) {
         callback: function (result) {
             if (result) {
                 $.ajax({
-                    url: `/Book/ChangeStatusToStochking/${id}`,
+                    url: `/book/changeStatusToStochking/${id}`,
                     method: "PATCH",
                     contentType: 'JSON',
                     success: function (response) {
@@ -339,10 +345,6 @@ book.drawDataTable = function () {
                     "orderable": false
                 },
                 {
-                    "targets": 4,
-                    "orderable": false
-                },
-                {
                     "targets": 5,
                     "orderable": false,
                     "searchable": false
@@ -356,6 +358,7 @@ book.drawDataTable = function () {
             "order": [[0, 'desc']]
         }
     );
+    table.page(pageCurrent).draw(false);
 };
 
 

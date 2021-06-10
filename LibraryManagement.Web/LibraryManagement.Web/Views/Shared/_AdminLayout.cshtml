@@ -48,10 +48,10 @@
                     <div class="nav">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Quản lý sách
+                            Quản lý sách
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                        <div id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" asp-controller="Category" asp-action="Index">Thể loại</a>
                                 <a class="nav-link" asp-controller="Book" asp-action="Index">Sách</a>
@@ -60,16 +60,19 @@
                         </div>
                         <a class="nav-link" asp-controller="LoanCard" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
-                                Thẻ mượn
+                            Thẻ mượn
                         </a>
                         <a class="nav-link" asp-controller="Student" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-graduation-cap"></i></div>
-                                Danh sách học sinh
+                            Danh sách học sinh
                         </a>
-                        <a class="nav-link" asp-controller="User" asp-action="Index">
-                            <div class="sb-nav-link-icon"><i class="fa fa-id-card"></i></div>
+                        @if (TempData["role"] as string == "System Admin")
+                        {
+                            <a class="nav-link" asp-controller="User" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fa fa-id-card"></i></div>
                                 Quản lý tài khoản
-                        </a>
+                            </a>
+                        }
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

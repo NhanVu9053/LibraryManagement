@@ -1,5 +1,6 @@
 ﻿var user = {} || user;
 var table = $('#tbUsers').DataTable();
+var pageCurrent = 0;
 
 user.showData = function () {
     $.ajax({
@@ -233,7 +234,7 @@ user.edit = function (id) {
             $('#Gender').val(`${response.data.gender}`);
             var dobString = response.data.dob.toString();
             $('#Dob').val(dobString.slice(0, 10));
-            var hireDateString = response.data.dob.toString();
+            var hireDateString = response.data.hireDate.toString();
             $('#HireDate').val(hireDateString.slice(0, 10));
             $('#Email').val(response.data.email);
             $('#Roles').val(response.data.roleId);
@@ -256,6 +257,7 @@ user.edit = function (id) {
 //---------------- Save -----------------
 
 user.save = function () {
+    pageCurrent = table.page.info().page;
     if ($('#fromAddEditUser').valid()) {
         var formData = new FormData();
         formData.append("userId", $('#UserId').val());
@@ -292,7 +294,8 @@ user.save = function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                if (response.data.userId != null) {
+                console.log(response);
+                if (response.data.email != null) {
                     bootbox.alert(`<h5 class="text-success">${response.data.message} !!!</h5>`, function () {
                         $('#addEditUserModal').modal('hide');
                         user.showData();
@@ -315,6 +318,7 @@ user.save = function () {
 
 //---------------- Change Status -----------------
 user.changeStatusToBlocked = function (id, name) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Khóa</b> Tài khoản có tên đăng nhập: <b class="text-success">${name}</b>?`,
@@ -351,6 +355,7 @@ user.changeStatusToBlocked = function (id, name) {
 }
 
 user.changeStatusToActive = function (id, name) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Hoạt động</b> Tài khoản có tên đăng nhập: <b class="text-success">${name}</b>?`,
@@ -386,6 +391,7 @@ user.changeStatusToActive = function (id, name) {
     });
 }
 user.delete = function (id, name) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h4 class="text-danger">THÔNG BÁO</h4>',
         message: `Bạn có muốn <b class="text-primary">Xóa</b> Tài khoản có tên đăng nhập: <b class="text-success">${name}</b>?`,
@@ -554,6 +560,7 @@ user.drawDataTable = function () {
             ]
         }
     );
+    table.page(pageCurrent).draw(false);
 };
 
 user.resetForm = function () {

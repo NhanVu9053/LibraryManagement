@@ -27,6 +27,7 @@ namespace LibraryManagement.Web.Controllers
                 TempData["email"] = Request.Cookies["email"];
                 TempData["avatar"] = Request.Cookies["avatar"];
                 TempData["name"] = Request.Cookies["name"];
+                TempData["role"] = Request.Cookies["roleName"];
                 return View();
             }
             else
@@ -106,6 +107,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/book/delete/{id}")]
         public IActionResult Delete(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -125,6 +127,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/book/changeStatusToOver/{id}")]
         public IActionResult ChangeStatusToOver(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -144,7 +147,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
-        [Route("/Book/ChangeStatusToStochking/{id}")]
+        [Route("/book/changeStatusToStochking/{id}")]
         public IActionResult ChangeStatusToStochking(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")
@@ -164,6 +167,7 @@ namespace LibraryManagement.Web.Controllers
             }
         }
         [HttpPatch]
+        [Route("/book/changeStatusToPending/{id}")]
         public IActionResult ChangeStatusToPending(int id)
         {
             if (Request.Cookies["roleName"] == "System Admin" || Request.Cookies["roleName"] == "Thủ thư")

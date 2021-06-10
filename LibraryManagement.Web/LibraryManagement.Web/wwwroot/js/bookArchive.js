@@ -1,6 +1,6 @@
-﻿
-var bookArchive = {} || bookArchive;
+﻿var bookArchive = {} || bookArchive;
 var table = $('#tbBookArchive').DataTable();
+var pageCurrent = 0;
 
 bookArchive.showData = function () {
     $.ajax({
@@ -79,6 +79,7 @@ bookArchive.details = function (bookArchiveId) {
 }
 
 bookArchive.delete = function (bookArchiveId, bookName) {
+    pageCurrent = table.page.info().page;
     bootbox.confirm({
         title: '<h2 class="text-danger">Thông báo</h2>',
         message: `Bạn có muốn xóa <b class="text-primary">Kho sách</b> lưu sách <b class="text-success"> ${bookName}</b> này không?`,
@@ -128,6 +129,7 @@ bookArchive.edit = function (id, isPlus, bookName) {
 };
 
 bookArchive.save = function () {
+    pageCurrent = table.page.info().page;
     $('#msgResult').hide();
     if ($('#fromEditbookArchive').valid()) {
         var saveObj = {};
@@ -214,6 +216,7 @@ bookArchive.drawDataTable = function () {
             "order": [[0, 'desc']]
         }
     );
+    table.page(pageCurrent).draw(false);
 }
 bookArchive.init = function () {
     bookArchive.showData();

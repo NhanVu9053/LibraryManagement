@@ -14,6 +14,7 @@ namespace LibraryManagement.Web.Controllers
                 TempData["email"] = Request.Cookies["email"];
                 TempData["avatar"] = Request.Cookies["avatar"];
                 TempData["name"] = Request.Cookies["name"];
+                TempData["role"] = Request.Cookies["roleName"];
                 return View();
             }
             else
